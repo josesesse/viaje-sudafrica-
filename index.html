@@ -73,11 +73,18 @@ input{font-family:inherit;}
 a{color:inherit;}
 
 .app{
-  max-width:640px; margin:0 auto; min-height:100vh; position:relative; padding-bottom:calc(84px + var(--safe-bottom));
+  max-width:640px; 
+  margin:0 auto; 
+  min-height:100%; 
+  position:relative; 
+  padding-bottom:calc(84px + var(--safe-bottom));
   background:
     radial-gradient(1200px 600px at 15% -10%, rgba(201,123,66,.14), transparent 60%),
     radial-gradient(1000px 500px at 100% 0%, rgba(78,148,132,.12), transparent 55%),
     linear-gradient(180deg, #F4EEDC 0%, #E8F2EC 65%, #E8F2EC 100%);
+  background-size: 100% 100vh;
+  background-attachment: scroll;
+  background-repeat: no-repeat;
 }
 
 /* ---------- Top header ---------- */
