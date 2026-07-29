@@ -635,30 +635,43 @@ function init(){
   const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const isStandalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone;
   const installDismissed = localStorage.getItem("sa-trip-install-dismissed") === "1";
-  function dismissInstallBar(){
-    bar.classList.remove("show");
-    try{ localStorage.setItem("sa-trip-install-dismissed", "1"); }catch(e){}
-  }
-  if(!isStandalone && !installDismissed){
-    if(isIOS){
-      document.getElementById("install-copy").textContent = "Toca Compartir → 'Añadir a pantalla de inicio' para tenerla siempre offline.";
-      setTimeout(()=> bar.classList.add("show"), 1200);
-    } else {
-      window.addEventListener("beforeinstallprompt", (e)=>{
-        e.preventDefault();
-        deferredPrompt = e;
-        bar.classList.add("show");
-      });
-      bar.addEventListener("click", (e)=>{
-        if(e.target.closest("#install-close")) return;
-        if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt=null; dismissInstallBar(); }
-      });
-    }
-  }
+function dismissInstallBar(){
+  bar.style.display = "none";  // Ocultar completamente
+  bar.classList.remove("show");
+  try{ localStorage.setItem("sa-trip-install-dismissed", "1"); }catch(e){}
+}
+
+// Manejo separado de iOS y Android
+if(isIOS){
   document.getElementById("install-close").addEventListener("click", (e)=>{
     e.stopPropagation();
-    dismissInstallBar();
+    e.preventDefault();
+    dismissInstallBar();  // Ahora se oculta
   });
+} else {
+  // Android/Web
+  window.addEventListener("beforeinstallprompt", (e)=>{
+    e.preventDefault();
+    deferredPrompt = e;
+    bar.classList.add("show");
+    
+    // Listener mejorado con userChoice
+    bar.addEventListener("click", (clickEvent)=>{
+      if(clickEvent.target.closest("#install-close")) {
+        clickEvent.stopPropagation();
+        clickEvent.preventDefault();
+        dismissInstallBar();
+        return;
+      }
+      // ...
+    });
+  });
+}
+
+// Si ya está instalada, ocultar directamente
+if(isStandalone || installDismissed) {
+  bar.style.display = "none";
+}
 
   // Service worker
   if("serviceWorker" in navigator){
