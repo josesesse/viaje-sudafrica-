@@ -455,15 +455,18 @@ function renderDayList(){
   });
   
   // Cambiar background de página según tarjetas visibles
-  // Solo aplicar leg-capetown si TODOS los días son de Cape Town (filtro específico activado)
   if(days.length > 0){
     const allCapeTown = days.every(d => d.leg === "capetown");
+    const allKruger = days.every(d => d.leg === "kruger");
     const onlyCapeTown = currentLeg === "capetown";
+    const onlyKruger = currentLeg === "kruger";
+    
+    document.body.classList.remove("leg-capetown", "leg-kruger");
     
     if(onlyCapeTown && allCapeTown){
       document.body.classList.add("leg-capetown");
-    } else {
-      document.body.classList.remove("leg-capetown");
+    } else if(onlyKruger && allKruger){
+      document.body.classList.add("leg-kruger");
     }
   }
 }

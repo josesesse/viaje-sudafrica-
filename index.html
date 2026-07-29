@@ -53,6 +53,7 @@ body{
     radial-gradient(1200px 600px at 15% -10%, rgba(201,123,66,.14), transparent 60%),
     radial-gradient(1000px 500px at 100% 0%, rgba(78,148,132,.12), transparent 55%),
     linear-gradient(180deg, var(--bg) 0%, #E8F2EC 65%, #E8F2EC 100%);
+  background-attachment: fixed;
   color:var(--text);
   font-family:var(--font-body);
   -webkit-font-smoothing:antialiased;
@@ -64,6 +65,14 @@ body.leg-capetown{
     radial-gradient(1200px 600px at 15% -10%, rgba(78,148,132,.16), transparent 60%),
     radial-gradient(1000px 500px at 100% 0%, rgba(78,148,132,.14), transparent 55%),
     linear-gradient(180deg, #E8F2EC 0%, #E8F2EC 100%);
+  background-attachment: fixed;
+}
+body.leg-kruger{
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(201,123,66,.14), transparent 60%),
+    radial-gradient(1000px 500px at 100% 0%, rgba(78,148,132,.12), transparent 55%),
+    linear-gradient(180deg, #F4EEDC 0%, #F4EEDC 100%);
+  background-attachment: fixed;
 }
 button{font-family:inherit; -webkit-appearance:none; appearance:none; border:none; background:none; color:inherit; cursor:pointer;}
 input{font-family:inherit;}
@@ -90,6 +99,7 @@ body .topbar{
   font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
   color:var(--amber-soft); font-weight:600;
 }
+body.leg-capetown .eyebrow{color:var(--teal-soft);}
 h1.trip-title{
   font-family:var(--font-display); font-weight:800; font-size:26px; letter-spacing:-.01em;
   margin:4px 0 0; line-height:1.05;
@@ -98,6 +108,7 @@ h1.trip-title{
   text-align:right; flex-shrink:0;
 }
 .countdown .num{font-family:var(--font-display); font-weight:800; font-size:26px; color:var(--amber-soft); line-height:1;}
+body.leg-capetown .countdown .num{color:var(--teal-soft);}
 .countdown .lbl{font-family:var(--font-mono); font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.1em;}
 
 .tabs{display:flex; gap:8px; margin-top:18px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none;}
@@ -114,6 +125,7 @@ body.leg-capetown .card .stub{background:rgba(78,148,132,.18);}
 .tab .dot{width:7px; height:7px; border-radius:50%; background:currentColor; opacity:.6;}
 .tab.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
 .tab.active .dot{background:var(--paper);}
+.tab[data-leg="kruger"].active{background:#8C4A22; border-color:#8C4A22;}
 .tab[data-leg="capetown"].active{background:#2E6B5E; border-color:#2E6B5E;}
 .tab[data-leg="kruger"]:not(.active){color:var(--amber-soft);}
 .tab[data-leg="capetown"]:not(.active){color:var(--teal-soft);}
@@ -132,9 +144,10 @@ body.leg-capetown .searchwrap input{background:rgba(233, 248, 242, 0.95); border
 .list{padding:18px 16px 8px; display:flex; flex-direction:column; gap:14px;}
 .section-label{
   font-family:var(--font-mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase;
-  color:var(--text-faint); margin:10px 6px 2px; display:flex; align-items:center; gap:8px;
+  color:var(--text-faint); margin:10px 0 2px; display:flex; align-items:center; gap:8px;
 }
 .section-label::after{content:""; flex:1; height:1px; background:var(--line);}
+body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 
 /* Boarding pass card */
 .card{
