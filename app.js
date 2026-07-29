@@ -205,7 +205,7 @@ const TRIP = {
 };
 
 const LEG_LABEL = { kruger: "Kruger", capetown: "Ciudad del Cabo" };
-const MYMAPS_URL = "https://www.google.com/maps/d/u/1/edit?mid=1DIxDEUx2ATWfkPIhY6HAbblI0aXUfv0&usp=sharing";
+const MYMAPS_URL = "https://www.google.com/maps/d/u/1/viewer?mid=1DIxDEUx2ATWfkPIhY6HAbblI0aXUfv0&usp=sharing";
 
 const RESERVATIONS_STATIC = [
   { key:"flight-in", label:"Vuelo internacional de ida", detail:"Johannesburgo · 15 ago, 08:30", status:"confirmed" },
