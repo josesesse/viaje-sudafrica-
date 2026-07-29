@@ -10,7 +10,7 @@ const TRIP = {
       day: 1, date: "2026-08-15", leg: "kruger",
       fromCode: "JNB", toCode: "MDB", from: "Johannesburgo", to: "Middelburg",
       title: "JNB → MDB",
-      subtitle: "Llegada a Sudáfrica",
+      subtitle: "Johannesburgo → Middelburg",
       summary: "Aterrizaje, recogida del coche y primer contacto con el bush en Loskop Dam.",
       distance: 140, time: "2h 30m",
       flight: { label: "Vuelo de llegada", detail: "Johannesburgo (JNB) · 08:30", status: "confirmed" },
@@ -26,8 +26,8 @@ const TRIP = {
       day: 2, date: "2026-08-16", leg: "kruger",
       fromCode: "MDB", toCode: "PTK", from: "Middelburg", to: "Pretoriuskop",
       title: "MDB → PTK",
-      subtitle: "Entrada al Kruger",
-      summary: "Middelburg → Dullstroom → Sabie → Numbi Gate → Pretoriuskop, con safari de tarde.",
+      subtitle: "Middelburg → Pretoriuskop",
+      summary: "Dullstroom → Sabie → Numbi Gate, entrada al Kruger con safari de tarde.",
       distance: 165, time: "3h 45m (con paradas)",
       stops: [
         { name: "Middelburg", lat:-25.7748, lon:29.4644, time: "07:30", note: "Salida temprano.", isHL:false },
@@ -43,8 +43,8 @@ const TRIP = {
       day: 3, date: "2026-08-17", leg: "kruger",
       fromCode: "PTK", toCode: "SAT", from: "Pretoriuskop", to: "Satara",
       title: "PTK → SAT",
-      subtitle: "Skukuza, Lake Panic Hide, Tshokwane",
-      summary: "Ruta clásica del Kruger con los mejores hides y llanuras de Satara.",
+      subtitle: "Pretoriuskop → Satara",
+      summary: "Skukuza, Lake Panic Hide, Tshokwane con los mejores hides del Kruger.",
       distance: 115, time: "4h 30m (safari lento)",
       stops: [
         { name: "Pretoriuskop", lat:-25.1793, lon:31.2582, time: "≈06:00", note: "Salida a la hora de apertura del parque.", isHL:false },
@@ -60,8 +60,8 @@ const TRIP = {
       day: 4, date: "2026-08-18", leg: "kruger",
       fromCode: "SAT", toCode: "TBT", from: "Satara", to: "Tamboti",
       title: "SAT → TBT",
-      subtitle: "S100 y H7, carreteras legendarias",
-      summary: "Dos de las mejores carreteras del Kruger hasta Tamboti, campamento pequeño y auténtico.",
+      subtitle: "Satara → Tamboti",
+      summary: "S100 y H7, carreteras legendarias hasta Tamboti, campamento pequeño y auténtico.",
       distance: 98, time: "3h 45m (safari lento)",
       stops: [
         { name: "Satara", lat:-24.3936, lon:31.7784, time: "Mañana", note: "Salida hacia la S100.", isHL:false },
@@ -77,7 +77,7 @@ const TRIP = {
       day: 5, date: "2026-08-19", leg: "kruger",
       fromCode: "TBT", toCode: "CRB", from: "Tamboti", to: "Crocodile Bridge",
       title: "TBT → CRB",
-      subtitle: "H10, Sunset Dam, Lower Sabie",
+      subtitle: "Tamboti → Crocodile Bridge",
       summary: "H10, Sunset Dam y la terraza de Lower Sabie antes de bajar al sureste del parque.",
       distance: 105, time: "4h 15m (safari lento)",
       stops: [
@@ -95,8 +95,8 @@ const TRIP = {
       day: 6, date: "2026-08-20", leg: "kruger",
       fromCode: "CRB", toCode: "GRK", from: "Crocodile Bridge", to: "Graskop",
       title: "CRB → GRK",
-      subtitle: "Último safari + Panorama Route",
-      summary: "Un último amanecer por la S28 y salida del parque hacia la parte más espectacular de la Panorama Route.",
+      subtitle: "Crocodile Bridge → Graskop",
+      summary: "Último amanecer (S28) + Panorama Route con Bourke's Luck, Three Rondavels y Lisbon Falls.",
       distance: 225, time: "4h 30m (incluye Panorama Route)",
       stops: [
         { name: "S28", lat:-25.30, lon:31.75, time: "Amanecer", note: "Carretera tranquila, excelente para rinocerontes, guepardos y aves rapaces.", isHL:true, stars:0 },
@@ -114,8 +114,8 @@ const TRIP = {
       day: 7, date: "2026-08-21", leg: "capetown",
       fromCode: "MQP", toCode: "CPT", from: "Nelspruit", to: "Ciudad del Cabo",
       title: "MQP → CPT",
-      subtitle: "Llegada a Ciudad del Cabo",
-      summary: "Vuelo interno a Ciudad del Cabo y una tarde tranquila de aterrizaje en la ciudad.",
+      subtitle: "Nelspruit → Ciudad del Cabo",
+      summary: "Vuelo interno y una tarde tranquila de aterrizaje en la ciudad.",
       flight: { label: "Vuelo interno", detail: "Nelspruit (MQP) → Ciudad del Cabo (CPT) · 18:30", status: "confirmed" },
       stops: [
         { name: "Aeropuerto de Ciudad del Cabo", lat:-33.9715, lon:18.6021, time: "≈18:30", note: "Llegada y recogida del coche de alquiler.", isHL:false },
@@ -132,8 +132,8 @@ const TRIP = {
       day: 8, date: "2026-08-22", leg: "capetown",
       fromCode: "CPT", toCode: "CPT", from: "Ciudad del Cabo", to: "Ciudad del Cabo",
       title: "CPT",
-      subtitle: "Table Mountain, Bo-Kaap, Signal Hill",
-      summary: "Teleférico a primera hora, Bo-Kaap y Company's Garden, atardecer en Signal Hill.",
+      subtitle: "Ciudad del Cabo",
+      summary: "Table Mountain, Bo-Kaap, Company's Garden y atardecer en Signal Hill.",
       distance: 22, time: "Día de ciudad",
       stops: [
         { name: "Table Mountain", lat:-33.9628, lon:18.4098, time: "08:00–08:30", note: "Salir temprano: menos gente, mejor luz, más posibilidades de vistas despejadas. Subida en teleférico si el tiempo acompaña.", isHL:true, stars:5 },
@@ -148,8 +148,8 @@ const TRIP = {
       day: 9, date: "2026-08-23", leg: "capetown",
       fromCode: "CPT", toCode: "SIM", from: "Ciudad del Cabo", to: "Simon's Town",
       title: "CPT → SIM",
-      subtitle: "Chapman's Peak, Cape Point, Cabo de Buena Esperanza",
-      summary: "Chapman's Peak Drive, Cape Point y el punto más icónico de la península.",
+      subtitle: "Ciudad del Cabo → Simon's Town",
+      summary: "Chapman's Peak Drive, Cape Point y Cabo de Buena Esperanza.",
       distance: 65, time: "2h 15m (con paradas)",
       stops: [
         { name: "Hout Bay", lat:-34.0492, lon:18.3547, time: "Mañana", note: "De paso hacia Chapman's Peak.", isHL:false },
@@ -166,8 +166,8 @@ const TRIP = {
       day: 10, date: "2026-08-24", leg: "capetown",
       fromCode: "SIM", toCode: "HER", from: "Simon's Town", to: "Hermanus",
       title: "SIM → HER",
-      subtitle: "Boulders Beach, Clarence Drive",
-      summary: "Boulders Beach, pueblos costeros y una de las carreteras más bonitas del Cabo hasta Hermanus.",
+      subtitle: "Simon's Town → Hermanus",
+      summary: "Boulders Beach, pueblos costeros, Clarence Drive hasta Hermanus.",
       distance: 120, time: "2h 45m",
       stops: [
         { name: "Boulders Beach", lat:-34.1970, lon:18.4498, time: "Mañana", note: "Colonia de pingüinos africanos en libertad.", isHL:true, stars:5 },
@@ -183,8 +183,8 @@ const TRIP = {
       day: 11, date: "2026-08-25", leg: "capetown",
       fromCode: "HER", toCode: "STB", from: "Hermanus", to: "Stellenbosch",
       title: "HER → STB",
-      subtitle: "Hermanus Cliff Path, traslado a viñedos",
-      summary: "Mañana tranquila buscando ballenas desde el Cliff Path, tarde de traslado a la región vinícola.",
+      subtitle: "Hermanus → Stellenbosch",
+      summary: "Mañana con Hermanus Cliff Path buscando ballenas, tarde traslado a región vinícola.",
       distance: 130, time: "2h 00m",
       stops: [
         { name: "Hermanus Cliff Path", lat:-34.4204, lon:19.2467, time: "Mañana", note: "Paseo junto a los acantilados: ballenas francas australes, delfines y aves marinas.", isHL:true, stars:5 },
@@ -198,8 +198,8 @@ const TRIP = {
       day: 12, date: "2026-08-26", leg: "capetown",
       fromCode: "STB", toCode: "STB", from: "Stellenbosch", to: "Stellenbosch",
       title: "STB",
-      subtitle: "Tokara, Waterford, centro histórico",
-      summary: "Dos bodegas seleccionadas sin excesos y el centro histórico colonial.",
+      subtitle: "Stellenbosch",
+      summary: "Tokara y Waterford, dos bodegas seleccionadas, centro histórico colonial.",
       distance: 45, time: "Día de región vinícola",
       stops: [
         { name: "Tokara Wine Estate", lat:-33.9764, lon:18.9126, time: "Mañana", note: "Una de las mejores vistas de los viñedos, montañas y paisajes espectaculares.", isHL:true, stars:5 },
@@ -213,8 +213,8 @@ const TRIP = {
       day: 13, date: "2026-08-27", leg: "capetown",
       fromCode: "STB", toCode: "CPT", from: "Stellenbosch", to: "Zona aeropuerto CPT",
       title: "STB → CPT",
-      subtitle: "Franschhoek, última bodega, despedida",
-      summary: "Último pueblo con encanto, una bodega final y traslado hacia el aeropuerto para el vuelo de madrugada.",
+      subtitle: "Stellenbosch → Aeropuerto Ciudad del Cabo",
+      summary: "Franschhoek, última bodega, comida de despedida y traslado al aeropuerto.",
       distance: 85, time: "1h 45m",
       flight: { label: "Vuelo de vuelta", detail: "Ciudad del Cabo → salida ≈06:00 (28 ago)", status: "confirmed" },
       stops: [
@@ -676,6 +676,12 @@ function init(){
       document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
       tab.classList.add("active");
       currentLeg = tab.dataset.leg;
+      // Cambiar clase de background según el leg
+      if(currentLeg === "capetown"){
+        document.body.classList.add("leg-capetown");
+      } else {
+        document.body.classList.remove("leg-capetown");
+      }
       renderDayList();
     });
   });
