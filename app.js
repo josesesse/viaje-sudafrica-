@@ -455,11 +455,7 @@ function openDay(dayNum){
       <div class="mapbox">${dayMapSVG(day)}</div>
       <div class="map-caption">${icon("info")}<span>Mapa esquemático, no es de navegación real — muestra el orden y la posición relativa de las paradas.</span></div>
       <a class="maplink" href="${gmapsUrl}" target="_blank" rel="noopener">${icon("compass")}Abrir ruta en Google Maps (requiere conexión)</a>
-      <a class="maplink" href="${MYMAPS_URL}" target="_blank" rel="noopener noreferrer" 
-   onclick="if(/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)){
-     window.open(this.href, '_system'); 
-     return false;
-   }" style="margin-left:8px;">${icon("map")}Ver en nuestro mapa completo (requiere conexión)</a>
+      <a class="maplink" href="${MYMAPS_URL}" target="_blank" rel="noopener" style="margin-left:8px;">${icon("map")}Ver en nuestro mapa completo (requiere conexión)</a>
     </div>
 
     <div class="section ${legClass}">
