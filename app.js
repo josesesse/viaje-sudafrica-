@@ -435,8 +435,7 @@ function renderDayList(){
           <span class="card-date">${dowLabel(day.date)} · ${dateLabel(day.date)}</span>
         </div>
         <div class="card-route">${day.fromCode}<span class="arrow">→</span>${day.toCode}</div>
-        <div class="card-title">${day.title}</div>
-        ${day.subtitle ? `<div class="card-subtitle">${day.subtitle}</div>` : ""}
+        ${day.subtitle ? `<div class="card-title">${day.subtitle}</div>` : ""}
         <div class="card-sub">${day.summary}</div>
         <div class="card-bottom">
           <span class="chip">${icon("bed")}${day.stay.name}</span>
@@ -454,6 +453,16 @@ function renderDayList(){
   list.querySelectorAll(".card").forEach(el=>{
     el.addEventListener("click", ()=> openDay(Number(el.dataset.day)));
   });
+  
+  // Cambiar background de página según tarjetas visibles
+  if(days.length > 0){
+    const firstLeg = days[0].leg;
+    if(firstLeg === "capetown"){
+      document.body.classList.add("leg-capetown");
+    } else {
+      document.body.classList.remove("leg-capetown");
+    }
+  }
 }
 
 /* ============ RENDER: DAY DETAIL ============ */
@@ -507,8 +516,7 @@ function openDay(dayNum){
         <span class="detail-daytag">Día ${day.day} de 13</span>
       </div>
       <div class="detail-route">${day.fromCode}<span class="arrow">→</span>${day.toCode}</div>
-      <div class="detail-title">${day.title}</div>
-      ${day.subtitle ? `<div class="detail-subtitle">${day.subtitle}</div>` : ""}
+      ${day.subtitle ? `<div class="detail-title">${day.subtitle}</div>` : ""}
       <div class="detail-date">${dowLabel(day.date)} · ${dateLabel(day.date)} 2026</div>
     </div>
 
@@ -577,11 +585,15 @@ function openDay(dayNum){
     else { navigator.clipboard?.writeText(text); shareBtn.querySelector("span")?.remove(); }
   });
 
+  // Añadir clase de leg al overlay para cambiar background
+  document.getElementById("overlay").classList.remove("leg-kruger", "leg-capetown");
+  document.getElementById("overlay").classList.add("leg-" + day.leg);
   document.getElementById("overlay").classList.add("open");
   document.body.style.overflow = "hidden";
 }
 function closeDay(){
   document.getElementById("overlay").classList.remove("open");
+  document.getElementById("overlay").classList.remove("leg-kruger", "leg-capetown");
   document.body.style.overflow = "";
 }
 
