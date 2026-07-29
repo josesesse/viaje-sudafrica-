@@ -4,40 +4,44 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1" />
 <title>Sudáfrica · Itinerario</title>
-<meta name="theme-color" content="#0E1116" />
+<meta name="theme-color" content="#F4EEDC" />
 <meta name="description" content="Itinerario offline del viaje a Sudáfrica" />
 <link rel="manifest" href="manifest.json" />
-<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="apple-touch-icon" href="icon-192.png" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 <meta name="apple-mobile-web-app-title" content="SudAfrica26" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Inter:opsz,wght@14..32,400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0E1116;
-  --bg-2:#14181F;
-  --surface:#181D26;
-  --surface-2:#1F2530;
-  --paper:#EFE3C8;
-  --paper-2:#E6D7B4;
-  --ink:#171308;
-  --amber:#CC7A3E;
-  --amber-soft:#E7A85E;
-  --olive:#7C8459;
-  --teal:#2C8C8A;
-  --teal-soft:#5CB8B0;
-  --indigo:#3A5A8C;
-  --text:#F1EEE6;
-  --text-dim:#9BA1AC;
-  --text-faint:#6B7280;
-  --line:rgba(241,238,230,.14);
-  --line-strong:rgba(241,238,230,.28);
-  --danger:#C4634B;
-  --ok:#6FA383;
+  /* Sand-paper base, like a field journal */
+  --bg:#F4EEDC;
+  --bg-2:#ECE2C6;
+  --surface:#FBF7EA;
+  --surface-2:#EFE4C8;
+  --ink:#241D12;
+  --paper:#FAF5E7;
+  /* Kruger: red clay + savanna ochre */
+  --amber:#C97B42;
+  --amber-soft:#8C4A22;
+  /* Cape Town: fynbos green + Atlantic teal */
+  --olive:#4C7A5E;
+  --teal:#4E9484;
+  --teal-soft:#2E6B5E;
+  --text:#2E2818;
+  --text-dim:#6B5E44;
+  --text-faint:#9C8F6E;
+  --line:rgba(36,29,18,.13);
+  --line-strong:rgba(36,29,18,.24);
+  --danger:#96402A;
+  --ok:#3F6B4E;
   --radius:22px;
   --radius-sm:14px;
-  --font-display: -apple-system, "SF Pro Display", "Segoe UI Semibold", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
-  --font-body: -apple-system, "SF Pro Text", "Segoe UI", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "SF Mono", "Cascadia Mono", "Roboto Mono", ui-monospace, "Courier New", monospace;
+  --font-display: "Inter", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter", "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Roboto Mono", "SF Mono", "Cascadia Mono", ui-monospace, "Courier New", monospace;
   --safe-top: env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
@@ -46,8 +50,8 @@ html,body{height:100%;}
 body{
   margin:0;
   background:
-    radial-gradient(1200px 600px at 15% -10%, rgba(204,122,62,.10), transparent 60%),
-    radial-gradient(1000px 500px at 100% 0%, rgba(44,140,138,.10), transparent 55%),
+    radial-gradient(1200px 600px at 15% -10%, rgba(201,123,66,.14), transparent 60%),
+    radial-gradient(1000px 500px at 100% 0%, rgba(78,148,132,.12), transparent 55%),
     var(--bg);
   color:var(--text);
   font-family:var(--font-body);
@@ -56,7 +60,7 @@ body{
 }
 button{font-family:inherit; -webkit-appearance:none; appearance:none; border:none; background:none; color:inherit; cursor:pointer;}
 input{font-family:inherit;}
-::selection{background:var(--amber); color:var(--ink);}
+::selection{background:var(--amber); color:var(--paper);}
 a{color:inherit;}
 
 .app{max-width:640px; margin:0 auto; min-height:100%; position:relative; padding-bottom:calc(84px + var(--safe-bottom));}
@@ -90,8 +94,8 @@ h1.trip-title{
   display:flex; align-items:center; gap:6px; transition:.15s;
 }
 .tab .dot{width:7px; height:7px; border-radius:50%; background:currentColor; opacity:.6;}
-.tab.active{background:var(--text); color:var(--ink); border-color:var(--text);}
-.tab.active .dot{background:var(--ink);}
+.tab.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+.tab.active .dot{background:var(--paper);}
 .tab[data-leg="kruger"]:not(.active){color:var(--amber-soft);}
 .tab[data-leg="capetown"]:not(.active){color:var(--teal-soft);}
 
@@ -124,8 +128,8 @@ h1.trip-title{
   font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:.08em;
   padding:3px 9px; border-radius:100px; text-transform:uppercase;
 }
-.card[data-leg="kruger"] .card-daytag{background:rgba(204,122,62,.16); color:var(--amber-soft);}
-.card[data-leg="capetown"] .card-daytag{background:rgba(44,140,138,.16); color:var(--teal-soft);}
+.card[data-leg="kruger"] .card-daytag{background:rgba(201,123,66,.18); color:var(--amber-soft);}
+.card[data-leg="capetown"] .card-daytag{background:rgba(78,148,132,.18); color:var(--teal-soft);}
 .card-date{font-family:var(--font-mono); font-size:12px; color:var(--text-dim);}
 .card-route{
   font-family:var(--font-mono); font-weight:700; font-size:19px; letter-spacing:.02em; margin-top:11px;
@@ -138,8 +142,8 @@ h1.trip-title{
 .chip{display:flex; align-items:center; gap:5px; font-size:12px; color:var(--text-dim);}
 .chip svg{width:13px; height:13px; opacity:.7;}
 .status-pill{font-size:11px; font-weight:600; padding:3px 9px; border-radius:100px; font-family:var(--font-mono); letter-spacing:.03em;}
-.status-pill.pending{background:rgba(196,99,75,.16); color:#E08D77;}
-.status-pill.confirmed{background:rgba(111,163,131,.16); color:#8FC1A5;}
+.status-pill.pending{background:rgba(150,64,42,.14); color:var(--danger);}
+.status-pill.confirmed{background:rgba(63,107,78,.14); color:var(--ok);}
 
 .stub{
   width:74px; flex-shrink:0; border-left:1.5px dashed var(--line-strong);
@@ -163,7 +167,7 @@ h1.trip-title{
 .bottomnav{
   position:fixed; left:0; right:0; bottom:0; z-index:40;
   max-width:640px; margin:0 auto;
-  background:rgba(20,24,31,.9); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+  background:rgba(244,238,220,.88); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
   border-top:1px solid var(--line);
   display:flex; padding:8px 6px calc(8px + var(--safe-bottom));
 }
@@ -186,10 +190,10 @@ h1.trip-title{
 .detail-hero{
   padding: calc(18px + var(--safe-top)) 18px 26px; position:relative; overflow:hidden;
 }
-.detail-hero.leg-kruger{background:linear-gradient(160deg, #2A1E12 0%, var(--bg) 60%);}
-.detail-hero.leg-capetown{background:linear-gradient(160deg, #10262A 0%, var(--bg) 60%);}
+.detail-hero.leg-kruger{background:linear-gradient(160deg, #E7CFA4 0%, var(--bg) 65%);}
+.detail-hero.leg-capetown{background:linear-gradient(160deg, #CFE3D6 0%, var(--bg) 65%);}
 .closebtn{
-  width:34px; height:34px; border-radius:50%; background:rgba(255,255,255,.08); display:flex;
+  width:34px; height:34px; border-radius:50%; background:rgba(36,29,18,.08); display:flex;
   align-items:center; justify-content:center;
 }
 .closebtn svg{width:16px; height:16px;}
@@ -219,9 +223,9 @@ h1.trip-title{
 .map-caption svg{width:13px; height:13px; flex-shrink:0; margin-top:1px;}
 .maplink{
   display:inline-flex; align-items:center; gap:6px; margin-top:12px; font-size:13px; font-weight:600;
-  color:var(--amber-soft); background:rgba(204,122,62,.1); padding:9px 14px; border-radius:100px;
+  color:var(--amber-soft); background:rgba(201,123,66,.12); padding:9px 14px; border-radius:100px;
 }
-.leg-capetown .maplink{color:var(--teal-soft); background:rgba(44,140,138,.1);}
+.leg-capetown .maplink{color:var(--teal-soft); background:rgba(78,148,132,.12);}
 .maplink svg{width:14px; height:14px;}
 
 /* timeline */
@@ -256,7 +260,7 @@ h1.trip-title{
 }
 .switch{width:40px; height:24px; border-radius:100px; background:var(--surface-2); position:relative; flex-shrink:0; border:1px solid var(--line-strong);}
 .switch::after{content:""; position:absolute; top:2px; left:2px; width:18px; height:18px; border-radius:50%; background:var(--text-faint); transition:.2s;}
-.switch.on{background:rgba(111,163,131,.25); border-color:var(--ok);}
+.switch.on{background:rgba(63,107,78,.22); border-color:var(--ok);}
 .switch.on::after{transform:translateX(16px); background:var(--ok);}
 .stay-toggle-label{font-size:13px; color:var(--text-dim); flex:1;}
 .stay-note{
@@ -268,10 +272,10 @@ h1.trip-title{
 
 /* tips */
 .tip{
-  display:flex; gap:10px; background:rgba(204,122,62,.08); border:1px solid rgba(204,122,62,.2);
+  display:flex; gap:10px; background:rgba(201,123,66,.10); border:1px solid rgba(201,123,66,.22);
   border-radius:var(--radius-sm); padding:13px 14px; font-size:13px; color:var(--text); line-height:1.5;
 }
-.leg-capetown .tip{background:rgba(44,140,138,.08); border-color:rgba(44,140,138,.2);}
+.leg-capetown .tip{background:rgba(78,148,132,.10); border-color:rgba(78,148,132,.22);}
 .tip svg{width:16px; height:16px; flex-shrink:0; margin-top:1px; color:var(--amber-soft);}
 .leg-capetown .tip svg{color:var(--teal-soft);}
 
@@ -324,7 +328,7 @@ h1.trip-title{
   position:fixed; left:12px; right:12px; z-index:90; bottom:calc(72px + var(--safe-bottom));
   max-width:616px; margin:0 auto; background:var(--surface-2); border:1px solid var(--line-strong);
   border-radius:18px; padding:14px 16px; display:flex; align-items:center; gap:12px;
-  box-shadow:0 12px 30px rgba(0,0,0,.4); transform:translateY(140%); transition:transform .4s cubic-bezier(.22,.9,.32,1);
+  box-shadow:0 12px 30px rgba(36,29,18,.18); transform:translateY(140%); transition:transform .4s cubic-bezier(.22,.9,.32,1);
 }
 .installbar.show{transform:translateY(0);}
 .installbar svg{width:24px; height:24px; color:var(--amber-soft); flex-shrink:0;}
@@ -412,6 +416,13 @@ h1.trip-title{
       <div class="info-row"><span class="k">Policía (SAPS)</span><span class="v">10111</span></div>
       <div class="info-row"><span class="k">Ambulancia</span><span class="v">10177</span></div>
       <div class="info-note">Guardad estos números también en el móvil "de verdad" (no solo en la app), por si acaso.</div>
+    </div>
+    <div class="info-card">
+      <h4><svg><use href="#i-map"/></svg>Mapa completo del viaje</h4>
+      <div class="info-note">
+        Tenemos un Google My Maps con (casi) todos los trayectos del viaje ya dibujados. Requiere conexión para verlo, así que es mejor para planificar en casa que para consultar sobre la marcha.
+      </div>
+      <a class="maplink" href="https://www.google.com/maps/d/u/1/edit?mid=1DIxDEUx2ATWfkPIhY6HAbblI0aXUfv0&usp=sharing" target="_blank" rel="noopener" style="margin-top:12px;"><svg><use href="#i-map"/></svg>Abrir nuestro My Maps</a>
     </div>
     <div class="info-card">
       <h4><svg><use href="#i-compass"/></svg>Antes de salir de ruta</h4>

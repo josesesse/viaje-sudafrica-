@@ -205,6 +205,7 @@ const TRIP = {
 };
 
 const LEG_LABEL = { kruger: "Kruger", capetown: "Ciudad del Cabo" };
+const MYMAPS_URL = "https://www.google.com/maps/d/u/1/edit?mid=1DIxDEUx2ATWfkPIhY6HAbblI0aXUfv0&usp=sharing";
 
 const RESERVATIONS_STATIC = [
   { key:"flight-in", label:"Vuelo internacional de ida", detail:"Johannesburgo · 15 ago, 08:30", status:"confirmed" },
@@ -270,8 +271,10 @@ function dayMapSVG(day){
   function Y(lat){ return offY + (maxLat-lat)*s; } // north at top
 
   const isCape = day.leg === "capetown";
-  const routeColor = isCape ? "#5CB8B0" : "#E7A85E";
-  const hlColor = isCape ? "#8FD9D0" : "#E8A84B";
+  const mapBg = isCape ? "#EAF1EC" : "#F3E9D4";
+  const routeColor = isCape ? "#4E9484" : "#C97B42";
+  const hlColor = isCape ? "#2E6B5E" : "#8C4A22";
+  const dotFaint = isCape ? "rgba(46,107,94,.45)" : "rgba(140,74,34,.4)";
 
   let path = "M";
   pts.forEach((p,i)=>{ path += `${i===0?"":" L"} ${X(p.lon).toFixed(1)} ${Y(p.lat).toFixed(1)}`; });
@@ -281,21 +284,21 @@ function dayMapSVG(day){
     const x=X(p.lon).toFixed(1), y=Y(p.lat).toFixed(1);
     const isFirst = i===0, isLast = i===pts.length-1;
     const r = p.isHL ? 7 : 4.5;
-    const fill = p.isHL ? hlColor : "rgba(241,238,230,.55)";
-    markers += `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="#0E1116" stroke-width="2"/>`;
+    const fill = p.isHL ? hlColor : dotFaint;
+    markers += `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="${mapBg}" stroke-width="2.5"/>`;
     if(p.isHL){
-      markers += `<circle cx="${x}" cy="${y}" r="${r+5}" fill="none" stroke="${hlColor}" stroke-width="1" opacity=".45"/>`;
+      markers += `<circle cx="${x}" cy="${y}" r="${r+5}" fill="none" stroke="${hlColor}" stroke-width="1" opacity=".4"/>`;
     }
     // label
     const labY = (isFirst||isLast) ? Number(y)+20 : Number(y)-13;
     const anchor = X(p.lon) < W*0.18 ? "start" : (X(p.lon) > W*0.82 ? "end" : "middle");
-    markers += `<text x="${x}" y="${labY}" font-size="12" font-family="ui-monospace,monospace" fill="rgba(241,238,230,.75)" text-anchor="${anchor}">${escapeXML(p.name.split(" ").slice(0,3).join(" "))}</text>`;
+    markers += `<text x="${x}" y="${labY}" font-size="12" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.8)" text-anchor="${anchor}">${escapeXML(p.name.split(" ").slice(0,3).join(" "))}</text>`;
   });
 
   return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-    <rect x="0" y="0" width="${W}" height="${H}" fill="#181D26"/>
+    <rect x="0" y="0" width="${W}" height="${H}" fill="${mapBg}"/>
     <path d="${path}" fill="none" stroke="${routeColor}" stroke-width="2.5" stroke-dasharray="1 7" stroke-linecap="round"/>
-    <path d="${path}" fill="none" stroke="${routeColor}" stroke-width="1" opacity=".35"/>
+    <path d="${path}" fill="none" stroke="${routeColor}" stroke-width="1" opacity=".4"/>
     ${markers}
   </svg>`;
 }
@@ -317,19 +320,19 @@ function fullTripMapSVG(){
   function Y(lat){ return offY+(maxLat-lat)*s; }
   let paths = "";
   TRIP.days.forEach(d=>{
-    const c = d.leg==="capetown" ? "#5CB8B0" : "#E7A85E";
+    const c = d.leg==="capetown" ? "#4E9484" : "#C97B42";
     let p = "M";
     d.stops.forEach((pt,i)=>{ p += `${i===0?"":" L"} ${X(pt.lon).toFixed(1)} ${Y(pt.lat).toFixed(1)}`; });
-    paths += `<path d="${p}" fill="none" stroke="${c}" stroke-width="2" opacity=".55"/>`;
+    paths += `<path d="${p}" fill="none" stroke="${c}" stroke-width="2" opacity=".6"/>`;
   });
   let markers = "";
   TRIP.days.forEach(d=>{
     const last = d.stops[d.stops.length-1];
-    const c = d.leg==="capetown" ? "#8FD9D0" : "#E8A84B";
-    markers += `<circle cx="${X(last.lon).toFixed(1)}" cy="${Y(last.lat).toFixed(1)}" r="5.5" fill="${c}" stroke="#0E1116" stroke-width="1.5"/>`;
+    const c = d.leg==="capetown" ? "#2E6B5E" : "#8C4A22";
+    markers += `<circle cx="${X(last.lon).toFixed(1)}" cy="${Y(last.lat).toFixed(1)}" r="5.5" fill="${c}" stroke="#F6F0DF" stroke-width="2"/>`;
   });
   return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-    <rect width="${W}" height="${H}" fill="#181D26"/>
+    <rect width="${W}" height="${H}" fill="#F1E8D2"/>
     ${paths}${markers}
   </svg>`;
 }
@@ -452,6 +455,7 @@ function openDay(dayNum){
       <div class="mapbox">${dayMapSVG(day)}</div>
       <div class="map-caption">${icon("info")}<span>Mapa esquemático, no es de navegación real — muestra el orden y la posición relativa de las paradas.</span></div>
       <a class="maplink" href="${gmapsUrl}" target="_blank" rel="noopener">${icon("compass")}Abrir ruta en Google Maps (requiere conexión)</a>
+      <a class="maplink" href="${MYMAPS_URL}" target="_blank" rel="noopener" style="margin-left:8px;">${icon("map")}Ver en nuestro mapa completo (requiere conexión)</a>
     </div>
 
     <div class="section ${legClass}">
