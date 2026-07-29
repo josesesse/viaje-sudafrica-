@@ -634,7 +634,12 @@ function init(){
   const bar = document.getElementById("installbar");
   const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const isStandalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone;
-  if(!isStandalone){
+  const installDismissed = localStorage.getItem("sa-trip-install-dismissed") === "1";
+  function dismissInstallBar(){
+    bar.classList.remove("show");
+    try{ localStorage.setItem("sa-trip-install-dismissed", "1"); }catch(e){}
+  }
+  if(!isStandalone && !installDismissed){
     if(isIOS){
       document.getElementById("install-copy").textContent = "Toca Compartir → 'Añadir a pantalla de inicio' para tenerla siempre offline.";
       setTimeout(()=> bar.classList.add("show"), 1200);
@@ -646,13 +651,13 @@ function init(){
       });
       bar.addEventListener("click", (e)=>{
         if(e.target.closest("#install-close")) return;
-        if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt=null; bar.classList.remove("show"); }
+        if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt=null; dismissInstallBar(); }
       });
     }
   }
   document.getElementById("install-close").addEventListener("click", (e)=>{
     e.stopPropagation();
-    bar.classList.remove("show");
+    dismissInstallBar();
   });
 
   // Service worker
