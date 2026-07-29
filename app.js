@@ -9,8 +9,10 @@ const TRIP = {
     {
       day: 1, date: "2026-08-15", leg: "kruger",
       fromCode: "JNB", toCode: "MDB", from: "Johannesburgo", to: "Middelburg",
-      title: "Llegada a Sudáfrica",
+      title: "JNB → MDB",
+      subtitle: "Llegada a Sudáfrica",
       summary: "Aterrizaje, recogida del coche y primer contacto con el bush en Loskop Dam.",
+      distance: 140, time: "2h 30m",
       flight: { label: "Vuelo de llegada", detail: "Johannesburgo (JNB) · 08:30", status: "confirmed" },
       stops: [
         { name: "Aeropuerto O.R. Tambo (JNB)", lat:-26.1367, lon:28.2420, time: "08:30", note: "Llegada y recogida del coche de alquiler.", isHL:false },
@@ -23,8 +25,10 @@ const TRIP = {
     {
       day: 2, date: "2026-08-16", leg: "kruger",
       fromCode: "MDB", toCode: "PTK", from: "Middelburg", to: "Pretoriuskop",
-      title: "Entrada al Kruger",
+      title: "MDB → PTK",
+      subtitle: "Entrada al Kruger",
       summary: "Middelburg → Dullstroom → Sabie → Numbi Gate → Pretoriuskop, con safari de tarde.",
+      distance: 165, time: "3h 45m (con paradas)",
       stops: [
         { name: "Middelburg", lat:-25.7748, lon:29.4644, time: "07:30", note: "Salida temprano.", isHL:false },
         { name: "Dullstroom", lat:-25.4204, lon:30.1107, time: "Mañana", note: "Desayuno y paseo por el pueblo (45–60 min).", isHL:false },
@@ -38,8 +42,10 @@ const TRIP = {
     {
       day: 3, date: "2026-08-17", leg: "kruger",
       fromCode: "PTK", toCode: "SAT", from: "Pretoriuskop", to: "Satara",
-      title: "Pretoriuskop → Satara",
-      summary: "Skukuza, Lake Panic Hide, Tshokwane y las grandes llanuras de Satara.",
+      title: "PTK → SAT",
+      subtitle: "Skukuza, Lake Panic Hide, Tshokwane",
+      summary: "Ruta clásica del Kruger con los mejores hides y llanuras de Satara.",
+      distance: 115, time: "4h 30m (safari lento)",
       stops: [
         { name: "Pretoriuskop", lat:-25.1793, lon:31.2582, time: "≈06:00", note: "Salida a la hora de apertura del parque.", isHL:false },
         { name: "Skukuza", lat:-24.9910, lon:31.5905, time: "Mañana", note: "Parada para desayunar. Desde el puente sobre el río Sabie: hipopótamos, cocodrilos, elefantes.", isHL:true, stars:0 },
@@ -53,8 +59,10 @@ const TRIP = {
     {
       day: 4, date: "2026-08-18", leg: "kruger",
       fromCode: "SAT", toCode: "TBT", from: "Satara", to: "Tamboti",
-      title: "Satara → Tamboti",
-      summary: "S100 y H7, dos de las mejores carreteras del Kruger, hasta un campamento pequeño y auténtico.",
+      title: "SAT → TBT",
+      subtitle: "S100 y H7, carreteras legendarias",
+      summary: "Dos de las mejores carreteras del Kruger hasta Tamboti, campamento pequeño y auténtico.",
+      distance: 98, time: "3h 45m (safari lento)",
       stops: [
         { name: "Satara", lat:-24.3936, lon:31.7784, time: "Mañana", note: "Salida hacia la S100.", isHL:false },
         { name: "S100", lat:-24.4450, lon:31.5550, time: "Mañana", note: "Probablemente la carretera más famosa del Kruger. Muchos rangers la consideran de las mejores para leones, leopardos e hienas. Recorrerla despacio.", isHL:true, stars:5 },
@@ -68,8 +76,10 @@ const TRIP = {
     {
       day: 5, date: "2026-08-19", leg: "kruger",
       fromCode: "TBT", toCode: "CRB", from: "Tamboti", to: "Crocodile Bridge",
-      title: "Tamboti → Crocodile Bridge",
+      title: "TBT → CRB",
+      subtitle: "H10, Sunset Dam, Lower Sabie",
       summary: "H10, Sunset Dam y la terraza de Lower Sabie antes de bajar al sureste del parque.",
+      distance: 105, time: "4h 15m (safari lento)",
       stops: [
         { name: "Tamboti", lat:-24.4300, lon:31.6200, time: "Muy temprano", note: "Salida.", isHL:false },
         { name: "Tshokwane", lat:-24.7236, lon:31.8706, time: "Mañana", note: "De paso hacia H10.", isHL:false },
@@ -84,8 +94,10 @@ const TRIP = {
     {
       day: 6, date: "2026-08-20", leg: "kruger",
       fromCode: "CRB", toCode: "GRK", from: "Crocodile Bridge", to: "Graskop",
-      title: "Último safari + Panorama Route",
+      title: "CRB → GRK",
+      subtitle: "Último safari + Panorama Route",
       summary: "Un último amanecer por la S28 y salida del parque hacia la parte más espectacular de la Panorama Route.",
+      distance: 225, time: "4h 30m (incluye Panorama Route)",
       stops: [
         { name: "S28", lat:-25.30, lon:31.75, time: "Amanecer", note: "Carretera tranquila, excelente para rinocerontes, guepardos y aves rapaces.", isHL:true, stars:0 },
         { name: "Graskop", lat:-24.9209, lon:30.8305, time: "≈3h30–4h en coche", note: "Llegada a la zona de la Panorama Route.", isHL:false },
@@ -100,12 +112,12 @@ const TRIP = {
     },
     {
       day: 7, date: "2026-08-21", leg: "capetown",
-      fromCode: "NLP", toCode: "CPT", from: "Nelspruit", to: "Ciudad del Cabo",
-      title: "Llegada a Ciudad del Cabo",
+      fromCode: "MQP", toCode: "CPT", from: "Nelspruit", to: "Ciudad del Cabo",
+      title: "MQP → CPT",
+      subtitle: "Llegada a Ciudad del Cabo",
       summary: "Vuelo interno a Ciudad del Cabo y una tarde tranquila de aterrizaje en la ciudad.",
-      flight: { label: "Vuelo interno", detail: "Nelspruit (NLP/MQP) → Ciudad del Cabo (CPT)", status: "confirmed" },
+      flight: { label: "Vuelo interno", detail: "Nelspruit (MQP) → Ciudad del Cabo (CPT) · 18:30", status: "confirmed" },
       stops: [
-        { name: "Aeropuerto Kruger Mpumalanga (MQP)", lat:-25.3831, lon:31.1056, time: "Mañana", note: "Vuelo interno a Ciudad del Cabo.", isHL:false },
         { name: "Aeropuerto de Ciudad del Cabo", lat:-33.9715, lon:18.6021, time: "≈18:30", note: "Llegada y recogida del coche de alquiler.", isHL:false },
         { name: "De Waterkant / Gardens / Oranjezicht", lat:-33.9249, lon:18.4108, time: "Noche", note: "Zona recomendada para dormir: ambiente agradable, seguro para cenar fuera y bien conectada con las visitas de los próximos días.", isHL:true, stars:0 },
       ],
@@ -119,8 +131,10 @@ const TRIP = {
     {
       day: 8, date: "2026-08-22", leg: "capetown",
       fromCode: "CPT", toCode: "CPT", from: "Ciudad del Cabo", to: "Ciudad del Cabo",
-      title: "Table Mountain + ciudad histórica",
+      title: "CPT",
+      subtitle: "Table Mountain, Bo-Kaap, Signal Hill",
       summary: "Teleférico a primera hora, Bo-Kaap y Company's Garden, atardecer en Signal Hill.",
+      distance: 22, time: "Día de ciudad",
       stops: [
         { name: "Table Mountain", lat:-33.9628, lon:18.4098, time: "08:00–08:30", note: "Salir temprano: menos gente, mejor luz, más posibilidades de vistas despejadas. Subida en teleférico si el tiempo acompaña.", isHL:true, stars:5 },
         { name: "Company's Garden", lat:-33.9258, lon:18.4173, time: "Mediodía", note: "Jardines históricos con vistas a Table Mountain.", isHL:true, stars:0 },
@@ -133,8 +147,10 @@ const TRIP = {
     {
       day: 9, date: "2026-08-23", leg: "capetown",
       fromCode: "CPT", toCode: "SIM", from: "Ciudad del Cabo", to: "Simon's Town",
-      title: "Cape Point + Cabo de Buena Esperanza",
+      title: "CPT → SIM",
+      subtitle: "Chapman's Peak, Cape Point, Cabo de Buena Esperanza",
       summary: "Chapman's Peak Drive, Cape Point y el punto más icónico de la península.",
+      distance: 65, time: "2h 15m (con paradas)",
       stops: [
         { name: "Hout Bay", lat:-34.0492, lon:18.3547, time: "Mañana", note: "De paso hacia Chapman's Peak.", isHL:false },
         { name: "Chapman's Peak Drive", lat:-34.0894, lon:18.3553, time: "Mañana", note: "Carretera panorámica imprescindible, con miradores sobre el Atlántico.", isHL:true, stars:5 },
@@ -149,8 +165,10 @@ const TRIP = {
     {
       day: 10, date: "2026-08-24", leg: "capetown",
       fromCode: "SIM", toCode: "HER", from: "Simon's Town", to: "Hermanus",
-      title: "Pingüinos + Clarence Drive",
+      title: "SIM → HER",
+      subtitle: "Boulders Beach, Clarence Drive",
       summary: "Boulders Beach, pueblos costeros y una de las carreteras más bonitas del Cabo hasta Hermanus.",
+      distance: 120, time: "2h 45m",
       stops: [
         { name: "Boulders Beach", lat:-34.1970, lon:18.4498, time: "Mañana", note: "Colonia de pingüinos africanos en libertad.", isHL:true, stars:5 },
         { name: "Kalk Bay", lat:-34.1268, lon:18.4491, time: "Mañana", note: "Pueblo costero con puerto, ambiente local y buen sitio para comer.", isHL:true, stars:0 },
@@ -164,8 +182,10 @@ const TRIP = {
     {
       day: 11, date: "2026-08-25", leg: "capetown",
       fromCode: "HER", toCode: "STB", from: "Hermanus", to: "Stellenbosch",
-      title: "Ballenas + Stellenbosch",
+      title: "HER → STB",
+      subtitle: "Hermanus Cliff Path, traslado a viñedos",
       summary: "Mañana tranquila buscando ballenas desde el Cliff Path, tarde de traslado a la región vinícola.",
+      distance: 130, time: "2h 00m",
       stops: [
         { name: "Hermanus Cliff Path", lat:-34.4204, lon:19.2467, time: "Mañana", note: "Paseo junto a los acantilados: ballenas francas australes, delfines y aves marinas.", isHL:true, stars:5 },
         { name: "Gearing's Point / Old Harbour", lat:-34.4183, lon:19.2427, time: "Mañana", note: "Mejores zonas para observar el océano y el ambiente de Hermanus.", isHL:true, stars:0 },
@@ -177,8 +197,10 @@ const TRIP = {
     {
       day: 12, date: "2026-08-26", leg: "capetown",
       fromCode: "STB", toCode: "STB", from: "Stellenbosch", to: "Stellenbosch",
-      title: "Viñedos de Stellenbosch",
+      title: "STB",
+      subtitle: "Tokara, Waterford, centro histórico",
       summary: "Dos bodegas seleccionadas sin excesos y el centro histórico colonial.",
+      distance: 45, time: "Día de región vinícola",
       stops: [
         { name: "Tokara Wine Estate", lat:-33.9764, lon:18.9126, time: "Mañana", note: "Una de las mejores vistas de los viñedos, montañas y paisajes espectaculares.", isHL:true, stars:5 },
         { name: "Waterford Estate", lat:-33.9908, lon:18.8825, time: "Mediodía", note: "Finca con mucho encanto, experiencia tranquila y cuidada.", isHL:true, stars:5 },
@@ -190,8 +212,10 @@ const TRIP = {
     {
       day: 13, date: "2026-08-27", leg: "capetown",
       fromCode: "STB", toCode: "CPT", from: "Stellenbosch", to: "Zona aeropuerto CPT",
-      title: "Franschhoek + despedida",
+      title: "STB → CPT",
+      subtitle: "Franschhoek, última bodega, despedida",
       summary: "Último pueblo con encanto, una bodega final y traslado hacia el aeropuerto para el vuelo de madrugada.",
+      distance: 85, time: "1h 45m",
       flight: { label: "Vuelo de vuelta", detail: "Ciudad del Cabo → salida ≈06:00 (28 ago)", status: "confirmed" },
       stops: [
         { name: "Franschhoek", lat:-33.9122, lon:19.1207, time: "Mañana", note: "Pueblo con encanto rodeado de montañas. Paseo tranquilo por el centro.", isHL:true, stars:5 },
@@ -206,6 +230,22 @@ const TRIP = {
 
 const LEG_LABEL = { kruger: "Kruger", capetown: "Ciudad del Cabo" };
 const MYMAPS_URL = "https://www.google.com/maps/d/u/1/viewer?mid=1DIxDEUx2ATWfkPIhY6HAbblI0aXUfv0&usp=sharing";
+
+const GMAPS_URLS = {
+  1: "https://www.google.com/maps/dir/OR+Tambo+International+Airport+Johannesburg/Rustique+Boutique+Hotel+Middelburg+South+Africa/Loskop+Dam+Nature+Reserve",
+  2: "https://www.google.com/maps/dir/Middelburg+Mpumalanga+South+Africa/Dullstroom+South+Africa/Sabie+South+Africa/Numbi+Gate+Kruger+National+Park/Pretoriuskop+Rest+Camp+Kruger",
+  3: "https://www.google.com/maps/dir/Pretoriuskop+Rest+Camp+Kruger/Skukuza+Kruger+National+Park/Lake+Panic+Hide+Kruger/Tshokwane+Picnic+Site+Kruger/Satara+Rest+Camp+Kruger",
+  4: "https://www.google.com/maps/dir/Satara+Rest+Camp+Kruger/S100+Kruger+National+Park/H7+Road+Kruger+National+Park/Orpen+Gate+Kruger/Tamboti+Tented+Camp+Kruger",
+  5: "https://www.google.com/maps/dir/Tamboti+Tented+Camp+Kruger/Tshokwane+Kruger/H10+Road+Kruger+National+Park/Sunset+Dam+Kruger/Lower+Sabie+Rest+Camp+Kruger/Crocodile+Bridge+Rest+Camp+Kruger",
+  6: "https://www.google.com/maps/dir/Crocodile+Bridge+Rest+Camp+Kruger/S28+Road+Kruger+National+Park/Graskop+South+Africa/Three+Rondavels+Panorama+Route",
+  7: "https://www.google.com/maps/dir/Cape+Town+International+Airport/De+Waterkant+Cape+Town+South+Africa",
+  8: "https://www.google.com/maps/dir/Table+Mountain+Cape+Town/Company's+Garden+Cape+Town/Bo-Kaap+Cape+Town/Signal+Hill+Cape+Town",
+  9: "https://www.google.com/maps/dir/Cape+Town+South+Africa/Chapman's+Peak+Drive+South+Africa/Cape+Point+Nature+Reserve/Cape+of+Good+Hope+South+Africa/Simon's+Town+South+Africa",
+  10: "https://www.google.com/maps/dir/Simon's+Town+South+Africa/Boulders+Beach+Penguin+Colony/Kalk+Bay+South+Africa/Muizenberg+South+Africa/Hermanus+South+Africa",
+  11: "https://www.google.com/maps/dir/Hermanus+Cliff+Path+South+Africa/Gearing's+Point+Hermanus/Stellenbosch+South+Africa",
+  12: "https://www.google.com/maps/dir/Stellenbosch+South+Africa/Tokara+Wine+Estate+Stellenbosch/Waterford+Estate+Stellenbosch/Stellenbosch+Town+Centre",
+  13: "https://www.google.com/maps/dir/Stellenbosch+South+Africa/Franschhoek+South+Africa/Cape+Town+International+Airport"
+};
 
 const RESERVATIONS_STATIC = [
   { key:"flight-in", label:"Vuelo internacional de ida", detail:"Johannesburgo · 15 ago, 08:30", status:"confirmed" },
@@ -238,6 +278,10 @@ STORE.stayStatus = STORE.stayStatus || {};   // day -> "confirmed"|"pending"
 STORE.stayNotes  = STORE.stayNotes  || {};   // day -> string
 STORE.resStatus  = STORE.resStatus  || {};   // key -> "confirmed"|"pending"
 STORE.checklist  = STORE.checklist  || {};   // label -> bool
+// Confirmar por defecto las estancias de Kruger (días 1-6)
+for(let d=1; d<=6; d++){
+  if(!STORE.stayStatus[d]) STORE.stayStatus[d] = "confirmed";
+}
 function persist(){ saveStore(STORE); }
 
 function stayStatus(day){ return STORE.stayStatus[day] || "pending"; }
@@ -262,13 +306,12 @@ function dayMapSVG(day){
   const W = 600, H = 380, PAD = 56;
   const spanLon = Math.max(maxLon-minLon, 0.02);
   const spanLat = Math.max(maxLat-minLat, 0.02);
-  // keep aspect roughly consistent, fit inside padded box
   const sx = (W-2*PAD)/spanLon, sy = (H-2*PAD)/spanLat;
   const s = Math.min(sx, sy);
   const offX = PAD + ((W-2*PAD) - spanLon*s)/2;
   const offY = PAD + ((H-2*PAD) - spanLat*s)/2;
   function X(lon){ return offX + (lon-minLon)*s; }
-  function Y(lat){ return offY + (maxLat-lat)*s; } // north at top
+  function Y(lat){ return offY + (maxLat-lat)*s; }
 
   const isCape = day.leg === "capetown";
   const mapBg = isCape ? "#EAF1EC" : "#F3E9D4";
@@ -276,30 +319,45 @@ function dayMapSVG(day){
   const hlColor = isCape ? "#2E6B5E" : "#8C4A22";
   const dotFaint = isCape ? "rgba(46,107,94,.45)" : "rgba(140,74,34,.4)";
 
+  let extras = "";
+  if(isCape && day.day >= 9){
+    // Línea de costa simplificada para días de cabo
+    extras += `<path d="M ${W-20} 0 L ${W-15} ${H*0.3} L ${W-10} ${H*0.6} L ${W} ${H}" fill="none" stroke="rgba(78,148,132,.25)" stroke-width="2.5" stroke-dasharray="3 4"/>`;
+  }
+  if(day.day >= 3 && day.day <= 6){
+    // Ríos simplificados para Kruger central
+    extras += `<path d="M ${W*0.3} ${H*0.2} Q ${W*0.5} ${H*0.4} ${W*0.7} ${H*0.8}" fill="none" stroke="rgba(140,74,34,.15)" stroke-width="1.5" stroke-dasharray="2 3"/>`;
+  }
+
   let path = "M";
   pts.forEach((p,i)=>{ path += `${i===0?"":" L"} ${X(p.lon).toFixed(1)} ${Y(p.lat).toFixed(1)}`; });
 
   let markers = "";
   pts.forEach((p,i)=>{
     const x=X(p.lon).toFixed(1), y=Y(p.lat).toFixed(1);
-    const isFirst = i===0, isLast = i===pts.length-1;
     const r = p.isHL ? 7 : 4.5;
     const fill = p.isHL ? hlColor : dotFaint;
     markers += `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="${mapBg}" stroke-width="2.5"/>`;
     if(p.isHL){
       markers += `<circle cx="${x}" cy="${y}" r="${r+5}" fill="none" stroke="${hlColor}" stroke-width="1" opacity=".4"/>`;
     }
-    // label
-    const labY = (isFirst||isLast) ? Number(y)+20 : Number(y)-13;
+    const labY = (i===0||i===pts.length-1) ? Number(y)+20 : Number(y)-13;
     const anchor = X(p.lon) < W*0.18 ? "start" : (X(p.lon) > W*0.82 ? "end" : "middle");
-    markers += `<text x="${x}" y="${labY}" font-size="12" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.8)" text-anchor="${anchor}">${escapeXML(p.name.split(" ").slice(0,3).join(" "))}</text>`;
+    markers += `<text x="${x}" y="${labY}" font-size="11" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.75)" text-anchor="${anchor}">${escapeXML(p.name.split(" ").slice(0,2).join(" "))}</text>`;
   });
+
+  const distStr = day.distance ? `${day.distance} km` : "";
+  const timeStr = day.time ? `${day.time}` : "";
+  const infoText = (distStr && timeStr) ? `${distStr} · ${timeStr}` : (distStr || timeStr || "");
+  const infoBox = infoText ? `<rect x="${W-152}" y="${H-32}" width="144" height="24" fill="${mapBg}" rx="6"/><text x="${W-80}" y="${H-14}" font-size="10" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.6)" text-anchor="middle" font-weight="500">${escapeXML(infoText)}</text>` : "";
 
   return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
     <rect x="0" y="0" width="${W}" height="${H}" fill="${mapBg}"/>
+    ${extras}
     <path d="${path}" fill="none" stroke="${routeColor}" stroke-width="2.5" stroke-dasharray="1 7" stroke-linecap="round"/>
     <path d="${path}" fill="none" stroke="${routeColor}" stroke-width="1" opacity=".4"/>
     ${markers}
+    ${infoBox}
   </svg>`;
 }
 function escapeXML(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
@@ -318,6 +376,10 @@ function fullTripMapSVG(){
   const offY = PAD + ((H-2*PAD)-spanLat*s)/2;
   function X(lon){ return offX+(lon-minLon)*s; }
   function Y(lat){ return offY+(maxLat-lat)*s; }
+  
+  // Línea de costa sudafricana simplificada
+  const coastline = `<path d="M ${X(16)},${Y(-33.9)} Q ${X(17)},${Y(-33.5)} ${X(18)},${Y(-33.3)} T ${X(20)},${Y(-32.5)} T ${X(22)},${Y(-31)}" fill="none" stroke="rgba(78,148,132,.15)" stroke-width="1.5" stroke-dasharray="2 3"/>`;
+  
   let paths = "";
   TRIP.days.forEach(d=>{
     const c = d.leg==="capetown" ? "#4E9484" : "#C97B42";
@@ -333,6 +395,7 @@ function fullTripMapSVG(){
   });
   return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
     <rect width="${W}" height="${H}" fill="#F1E8D2"/>
+    ${coastline}
     ${paths}${markers}
   </svg>`;
 }
@@ -373,6 +436,7 @@ function renderDayList(){
         </div>
         <div class="card-route">${day.fromCode}<span class="arrow">→</span>${day.toCode}</div>
         <div class="card-title">${day.title}</div>
+        ${day.subtitle ? `<div class="card-subtitle">${day.subtitle}</div>` : ""}
         <div class="card-sub">${day.summary}</div>
         <div class="card-bottom">
           <span class="chip">${icon("bed")}${day.stay.name}</span>
@@ -423,8 +487,7 @@ function openDay(dayNum){
 
   let tipsHtml = (day.tips||[]).map(t=>`<div class="tip">${icon("info")}<span>${t}</span></div>`).join("");
 
-  const gmapsQuery = encodeURIComponent(day.stops.map(s=>s.name).join(" to "));
-  const gmapsUrl = `https://www.google.com/maps/dir/${day.stops.map(s=>encodeURIComponent(s.name)).join("/")}`;
+  const gmapsUrl = GMAPS_URLS[day.day] || `https://www.google.com/maps/search/${encodeURIComponent(day.to)}`;
 
   const flightHtml = day.flight ? `
     <div class="section">
@@ -445,6 +508,7 @@ function openDay(dayNum){
       </div>
       <div class="detail-route">${day.fromCode}<span class="arrow">→</span>${day.toCode}</div>
       <div class="detail-title">${day.title}</div>
+      ${day.subtitle ? `<div class="detail-subtitle">${day.subtitle}</div>` : ""}
       <div class="detail-date">${dowLabel(day.date)} · ${dateLabel(day.date)} 2026</div>
     </div>
 
