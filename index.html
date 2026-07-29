@@ -52,7 +52,7 @@ body{
   background:
     radial-gradient(1200px 600px at 15% -10%, rgba(201,123,66,.14), transparent 60%),
     radial-gradient(1000px 500px at 100% 0%, rgba(78,148,132,.12), transparent 55%),
-    var(--bg);
+    linear-gradient(180deg, var(--bg) 0%, #E8F2EC 65%, #E8F2EC 100%);
   color:var(--text);
   font-family:var(--font-body);
   -webkit-font-smoothing:antialiased;
@@ -63,7 +63,7 @@ body.leg-capetown{
   background:
     radial-gradient(1200px 600px at 15% -10%, rgba(78,148,132,.16), transparent 60%),
     radial-gradient(1000px 500px at 100% 0%, rgba(78,148,132,.14), transparent 55%),
-    #E8F2EC;
+    linear-gradient(180deg, #E8F2EC 0%, #E8F2EC 100%);
 }
 button{font-family:inherit; -webkit-appearance:none; appearance:none; border:none; background:none; color:inherit; cursor:pointer;}
 input{font-family:inherit;}
@@ -81,6 +81,9 @@ a{color:inherit;}
 }
 body.leg-capetown .topbar{
   background:linear-gradient(180deg, #E8F2EC 70%, transparent);
+}
+body .topbar{
+  background:linear-gradient(180deg, #F4EEDC 70%, transparent);
 }
 .topbar-row{display:flex; align-items:flex-start; justify-content:space-between; gap:12px;}
 .eyebrow{
@@ -105,9 +108,13 @@ h1.trip-title{
   display:flex; align-items:center; gap:6px; transition:.15s;
 }
 body.leg-capetown .tab{background:rgba(233, 248, 242, 0.95); border-color:rgba(78,148,132,.2);}
+body.leg-capetown .card{background:#FBF7EA; border-color:rgba(78,148,132,.2);}
+body.leg-capetown .card .card-main{background:#FBF7EA;}
+body.leg-capetown .card .stub{background:rgba(78,148,132,.18);}
 .tab .dot{width:7px; height:7px; border-radius:50%; background:currentColor; opacity:.6;}
 .tab.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
 .tab.active .dot{background:var(--paper);}
+.tab[data-leg="capetown"].active{background:#2E6B5E; border-color:#2E6B5E;}
 .tab[data-leg="kruger"]:not(.active){color:var(--amber-soft);}
 .tab[data-leg="capetown"]:not(.active){color:var(--teal-soft);}
 
@@ -134,9 +141,21 @@ body.leg-capetown .searchwrap input{background:rgba(233, 248, 242, 0.95); border
   display:flex; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
   overflow:hidden; position:relative; text-align:left; width:100%;
 }
+body.leg-capetown .card[data-leg="capetown"]{
+  background:rgba(233, 248, 242, 0.95);
+}
+body.leg-capetown .card[data-leg="capetown"] .card-main{
+  background:#FBF7EA;
+}
+body.leg-capetown .card[data-leg="capetown"] .stub{
+  background:rgba(78,148,132,.18);
+}
 .card[data-leg="capetown"]{
   background:rgba(233, 248, 242, 0.95);
   border-color:rgba(78,148,132,.2);
+}
+.card[data-leg="capetown"] .card-main{
+  background:#FBF7EA;
 }
 .card:active{transform:scale(.995);}
 .card-main{flex:1; padding:18px 16px; min-width:0;}
@@ -168,7 +187,9 @@ body.leg-capetown .searchwrap input{background:rgba(233, 248, 242, 0.95); border
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
   position:relative; background:var(--surface-2);
 }
-.card[data-leg="capetown"] .stub{background:rgba(78,148,132,.08);}
+.card[data-leg="capetown"] .stub{background:#B3DFD1;}
+.card[data-leg="capetown"] .stub-num{color:var(--teal-soft);}
+.card[data-leg="capetown"] .stub svg{color:var(--teal-soft);}
 .card[data-leg="capetown"]{border-color:rgba(78,148,132,.2);}
 .card[data-leg="capetown"] .stub::before, .card[data-leg="capetown"] .stub::after{background:var(--bg);}
 .stub::before, .stub::after{
