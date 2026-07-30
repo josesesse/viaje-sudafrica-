@@ -778,19 +778,15 @@ let lastScrollTop = 0;
     const isNearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
     
     if(scrollTop === 0){
-      // En el top - completamente transparente
       topbar.classList.remove("hidden", "visible");
     } else if(isNearBottom){
-      // Cerca del final - no hacer nada, mantener estado
       return;
     } else if(scrollTop > lastScrollTop && scrollTop > 100){
-      // Scrolling DOWN - esconder header (con threshold más alto)
       scrollTimeout = setTimeout(()=>{
         topbar.classList.add("hidden");
         topbar.classList.remove("visible");
       }, 50);
     } else if(scrollTop < lastScrollTop){
-      // Scrolling UP - mostrar header con fondo blanco
       topbar.classList.remove("hidden");
       topbar.classList.add("visible");
     }
