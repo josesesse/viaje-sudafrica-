@@ -788,17 +788,18 @@ window.addEventListener("scroll", () => {
   if (scrollTop + windowHeight >= documentHeight - 10) {
     topbar.classList.remove("hidden");
     topbar.classList.add("visible");
+    lastScrollTop = scrollTop;
     return;
   }
 
-  // Comportamiento normal de Scroll Down / Up
+  // Comportamiento de Scroll Down / Up con limpieza de clases estricta
   if (scrollTop > lastScrollTop && scrollTop > 80) {
-    // Scrolling DOWN - esconder
+    // SCROLL DOWN - Esconder (Añadimos hidden, quitamos visible)
     topbar.classList.add("hidden");
     topbar.classList.remove("visible");
   } else if (scrollTop < lastScrollTop) {
-    // Scrolling UP - mostrar
-    topbar.classList.remove("hidden");
+    // SCROLL UP - Mostrar (Quitamos hidden para que la animación funcione, añadimos visible)
+    topbar.classList.remove("hidden"); /* 👈 ¡ESTA LÍNEA CORRIGE EL DESAPARECIDO SÚBITO! */
     topbar.classList.add("visible");
   }
 
