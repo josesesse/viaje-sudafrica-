@@ -767,23 +767,44 @@ if(isStandalone || installDismissed) {
       navigator.serviceWorker.register("sw.js").catch(()=>{});
     });
   }
+
   
+
 let lastScrollTop = 0;
-  window.addEventListener("scroll", ()=>{
-    const topbar = document.querySelector(".topbar");
-    const scrollTop = window.scrollY;
-    
-    if(scrollTop > lastScrollTop && scrollTop > 50){
-      // Scrolling DOWN - esconder header
-      topbar.classList.add("hidden");
-      topbar.classList.remove("visible");
-    } else {
-      // Scrolling UP - mostrar header con fondo
-      topbar.classList.remove("hidden");
-      topbar.classList.add("visible");
-    }
-    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-  }, false);
+const tolerance = 10; // Pixeles mínimos para reaccionar al scroll
+
+window.addEventListener("scroll", () => {
+  const topbar = document.querySelector(".topbar");
+  if (!topbar) return; // Seguridad por si no existe en alguna página
   
+  const scrollTop = window.scrollY;
+  const windowHeight = window.innerHeight;
+  const documentHeight = document.documentElement.scrollHeight;
+
+  // Evita el temblor si el scroll es menor a la tolerancia
+  if (Math.abs(lastScrollTop - scrollTop) <= tolerance) return;
+
+  // SOLUCIÓN AL TEMBLOR: Si llegamos al final de la página, forzar que se quede VISIBLE
+  if (scrollTop + windowHeight >= documentHeight - 10) {
+    topbar.classList.remove("hidden");
+    topbar.classList.add("visible");
+    return;
+  }
+
+  // Comportamiento normal de Scroll Down / Up
+  if (scrollTop > lastScrollTop && scrollTop > 80) {
+    // Scrolling DOWN - esconder
+    topbar.classList.add("hidden");
+    topbar.classList.remove("visible");
+  } else if (scrollTop < lastScrollTop) {
+    // Scrolling UP - mostrar
+    topbar.classList.remove("hidden");
+    topbar.classList.add("visible");
+  }
+
+  // Evita valores negativos en navegadores con scroll elástico (como Safari)
+  lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+}, false);
 }
+
 document.addEventListener("DOMContentLoaded", init);
