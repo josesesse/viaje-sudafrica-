@@ -125,7 +125,7 @@ h1.trip-title{
   background:var(--surface); color:var(--text-dim); border:1px solid var(--line);
   display:flex; align-items:center; gap:6px; transition:.15s;
 }
-body.leg-capetown .tab{background:rgba(233, 248, 242, 0.95); border-color:rgba(78,148,132,.2);}
+body.leg-capetown .tab{background:var(--surface); border-color:var(--line);}
 body.leg-capetown .card{background:#FBF7EA; border-color:rgba(78,148,132,.2);}
 body.leg-capetown .card .card-main{background:#FBF7EA;}
 body.leg-capetown .card .stub{background:rgba(78,148,132,.18);}
@@ -208,7 +208,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
   position:relative; background:var(--surface-2);
 }
-.card[data-leg="capetown"] .stub{background:none;}
+.card[data-leg="capetown"] .stub{background:#4E9484;}
 .card[data-leg="capetown"] .stub-num{color:var(--teal-soft);}
 .card[data-leg="capetown"] .stub svg{color:var(--teal-soft);}
 .card[data-leg="capetown"]{border-color:rgba(78,148,132,.2);}
@@ -249,6 +249,12 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 }
 .overlay.open{transform:translateY(0);}
 .overlay-inner{max-width:640px; margin:0 auto; padding-bottom:60px;}
+.overlay.leg-capetown{
+  background: #E8F2EC;
+}
+.overlay.leg-capetown .overlay-inner{
+  background: #E8F2EC;
+}  
 
 .detail-hero{
   padding: calc(18px + var(--safe-top)) 18px 26px; position:relative; overflow:hidden;
@@ -308,7 +314,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 /* highlight cards */
 .hl-grid{display:flex; flex-direction:column; gap:10px;}
 .hl-card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-sm); padding:14px 15px;}
-.leg-capetown .hl-card{background:rgba(233, 248, 242, 0.95); border-color:rgba(78,148,132,.2);}
+.leg-capetown .hl-card{background:var(--surface); border-color:var(--line);}
 .hl-card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:10px;}
 .hl-card-top .name{font-family:var(--font-display); font-weight:700; font-size:14.5px;}
 .hl-card .stars{color:var(--amber-soft); font-size:12px; white-space:nowrap;}
@@ -317,7 +323,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 
 /* stay card */
 .stay-card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:18px;}
-.leg-capetown .stay-card{background:rgba(233, 248, 242, 0.95); border-color:rgba(78,148,132,.2);}
+.leg-capetown .stay-card{background:var(--surface); border-color:var(--line);}
 .stay-top{display:flex; align-items:center; justify-content:space-between; gap:10px;}
 .stay-name{font-family:var(--font-display); font-weight:700; font-size:16px;}
 .stay-area{font-size:12.5px; color:var(--text-dim); margin-top:3px;}
@@ -351,7 +357,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
   flex:1; display:flex; align-items:center; justify-content:center; gap:7px; padding:13px;
   border-radius:100px; background:var(--surface); border:1px solid var(--line); font-size:13px; font-weight:600;
 }
-.leg-capetown .actionbtn{background:rgba(233, 248, 242, 0.95); border-color:rgba(78,148,132,.2);}
+.leg-capetown .hl-card{background:var(--surface); border-color:var(--line);}
 .actionbtn svg{width:15px; height:15px;}
 
 /* ---------- Overview page ---------- */
@@ -373,7 +379,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
   display:flex; align-items:center; gap:12px; background:var(--surface); border:1px solid var(--line);
   border-radius:var(--radius-sm); padding:13px 14px;
 }
-body.leg-capetown .check-item{background:rgba(233, 248, 242, 0.95); border-color:rgba(78,148,132,.2);}
+body.leg-capetown .check-item{background:var(--surface); border-color:var(--line);}
 .checkbox{width:21px; height:21px; border-radius:7px; border:1.5px solid var(--line-strong); flex-shrink:0; display:flex; align-items:center; justify-content:center;}
 .checkbox.on{background:var(--ok); border-color:var(--ok);}
 .checkbox svg{width:13px; height:13px; color:var(--bg); opacity:0;}
@@ -383,7 +389,7 @@ body.leg-capetown .check-item{background:rgba(233, 248, 242, 0.95); border-color
 .check-item.done .ct{color:var(--text-faint); text-decoration:line-through;}
 
 .info-card{margin:14px 16px 0; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:16px 18px;}
-body.leg-capetown .info-card{background:rgba(233, 248, 242, 0.95); border-color:rgba(78,148,132,.2);}
+body.leg-capetown .info-card{background:var(--surface); border-color:var(--line);}
 .info-card h4{font-family:var(--font-display); font-size:14px; margin:0 0 10px; display:flex; align-items:center; gap:8px;}
 .info-card h4 svg{width:15px; height:15px; color:var(--amber-soft);}
 .info-row{display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-top:1px solid var(--line); font-size:13px;}
