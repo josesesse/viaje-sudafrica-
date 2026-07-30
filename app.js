@@ -397,7 +397,7 @@ function dayMapSVG(day){
 function escapeXML(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
 function fullTripMapSVG(legFilter){
-  const days = TRIP.days.filter(d => d.leg === legFilter);
+  const days = TRIP.days.filter(d => legFilter === "kruger" ? d.day <= 6 : d.day >= 7);
   const pts = [];
   days.forEach(d=> d.stops.forEach(p=> pts.push({...p, leg:d.leg})) );
 
