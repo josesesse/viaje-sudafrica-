@@ -265,6 +265,43 @@ const PACKING_DEFAULT = [
   "Seguro de viaje con cobertura médica",
 ];
 
+
+const LOCAL_PHRASES = [
+  { term:"Howzit?", meaning:"Saludo informal, viene a ser «¿qué tal?» o «¿cómo va?»." },
+  { term:"Lekker", meaning:"Genial, rico, guay — se usa para casi todo lo que está bien." },
+  { term:"Sharp sharp!", meaning:"Vale, de acuerdo, hecho — también se usa como despedida («¡nos vemos!»)." },
+  { term:"Eish!", meaning:"Exclamación de sorpresa, frustración o asombro — algo así como «¡vaya!»." },
+  { term:"Just now / Now now", meaning:"«Ahora mismo» no significa inmediato — puede ser en un rato (¡o en una hora!)." },
+  { term:"Braai", meaning:"Barbacoa — mucho más que comida, es todo un plan social." },
+];
+
+
+
+const ZAR_TO_EUR = 0.051;
+const EUR_TO_ZAR = 19.60;
+
+function initCurrencyConverter(){
+  const zarInput = document.getElementById("zar-input");
+  const eurInput = document.getElementById("eur-input");
+  if(!zarInput || !eurInput || zarInput.dataset.bound) return;
+
+  function fromZar(){
+    const v = parseFloat(zarInput.value);
+    eurInput.value = isNaN(v) ? "" : (v*ZAR_TO_EUR).toFixed(2);
+  }
+  function fromEur(){
+    const v = parseFloat(eurInput.value);
+    zarInput.value = isNaN(v) ? "" : (v*EUR_TO_ZAR).toFixed(2);
+  }
+  zarInput.addEventListener("input", fromZar);
+  eurInput.addEventListener("input", fromEur);
+  fromZar(); // valor inicial con los 100 ZAR de ejemplo
+  zarInput.dataset.bound = "1";
+}
+
+
+
+
 /* ============ STORAGE ============ */
 const STORE_KEY = "sa-trip-v1";
 function loadStore(){
@@ -461,6 +498,23 @@ function renderFullMap(){
     elSouth.innerHTML = fullTripMapSVG("capetown");
     elSouth.dataset.rendered = "1";
   }
+}
+
+
+function renderPhrases(){
+  const el = document.getElementById("phrase-grid");
+  if(!el || el.dataset.rendered) return;
+  el.innerHTML = LOCAL_PHRASES.map(p => `
+    <div class="phrase-card">
+      <div class="phrase-term">${p.term}</div>
+      <div class="phrase-meaning">${p.meaning}</div>
+    </div>
+  `).join("") + `
+    <div class="tip" style="margin-top:2px;">
+      ${icon("info")}
+      <span><b>Ojo con «robot»:</b> en Sudáfrica significa semáforo, no un droide — «turn left at the robot» es «gira a la izquierda en el semáforo».</span>
+    </div>`;
+  el.dataset.rendered = "1";
 }
 
 
@@ -732,6 +786,7 @@ function showPage(name){
   document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active", b.dataset.page===name));
   if(name==="overview") renderOverview();
   if(name==="info") renderFullMap();
+  if(name==="info") renderPhrases();
 }
 
 /* ============ COUNTDOWN ============ */
@@ -763,6 +818,8 @@ function openMapZoom(svgMarkup){
   document.getElementById("map-zoom-inner").innerHTML = svgMarkup;
   mapZoomState = { scale:1, x:0, y:0, pinchDist:null, dragging:false, lastX:0, lastY:0 };
   applyMapZoomTransform();
+  const content = document.querySelector("#map-zoom-inner > *");
+  if(content) content.style.transform = "rotate(0deg)";
   document.getElementById("map-zoom-modal").classList.add("open");
   document.body.style.overflow = "hidden";
 }
@@ -780,6 +837,12 @@ function initMapZoomModal(){
   const modal = document.getElementById("map-zoom-modal");
   const inner = document.getElementById("map-zoom-inner");
   document.getElementById("map-zoom-close").addEventListener("click", closeMapZoom);
+  let zoomRotation = 0;
+document.getElementById("map-zoom-rotate").addEventListener("click", ()=>{
+  zoomRotation = (zoomRotation + 90) % 360;
+  const content = document.querySelector("#map-zoom-inner > *");
+  if(content) content.style.transform = `rotate(${zoomRotation}deg)`;
+});
   modal.addEventListener("click", (e)=>{ if(e.target===modal) closeMapZoom(); });
 
   modal.addEventListener("wheel", (e)=>{
@@ -834,6 +897,14 @@ function initMapZoomModal(){
   });
 }
 
+function initParkMapViewer(){
+  const btn = document.getElementById("expand-park-map");
+  if(!btn) return;
+  btn.addEventListener("click", ()=>{
+    openMapZoom(`<img src="assets/kruger-park-map.jpg" alt="Plano del Kruger" id="park-map-full"/>`);
+  });
+}
+
 
 
 
@@ -842,6 +913,8 @@ function init(){
   renderDayList();
   updateCountdown();
   initMapZoomModal();
+  initCurrencyConverter();
+  initParkMapViewer();
   setInterval(updateCountdown, 60*60*1000);
 
   document.querySelectorAll(".tab").forEach(tab=>{
