@@ -314,7 +314,7 @@ function dayMapSVG(day){
   function Y(lat){ return offY + (maxLat-lat)*s; }
 
   const isCape = day.leg === "capetown";
-  const mapBg = isCape ? "#EAF1EC" : "#F3E9D4";
+  const mapBg = isCape ? "#F5F9F6" : "#FAF4E8";
   const routeColor = isCape ? "#4E9484" : "#C97B42";
   const hlColor = isCape ? "#2E6B5E" : "#8C4A22";
   const dotFaint = isCape ? "rgba(46,107,94,.45)" : "rgba(140,74,34,.4)";
