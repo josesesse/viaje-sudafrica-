@@ -901,7 +901,7 @@ function initParkMapViewer(){
   const btn = document.getElementById("expand-park-map");
   if(!btn) return;
   btn.addEventListener("click", ()=>{
-    openMapZoom(`<img src="assets/kruger-park-map.jpg" alt="Plano del Kruger" id="park-map-full"/>`);
+    openMapZoom(`<img src="kruger-park-map.jpg" alt="Plano del Kruger" id="park-map-full"/>`);
   });
 }
 
