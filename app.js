@@ -404,7 +404,7 @@ function fullTripMapSVG(legFilter){
   const lons = pts.map(p=>p.lon), lats = pts.map(p=>p.lat);
   const minLon = Math.min(...lons), maxLon = Math.max(...lons);
   const minLat = Math.min(...lats), maxLat = Math.max(...lats);
-  const W = 640, H = 560, PAD = 56;
+  const W = 500, H = 620, PAD = 36;  
   const spanLon = Math.max(maxLon-minLon, 0.05), spanLat = Math.max(maxLat-minLat, 0.05);
   const sx = (W-2*PAD)/spanLon, sy=(H-2*PAD)/spanLat;
   const s = Math.min(sx,sy);
@@ -431,12 +431,12 @@ function fullTripMapSVG(legFilter){
   days.forEach(d=>{
     const last = d.stops[d.stops.length-1];
     const x = X(last.lon).toFixed(1), y = Y(last.lat).toFixed(1);
-    markers += `<circle cx="${x}" cy="${y}" r="8" fill="${dotColor}" stroke="${bg}" stroke-width="2.5"/>`;
-    markers += `<circle cx="${x}" cy="${y}" r="13" fill="none" stroke="${dotColor}" stroke-width="1" opacity=".4"/>`;
+    markers += `<circle cx="${x}" cy="${y}" r="10" fill="${dotColor}" stroke="${bg}" stroke-width="3"/>`;
+    markers += `<circle cx="${x}" cy="${y}" r="17" fill="none" stroke="${dotColor}" stroke-width="1.3" opacity=".4"/>`;
     const label = escapeXML(`D${d.day} · ${d.to}`);
 const anchor = X(last.lon) < W*0.2 ? "start" : (X(last.lon) > W*0.8 ? "end" : "middle");
 const labY = Number(y) - 16;
-const fontSize = 14;
+const fontSize = 19;
 const estW = label.length * fontSize * 0.6;
 const boxX = anchor==="start" ? Number(x)-4 : (anchor==="end" ? Number(x)-estW+4 : Number(x)-estW/2);
 markers += `<rect x="${boxX.toFixed(1)}" y="${(labY-fontSize+2).toFixed(1)}" width="${estW.toFixed(1)}" height="${(fontSize+6).toFixed(1)}" rx="5" fill="${bg}" opacity=".9"/>`;
@@ -446,8 +446,7 @@ markers += `<text x="${x}" y="${labY}" font-size="${fontSize}" font-weight="700"
   return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
     <rect width="${W}" height="${H}" fill="${bg}"/>
     ${coastline}
-    <path d="${path}" fill="none" stroke="${lineColor}" stroke-width="2.5" stroke-dasharray="1 6" stroke-linecap="round" opacity=".7"/>
-    ${markers}
+  <path d="${path}" fill="none" stroke="${lineColor}" stroke-width="3.5" stroke-dasharray="1 7" stroke-linecap="round" opacity=".75"/>    ${markers}
   </svg>`;
 }
 
