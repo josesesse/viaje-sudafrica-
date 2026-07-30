@@ -49,7 +49,7 @@
 html,body{height:100%;}
 body{
   margin:0;
-  padding-top: 155px; 
+   
   background:
     radial-gradient(1200px 600px at 15% -10%, rgba(201,123,66,.14), transparent 60%),
     radial-gradient(1000px 500px at 100% 0%, rgba(78,148,132,.12), transparent 55%),
@@ -84,6 +84,10 @@ a{color:inherit;}
   min-height:100%; 
   position:relative; 
   padding-bottom:calc(84px + var(--safe-bottom));
+}
+
+#page-home{
+  padding-top: 155px;
 }
 
 /* ---------- Top header ---------- */
@@ -521,10 +525,32 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
       <div class="info-row"><span class="k">Policía (SAPS)</span><span class="v">10111</span></div>
       <div class="info-row"><span class="k">Ambulancia</span><span class="v">10177</span></div>
       <div class="info-note">Guardad estos números también en el móvil "de verdad" (no solo en la app), por si acaso.</div>
+      
     </div>
     <div class="info-card">
       <h4><svg><use href="#i-map"/></svg>Mapa completo del viaje</h4>
-      <div class="info-note">
+      <div class="mapbox" id="full-map"></div>
+      <div style="display:flex; gap:16px; margin-top:10px; padding:0 2px;">
+  <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);">
+    <span style="width:9px;height:9px;border-radius:50%;background:#8C4A22;display:inline-block;"></span>Kruger
+  </span>
+  <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);">
+    <span style="width:9px;height:9px;border-radius:50%;background:#2E6B5E;display:inline-block;"></span>Cape Town
+  </span>
+</div>
+      <div style="display:flex; gap:16px; margin-top:10px; padding:0 2px;">
+        <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);">
+          <span style="width:9px;height:9px;border-radius:50%;background:#8C4A22;display:inline-block;"></span>Kruger
+        </span>
+        <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);">
+          <span style="width:9px;height:9px;border-radius:50%;background:#2E6B5E;display:inline-block;"></span>Cape Town
+        </span>
+      </div>
+      <div class="map-caption" style="margin-top:9px;">
+        <svg><use href="#i-info"/></svg>
+        <span>Mapa esquemático offline con las 13 etapas — no es de navegación real.</span>
+      </div>
+      <div class="info-note" style="margin-top:12px;">
         Tenemos un Google My Maps con (casi) todos los trayectos del viaje ya dibujados. Requiere conexión para verlo, así que es mejor para planificar en casa que para consultar sobre la marcha.
       </div>
       <a class="maplink" href="https://www.google.com/maps/d/u/1/viewer?mid=1DIxDEUx2ATWfkPIhY6HAbblI0aXUfv0&usp=sharing" target="_blank" rel="noopener" style="margin-top:12px;"><svg><use href="#i-map"/></svg>Abrir nuestro My Maps</a>
@@ -549,9 +575,6 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
       </div>
     </div>
   </div>
-
-</div>
-
 <!-- bottom nav -->
 <nav class="bottomnav">
   <button class="navbtn active" data-page="home"><svg><use href="#i-list"/></svg>Itinerario</button>
