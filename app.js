@@ -400,6 +400,15 @@ function fullTripMapSVG(){
   </svg>`;
 }
 
+function renderFullMap(){
+  const el = document.getElementById("full-map");
+  if(el && !el.dataset.rendered){
+    el.innerHTML = fullTripMapSVG();
+    el.dataset.rendered = "1"; // evita recalcular el SVG cada vez que se abre la pestaña
+  }
+}
+
+
 /* ============ RENDER: DAY LIST ============ */
 let currentLeg = "all";
 let currentQuery = "";
@@ -659,6 +668,7 @@ function showPage(name){
   document.getElementById("page-"+name).classList.add("active");
   document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active", b.dataset.page===name));
   if(name==="overview") renderOverview();
+  if(name==="info") renderFullMap();
 }
 
 /* ============ COUNTDOWN ============ */
