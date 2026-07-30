@@ -769,24 +769,16 @@ if(isStandalone || installDismissed) {
   }
   
 let lastScrollTop = 0;
-  let scrollTimeout;
-  const topbar = document.querySelector(".topbar");
-  
   window.addEventListener("scroll", ()=>{
-    clearTimeout(scrollTimeout);
+    const topbar = document.querySelector(".topbar");
     const scrollTop = window.scrollY;
-    const isNearBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 100;
     
-    if(scrollTop === 0){
-      topbar.classList.remove("hidden", "visible");
-    } else if(isNearBottom){
-      return;
-    } else if(scrollTop > lastScrollTop && scrollTop > 100){
-      scrollTimeout = setTimeout(()=>{
-        topbar.classList.add("hidden");
-        topbar.classList.remove("visible");
-      }, 50);
-    } else if(scrollTop < lastScrollTop){
+    if(scrollTop > lastScrollTop && scrollTop > 50){
+      // Scrolling DOWN - esconder header
+      topbar.classList.add("hidden");
+      topbar.classList.remove("visible");
+    } else {
+      // Scrolling UP - mostrar header con fondo
       topbar.classList.remove("hidden");
       topbar.classList.add("visible");
     }
