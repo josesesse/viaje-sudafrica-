@@ -90,41 +90,54 @@ a{color:inherit;}
 .topbar {
   padding: calc(22px + var(--safe-top)) 20px 14px;
   position: fixed; 
-  
-  /* 1. Controlamos la posición inicial usando TOP en vez de transform */
-  top: 0; 
+  top: 0;
   left: 0;
+  right: 0;
   width: 100%;
   box-sizing: border-box;
   z-index: 30;
   
-  /* Fondo estético de cristal (funciona nativo en PC sin trucos raros) */
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   
-  /* 2. Animamos la propiedad TOP para que se deslice como una cortina */
   transition: top 0.4s ease-in-out, background 0.4s ease;
 }
 
-/* 3. Cuando se esconde, lo subimos -150px (suficiente para ocultar su altura) */
 .topbar.hidden {
-  top: -150px; 
+  top: -160px; 
 }
 
-/* 4. Cuando aparece, vuelve a su posición 0 */
 .topbar.visible {
   top: 0;
 }
 
-/* 5. Centrado absoluto garantizado para el título en PC y móvil */
+/* El motor Grid distribuye el espacio de forma segura en PC y móvil */
 .topbar-row {
-  display: flex; 
-  align-items: center;      /* Centra verticalmente el título y botones */
-  justify-content: space-between; 
+  display: grid; 
+  grid-template-columns: 1fr auto 1fr; 
+  align-items: center; 
   gap: 12px;
   width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
 }
+
+/* El título se queda clavado en el centro geométrico */
+.topbar-row > *:nth-child(2) {
+  text-align: center;
+  justify-self: center;
+  /* 📱 PROTECCIÓN PARA MÓVILES: Si el título es largo, no pisa los botones */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; 
+}
+
+/* El bloque de la derecha (buscador/botones) se pega a su extremo */
+.topbar-row > *:nth-child(3) {
+  justify-self: end;
+}
+
 
 .eyebrow{
   font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
