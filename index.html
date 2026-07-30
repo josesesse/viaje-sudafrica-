@@ -89,11 +89,11 @@ a{color:inherit;}
 .topbar{
   padding: calc(22px + var(--safe-top)) 20px 14px;
   position:sticky; top:0; z-index:30;
-  background:linear-gradient(180deg, var(--bg) 70%, transparent);
+  background:linear-gradient(180deg, var(--bg) 85%, rgba(244,238,220,.3) 100%);
   transition: background 0.3s ease;
 }
 body.leg-capetown .topbar{
-  background:linear-gradient(180deg, #E8F2EC 70%, transparent);
+  background:linear-gradient(180deg, #E8F2EC 85%, rgba(232,242,236,.3) 100%);
 }
 body .topbar{
   background:linear-gradient(180deg, #F4EEDC 70%, transparent);
@@ -103,7 +103,7 @@ body .topbar{
   font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
   color:var(--amber-soft); font-weight:600;
 }
-body.leg-capetown .eyebrow{color:var(--teal-soft);}
+.app.leg-capetown .eyebrow{color:var(--teal-soft);}
 h1.trip-title{
   font-family:var(--font-display); font-weight:800; font-size:26px; letter-spacing:-.01em;
   margin:4px 0 0; line-height:1.05;
@@ -112,7 +112,7 @@ h1.trip-title{
   text-align:right; flex-shrink:0;
 }
 .countdown .num{font-family:var(--font-display); font-weight:800; font-size:26px; color:var(--amber-soft); line-height:1;}
-body.leg-capetown .countdown .num{color:var(--teal-soft);}
+.app.leg-capetown .countdown .num{color:var(--teal-soft);}
 .countdown .lbl{font-family:var(--font-mono); font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.1em;}
 
 .tabs{display:flex; gap:8px; margin-top:18px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none;}
@@ -166,8 +166,15 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
   background:#FBF7EA;
 }
 .card[data-leg="capetown"] .stub{
-  background:rgba(78,148,132,.18);
+  background:#7FDBCA;
 }
+.card[data-leg="capetown"] .stub-num{
+  color:#2E6B5E;
+}
+.card[data-leg="capetown"] .stub svg{
+  color:#2E6B5E;
+}
+  
 .card:active{transform:scale(.995);}
 .card-main{flex:1; padding:18px 16px; min-width:0;}
 .card-top{display:flex; align-items:center; justify-content:space-between; gap:10px;}
