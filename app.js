@@ -785,7 +785,7 @@ window.addEventListener("scroll", () => {
   if (Math.abs(lastScrollTop - scrollTop) <= tolerance) return;
 
   // SOLUCIÓN AL TEMBLOR: Si llegamos al final de la página, forzar que se quede VISIBLE
-  if (scrollTop + windowHeight >= documentHeight - 10) {
+  if (scrollTop + windowHeight >= documentHeight - 35) {
     topbar.classList.remove("hidden");
     topbar.classList.add("visible");
     lastScrollTop = scrollTop;
