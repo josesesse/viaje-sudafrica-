@@ -126,8 +126,8 @@ h1.trip-title{
   display:flex; align-items:center; gap:6px; transition:.15s;
 }
 body.leg-capetown .tab{background:var(--surface); border-color:var(--line);}
-body.leg-capetown .card{background:#FBF7EA; border-color:rgba(78,148,132,.2);}
-body.leg-capetown .card .card-main{background:#FBF7EA;}
+body.leg-capetown .card{background:#FFFDF9; border-color:rgba(78,148,132,.2);}
+body.leg-capetown .card .card-main{background:#FFFDF9;}
 body.leg-capetown .card .stub{background:rgba(196,232,216,.4);}
 .tab .dot{width:7px; height:7px; border-radius:50%; background:currentColor; opacity:.6;}
 .tab.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
@@ -158,15 +158,15 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 
 /* Boarding pass card */
 .card{
-  display:flex; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  display:flex; background:#FFFDF9; border:1px solid var(--line); border-radius:var(--radius);
   overflow:hidden; position:relative; text-align:left; width:100%;
 }
 .card[data-leg="capetown"]{
-  background:#FBF7EA;
+  background:#FFFDF9;
   border-color:rgba(78,148,132,.2);
 }
 .card[data-leg="capetown"] .card-main{
-  background:#FBF7EA;
+  background:#FFFDF9;
 }
 
   
@@ -196,7 +196,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 .status-pill.confirmed{background:rgba(63,107,78,.14); color:var(--ok);}
 
 .stub{
-  width:74px; flex-shrink:0; 
+  width:74px; flex-shrink:0; margin-left: auto;
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
   position:relative; background:var(--surface-2);
 }
