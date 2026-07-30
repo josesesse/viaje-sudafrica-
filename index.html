@@ -89,14 +89,17 @@ a{color:inherit;}
 .topbar{
   padding: calc(22px + var(--safe-top)) 20px 14px;
   position:sticky; top:0; z-index:30;
-  background: rgba(255, 255, 255, 0.8);
-  transition: background 0.3s ease;
+  background: transparent;
+  transition: transform 0.3s ease, background 0.3s ease;
+  transform: translateY(0);
 }
-body.leg-capetown .topbar{
-  background: rgba(255, 255, 255, 0.8);
+.topbar.hidden{
+  transform: translateY(-100%);
 }
-body .topbar{
-  background: rgba(255, 255, 255, 0.8);
+.topbar.visible{
+  background: rgba(255, 255, 255, 0.80);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 .topbar-row{display:flex; align-items:flex-start; justify-content:space-between; gap:12px;}
 .eyebrow{
