@@ -396,51 +396,74 @@ function dayMapSVG(day){
 }
 function escapeXML(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
-function fullTripMapSVG(){
+function fullTripMapSVG(legFilter){
+  const days = TRIP.days.filter(d => d.leg === legFilter);
   const pts = [];
-  TRIP.days.forEach(d=> d.stops.forEach(p=> pts.push({...p, leg:d.leg})) );
+  days.forEach(d=> d.stops.forEach(p=> pts.push({...p, leg:d.leg})) );
+
   const lons = pts.map(p=>p.lon), lats = pts.map(p=>p.lat);
   const minLon = Math.min(...lons), maxLon = Math.max(...lons);
   const minLat = Math.min(...lats), maxLat = Math.max(...lats);
-  const W = 600, H = 520, PAD = 40;
-  const spanLon = maxLon-minLon, spanLat = maxLat-minLat;
+  const W = 600, H = 520, PAD = 50;
+  const spanLon = Math.max(maxLon-minLon, 0.05), spanLat = Math.max(maxLat-minLat, 0.05);
   const sx = (W-2*PAD)/spanLon, sy=(H-2*PAD)/spanLat;
   const s = Math.min(sx,sy);
   const offX = PAD + ((W-2*PAD)-spanLon*s)/2;
   const offY = PAD + ((H-2*PAD)-spanLat*s)/2;
   function X(lon){ return offX+(lon-minLon)*s; }
   function Y(lat){ return offY+(maxLat-lat)*s; }
-  
-  // Línea de costa sudafricana simplificada
-  const coastline = `<path d="M ${X(16)},${Y(-33.9)} Q ${X(17)},${Y(-33.5)} ${X(18)},${Y(-33.3)} T ${X(20)},${Y(-32.5)} T ${X(22)},${Y(-31)}" fill="none" stroke="rgba(78,148,132,.15)" stroke-width="1.5" stroke-dasharray="2 3"/>`;
-  
-  let paths = "";
-  TRIP.days.forEach(d=>{
-    const c = d.leg==="capetown" ? "#4E9484" : "#C97B42";
-    let p = "M";
-    d.stops.forEach((pt,i)=>{ p += `${i===0?"":" L"} ${X(pt.lon).toFixed(1)} ${Y(pt.lat).toFixed(1)}`; });
-    paths += `<path d="${p}" fill="none" stroke="${c}" stroke-width="2" opacity=".6"/>`;
-  });
+
+  const isCape = legFilter === "capetown";
+  const bg = isCape ? "#F5F9F6" : "#FAF4E8";
+  const lineColor = isCape ? "#4E9484" : "#C97B42";
+  const dotColor = isCape ? "#2E6B5E" : "#8C4A22";
+
+  const coastline = isCape
+    ? `<path d="M ${X(16)},${Y(-33.9)} Q ${X(17)},${Y(-33.5)} ${X(18)},${Y(-33.3)} T ${X(20)},${Y(-32.5)}" fill="none" stroke="rgba(78,148,132,.15)" stroke-width="1.5" stroke-dasharray="2 3"/>`
+    : "";
+
+  let path = "M";
+  let allStops = [];
+  days.forEach(d=> d.stops.forEach(p=> allStops.push(p)) );
+  allStops.forEach((p,i)=>{ path += `${i===0?"":" L"} ${X(p.lon).toFixed(1)} ${Y(p.lat).toFixed(1)}`; });
+
   let markers = "";
-  TRIP.days.forEach(d=>{
+  days.forEach(d=>{
     const last = d.stops[d.stops.length-1];
-    const c = d.leg==="capetown" ? "#2E6B5E" : "#8C4A22";
-    markers += `<circle cx="${X(last.lon).toFixed(1)}" cy="${Y(last.lat).toFixed(1)}" r="5.5" fill="${c}" stroke="#F6F0DF" stroke-width="2"/>`;
+    const x = X(last.lon).toFixed(1), y = Y(last.lat).toFixed(1);
+    markers += `<circle cx="${x}" cy="${y}" r="6" fill="${dotColor}" stroke="${bg}" stroke-width="2.5"/>`;
+    const label = escapeXML(`D${d.day} · ${d.to}`);
+    const anchor = X(last.lon) < W*0.2 ? "start" : (X(last.lon) > W*0.8 ? "end" : "middle");
+    const labY = Number(y) - 12;
+    const estW = label.length * 6.2;
+    const boxX = anchor==="start" ? Number(x)-4 : (anchor==="end" ? Number(x)-estW+4 : Number(x)-estW/2);
+    markers += `<rect x="${boxX.toFixed(1)}" y="${(labY-11).toFixed(1)}" width="${estW.toFixed(1)}" height="16" rx="4" fill="${bg}" opacity=".9"/>`;
+    markers += `<text x="${x}" y="${labY}" font-size="11" font-weight="600" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.85)" text-anchor="${anchor}">${label}</text>`;
   });
+
   return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
-    <rect width="${W}" height="${H}" fill="#F1E8D2"/>
+    <rect width="${W}" height="${H}" fill="${bg}"/>
     ${coastline}
-    ${paths}${markers}
+    <path d="${path}" fill="none" stroke="${lineColor}" stroke-width="2.5" stroke-dasharray="1 6" stroke-linecap="round" opacity=".7"/>
+    ${markers}
   </svg>`;
 }
 
 function renderFullMap(){
-  const el = document.getElementById("full-map");
-  if(el && !el.dataset.rendered){
-    el.innerHTML = fullTripMapSVG();
-    el.dataset.rendered = "1"; // evita recalcular el SVG cada vez que se abre la pestaña
+  const elNorth = document.getElementById("full-map-north");
+  const elSouth = document.getElementById("full-map-south");
+  if(elNorth && !elNorth.dataset.rendered){
+    elNorth.innerHTML = fullTripMapSVG("kruger");
+    elNorth.dataset.rendered = "1";
+  }
+  if(elSouth && !elSouth.dataset.rendered){
+    elSouth.innerHTML = fullTripMapSVG("capetown");
+    elSouth.dataset.rendered = "1";
   }
 }
+
+
+
 
 
 /* ============ RENDER: DAY LIST ============ */
