@@ -767,5 +767,24 @@ if(isStandalone || installDismissed) {
       navigator.serviceWorker.register("sw.js").catch(()=>{});
     });
   }
+  
+let lastScrollTop = 0;
+  window.addEventListener("scroll", ()=>{
+    const topbar = document.querySelector(".topbar");
+    const scrollTop = window.scrollY;
+    
+    if(scrollTop > lastScrollTop && scrollTop > 50){
+      // Scrolling DOWN - esconder header
+      topbar.classList.add("hidden");
+      topbar.classList.remove("visible");
+    } else {
+      // Scrolling UP - mostrar header con fondo
+      topbar.classList.remove("hidden");
+      topbar.classList.add("visible");
+    }
+    lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+  }, false);
+  
+  
 }
 document.addEventListener("DOMContentLoaded", init);
