@@ -348,7 +348,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
   
 .map-zoom-modal{
   position:fixed; inset:0; z-index:200; background:rgba(20,16,8,.92);
-  display:none; align-items:center; justify-content:center; overflow:hidden; touch-action:none;
+  display:none; align-items:center; justify-content:center; overflow:hidden; touch-action:manipulation;
 }
 .map-zoom-modal.open{display:flex;}
 .map-zoom-close{
@@ -360,7 +360,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
   position:absolute; bottom:calc(20px + var(--safe-bottom)); left:0; right:0; text-align:center;
   color:rgba(255,255,255,.6); font-size:12px; font-family:var(--font-mono);
 }
-#map-zoom-inner{ width:90%; max-width:640px; touch-action:none; cursor:grab; transition:transform .05s linear; }
+#map-zoom-inner{ width:90%; max-width:640px; touch-action:manipulation; cursor:grab; transition:transform .05s linear; }
 #map-zoom-inner svg{ width:100%; height:auto; display:block; }
   
 
@@ -595,82 +595,24 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
       <h1>Info práctica</h1>
       <p>Lo esencial, disponible sin conexión.</p>
     </div>
+    
+
     <div class="info-card">
-      <h4><svg><use href="#i-phone"/></svg>Emergencias en Sudáfrica</h4>
-      <div class="info-row"><span class="k">General (móvil, sin saldo)</span><span class="v">112</span></div>
-      <div class="info-row"><span class="k">Policía (SAPS)</span><span class="v">10111</span></div>
-      <div class="info-row"><span class="k">Ambulancia</span><span class="v">10177</span></div>
-      <div class="info-note">Guardad estos números también en el móvil "de verdad" (no solo en la app), por si acaso.</div>
-      
+  <h4><svg><use href="#i-map"/></svg>Plano del parque Kruger</h4>
+  <div class="mapbox-wrap">
+    <div class="mapbox">
+      <img src="kruger-park-map.jpg" alt="Plano del Kruger" />
     </div>
-    <div class="info-card">
-      <h4><svg><use href="#i-map"/></svg>Mapa completo del viaje</h4>
-      <div class="info-card">
-  <h4><svg><use href="#i-map"/></svg>Mapa completo del viaje</h4>
-
-  <div class="section-label" style="margin:0 0 8px;">Norte · Kruger &amp; Panorama Route (días 1–6)</div>
-  <div class="mapbox" id="full-map-north"></div>
-  <div style="display:flex; gap:16px; margin-top:10px; padding:0 2px;">
-    <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);">
-      <span style="width:9px;height:9px;border-radius:50%;background:#8C4A22;display:inline-block;"></span>Kruger
-    </span>
+    <button class="mapbox-expand" id="expand-park-map"><svg><use href="#i-expand"/></svg></button>
   </div>
-
-  <div class="section-label" style="margin:20px 0 8px;">Sur · Cape Town &amp; Winelands (días 7–13)</div>
-  <div class="mapbox" id="full-map-south"></div>
-  <div style="display:flex; gap:16px; margin-top:10px; padding:0 2px;">
-    <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);">
-      <span style="width:9px;height:9px;border-radius:50%;background:#2E6B5E;display:inline-block;"></span>Cape Town
-    </span>
-  </div>
-
-  <div class="map-caption" style="margin-top:12px;">
+  <div class="map-caption">
     <svg><use href="#i-info"/></svg>
-    <span>Mapas esquemáticos offline — no son de navegación real.</span>
+    <span>Toca la imagen para ampliarla a pantalla completa. Pellizca o usa la rueda para zoom, arrastra para moverte, y usa el botón de rotar si el plano aparece de lado.</span>
   </div>
-  <div class="info-note" style="margin-top:12px;">
-    Tenemos un Google My Maps con (casi) todos los trayectos del viaje ya dibujados. Requiere conexión para verlo, así que es mejor para planificar en casa que para consultar sobre la marcha.
-  </div>
-  <a class="maplink" href="https://www.google.com/maps/d/u/1/viewer?mid=1DIxDEUx2ATWfkPIhY6HAbblI0aXUfv0&usp=sharing" target="_blank" rel="noopener" style="margin-top:12px;"><svg><use href="#i-map"/></svg>Abrir nuestro My Maps</a>
-</div>
-      <div style="display:flex; gap:16px; margin-top:10px; padding:0 2px;">
-  <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);">
-    <span style="width:9px;height:9px;border-radius:50%;background:#8C4A22;display:inline-block;"></span>Kruger
-  </span>
-  <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);">
-    <span style="width:9px;height:9px;border-radius:50%;background:#2E6B5E;display:inline-block;"></span>Cape Town
-  </span>
-</div>
-      
-      <div class="map-caption" style="margin-top:9px;">
-        <svg><use href="#i-info"/></svg>
-        <span>Mapa esquemático offline con las 13 etapas — no es de navegación real.</span>
-      </div>
-      <div class="info-note" style="margin-top:12px;">
-        Tenemos un Google My Maps con (casi) todos los trayectos del viaje ya dibujados. Requiere conexión para verlo, así que es mejor para planificar en casa que para consultar sobre la marcha.
-      </div>
-      <a class="maplink" href="https://www.google.com/maps/d/u/1/viewer?mid=1DIxDEUx2ATWfkPIhY6HAbblI0aXUfv0&usp=sharing" target="_blank" rel="noopener" style="margin-top:12px;"><svg><use href="#i-map"/></svg>Abrir nuestro My Maps</a>
-    </div>
-    <div class="info-card">
-      <h4><svg><use href="#i-compass"/></svg>Antes de salir de ruta</h4>
-      <div class="info-note">
-        Esta app usa mapas ilustrativos, no de navegación real. Para conducir por el Kruger y la Garden Route descargad de antemano (con wifi) el <b>mapa offline de Sudáfrica en Google Maps</b> (Google Maps → Mapas sin conexión → Descargar mapa nuevo). Así tendréis rutas y localización GPS reales aunque no haya cobertura.
-      </div>
-    </div>
-    <div class="info-card">
-      <h4><svg><use href="#i-sun"/></svg>Datos útiles</h4>
-      <div class="info-row"><span class="k">Moneda</span><span class="v">ZAR (Rand)</span></div>
-      <div class="info-row"><span class="k">Enchufe</span><span class="v">Tipo M</span></div>
-      <div class="info-row"><span class="k">Conducción</span><span class="v">Izquierda</span></div>
-      <div class="info-note">En agosto (invierno austral) las mañanas y noches de safari son frías: llevad capas y algo de abrigo para los game drives al amanecer.</div>
-    </div>
-
-    <div class="info-card">
-  <h4><svg><use href="#i-chat"/></svg>Expresiones locales</h4>
-  <div class="phrase-grid" id="phrase-grid"></div>
 </div>
 
-<div class="info-card">
+
+    <div class="info-card">
   <h4><svg><use href="#i-currency"/></svg>Conversor ZAR ↔ EUR</h4>
   <div class="currency-conv">
     <div class="currency-field">
@@ -686,20 +628,87 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
   <div class="info-note">Conversión estimada para el 15 de agosto (1 ZAR ≈ 0,051 EUR · 1 EUR ≈ 19,60 ZAR). El cambio real puede variar.</div>
 </div>
 
-<div class="info-card">
-  <h4><svg><use href="#i-map"/></svg>Plano del parque Kruger</h4>
-  <div class="mapbox-wrap">
-    <div class="mapbox">
-      <img src="kruger-park-map.jpg" alt="Plano del Kruger" />
-    </div>
-    <button class="mapbox-expand" id="expand-park-map"><svg><use href="#i-expand"/></svg></button>
-  </div>
-  <div class="map-caption">
-    <svg><use href="#i-info"/></svg>
-    <span>Toca la imagen para ampliarla a pantalla completa. Pellizca o usa la rueda para zoom, arrastra para moverte, y usa el botón de rotar si el plano aparece de lado.</span>
-  </div>
+     <div class="info-card">
+  <h4><svg><use href="#i-chat"/></svg>Expresiones locales</h4>
+  <div class="phrase-grid" id="phrase-grid"></div>
 </div>
+    
+    
+    <div class="info-card">
+  <h4><svg><use href="#i-map"/></svg>Mapa completo del viaje</h4>
 
+  <div class="section-label" style="margin:0 0 8px;">
+    Norte · Kruger &amp; Panorama Route (días 1–6)
+  </div>
+  <div class="mapbox" id="full-map-north"></div>
+  <div style="display:flex; gap:16px; margin-top:10px; padding:0 2px;">
+    <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);">
+      <span style="width:9px;height:9px;border-radius:50%;background:#8C4A22;display:inline-block;"></span>
+      Kruger
+    </span>
+  </div>
+
+  <div class="section-label" style="margin:20px 0 8px;">
+    Sur · Cape Town &amp; Winelands (días 7–13)
+  </div>
+  <div class="mapbox" id="full-map-south"></div>
+  <div style="display:flex; gap:16px; margin-top:10px; padding:0 2px;">
+    <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);">
+      <span style="width:9px;height:9px;border-radius:50%;background:#2E6B5E;display:inline-block;"></span>
+      Cape Town
+    </span>
+  </div>
+
+  <div class="map-caption" style="margin-top:12px;">
+    <svg><use href="#i-info"/></svg>
+    <span>Mapas esquemáticos offline — no son de navegación real.</span>
+  </div>
+
+  <div class="info-note" style="margin-top:12px;">
+    Tenemos un Google My Maps con (casi) todos los trayectos del viaje ya dibujados. Requiere conexión para verlo, así que es mejor para planificar en casa que para consultar sobre la marcha.
+  </div>
+
+  <a class="maplink"
+     href="https://www.google.com/maps/d/u/1/viewer?mid=1DIxDEUx2ATWfkPIhY6HAbblI0aXUfv0&usp=sharing"
+     target="_blank"
+     rel="noopener"
+     style="margin-top:12px;">
+    <svg><use href="#i-map"/></svg>
+    Abrir nuestro My Maps
+  </a>
+</div>
+    
+    <div class="info-card">
+      <h4><svg><use href="#i-sun"/></svg>Datos útiles</h4>
+      <div class="info-row"><span class="k">Moneda</span><span class="v">ZAR (Rand)</span></div>
+      <div class="info-row"><span class="k">Enchufe</span><span class="v">Tipo M</span></div>
+      <div class="info-row"><span class="k">Conducción</span><span class="v">Izquierda</span></div>
+      <div class="info-note">En agosto (invierno austral) las mañanas y noches de safari son frías: llevad capas y algo de abrigo para los game drives al amanecer.</div>
+    </div>
+
+   
+
+
+
+
+
+
+    <div class="info-card">
+      <h4><svg><use href="#i-phone"/></svg>Emergencias en Sudáfrica</h4>
+      <div class="info-row"><span class="k">General (móvil, sin saldo)</span><span class="v">112</span></div>
+      <div class="info-row"><span class="k">Policía (SAPS)</span><span class="v">10111</span></div>
+      <div class="info-row"><span class="k">Ambulancia</span><span class="v">10177</span></div>
+      <div class="info-note">Guardad estos números también en el móvil "de verdad" (no solo en la app), por si acaso.</div>
+      
+    </div>
+
+    
+    <div class="info-card">
+      <h4><svg><use href="#i-compass"/></svg>Antes de salir de ruta</h4>
+      <div class="info-note">
+        Esta app usa mapas ilustrativos, no de navegación real. Para conducir por el Kruger y la Garden Route descargad de antemano (con wifi) el <b>mapa offline de Sudáfrica en Google Maps</b> (Google Maps → Mapas sin conexión → Descargar mapa nuevo). Así tendréis rutas y localización GPS reales aunque no haya cobertura.
+      </div>
+    </div>
     
     <div class="info-card">
       <h4><svg><use href="#i-download"/></svg>Sobre esta app</h4>
