@@ -52,7 +52,7 @@ body{
   background:
     radial-gradient(1200px 600px at 15% -10%, rgba(201,123,66,.14), transparent 60%),
     radial-gradient(1000px 500px at 100% 0%, rgba(78,148,132,.12), transparent 55%),
-    linear-gradient(180deg, var(--bg) 0%, #E8F2EC 65%, #E8F2EC 100%);
+    linear-gradient(180deg, var(--bg) 0%, #F0F8F5 80%, #F0F8F5 100%);
   background-attachment: fixed;
   color:var(--text);
   font-family:var(--font-body);
@@ -158,21 +158,15 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
   display:flex; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
   overflow:hidden; position:relative; text-align:left; width:100%;
 }
-body.leg-capetown .card[data-leg="capetown"]{
-  background:rgba(#FBF7EA);
-}
-body.leg-capetown .card[data-leg="capetown"] .card-main{
-  background:#FBF7EA;
-}
-body.leg-capetown .card[data-leg="capetown"] .stub{
-  background:rgba(78,148,132,.18);
-}
 .card[data-leg="capetown"]{
-  background:rgba(233, 248, 242, 0.95);
+  background:#FBF7EA;
   border-color:rgba(78,148,132,.2);
 }
 .card[data-leg="capetown"] .card-main{
   background:#FBF7EA;
+}
+.card[data-leg="capetown"] .stub{
+  background:rgba(78,148,132,.18);
 }
 .card:active{transform:scale(.995);}
 .card-main{flex:1; padding:18px 16px; min-width:0;}
