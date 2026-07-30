@@ -73,7 +73,7 @@ body{
     radial-gradient(1000px 500px at 100% 0%, rgba(78,148,132,.12), transparent 55%),
     linear-gradient(180deg, #F4EEDC 0%, #F4EEDC 100%);
 }
-button{font-family:inherit; -webkit-appearance:none; appearance:none; border:none; background:none; color:inherit; cursor:pointer;}
+button{font-family:inherit; -webkit-appearance:none; appearance:none; border:none; background:none; color:inherit; cursor:pointer; padding:0;}
 input{font-family:inherit;}
 ::selection{background:var(--amber); color:var(--paper);}
 a{color:inherit;}
@@ -184,7 +184,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 /* Boarding pass card */
 .card{
   display:flex; background:#FFFDF9; border:1px solid var(--line); border-radius:var(--radius);
-  overflow:visible; position:relative; text-align:left; width:100%;
+  overflow:hidden; position:relative; text-align:left; width:100%;
 }
 .card[data-leg="capetown"]{
   background:#FFFDF9;
