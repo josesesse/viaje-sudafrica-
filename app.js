@@ -446,7 +446,7 @@ function renderDayList(){
         <div class="stub-num">${String(day.day).padStart(2,"0")}</div>
         ${icon(day.leg==="capetown" ? "wave" : "paw")}
       </div>
-      <svg class="card-chevron"><use href="#i-chevron"/></svg>
+      /*<svg class="card-chevron"><use href="#i-chevron"/></svg>*/
     </button>`;
   });
   list.innerHTML = html;
