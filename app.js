@@ -461,12 +461,12 @@ function renderDayList(){
     const onlyCapeTown = currentLeg === "capetown";
     const onlyKruger = currentLeg === "kruger";
     
-    document.body.classList.remove("leg-capetown", "leg-kruger");
+    document.getElementById("app").classList.remove("leg-capetown", "leg-kruger");
     
     if(onlyCapeTown && allCapeTown){
-      document.body.classList.add("leg-capetown");
+      document.getElementById("app").classList.add("leg-capetown");
     } else if(onlyKruger && allKruger){
-      document.body.classList.add("leg-kruger");
+      document.getElementById("app").classList.add("leg-kruger");
     }
   }
 }
@@ -696,9 +696,9 @@ function init(){
       currentLeg = tab.dataset.leg;
       // Cambiar clase de background según el leg
       if(currentLeg === "capetown"){
-        document.body.classList.add("leg-capetown");
+        document.getElementById("app").classList.add("leg-capetown");
       } else {
-        document.body.classList.remove("leg-capetown");
+        document.getElementById("app").classList.remove("leg-capetown");
       }
       renderDayList();
     });
