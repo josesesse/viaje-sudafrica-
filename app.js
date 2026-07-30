@@ -298,12 +298,34 @@ function starsStr(n){ if(!n) return ""; return "★".repeat(n) + "☆".repeat(5-
 function icon(name){ return `<svg><use href="#i-${name}"/></svg>`; }
 
 /* ============ SVG SCHEMATIC MAP ============ */
+function pathMidpoint(pts, X, Y){
+  const coords = pts.map(p=>({x:X(p.lon), y:Y(p.lat)}));
+  let total = 0;
+  const segLens = [];
+  for(let i=1;i<coords.length;i++){
+    const dx = coords[i].x-coords[i-1].x, dy = coords[i].y-coords[i-1].y;
+    const len = Math.sqrt(dx*dx+dy*dy);
+    segLens.push(len);
+    total += len;
+  }
+  let target = total/2, acc = 0;
+  for(let i=0;i<segLens.length;i++){
+    if(acc+segLens[i] >= target){
+      const t = segLens[i] ? (target-acc)/segLens[i] : 0;
+      const a = coords[i], b = coords[i+1];
+      return { x: a.x + (b.x-a.x)*t, y: a.y + (b.y-a.y)*t };
+    }
+    acc += segLens[i];
+  }
+  return coords[Math.floor(coords.length/2)];
+}
+
 function dayMapSVG(day){
   const pts = day.stops;
   const lons = pts.map(p=>p.lon), lats = pts.map(p=>p.lat);
   const minLon = Math.min(...lons), maxLon = Math.max(...lons);
   const minLat = Math.min(...lats), maxLat = Math.max(...lats);
-  const W = 600, H = 380, PAD = 56;
+  const W = 640, H = 440, PAD = 64;
   const spanLon = Math.max(maxLon-minLon, 0.02);
   const spanLat = Math.max(maxLat-minLat, 0.02);
   const sx = (W-2*PAD)/spanLon, sy = (H-2*PAD)/spanLat;
@@ -321,11 +343,9 @@ function dayMapSVG(day){
 
   let extras = "";
   if(isCape && day.day >= 9){
-    // Línea de costa simplificada para días de cabo
     extras += `<path d="M ${W-20} 0 L ${W-15} ${H*0.3} L ${W-10} ${H*0.6} L ${W} ${H}" fill="none" stroke="rgba(78,148,132,.25)" stroke-width="2.5" stroke-dasharray="3 4"/>`;
   }
   if(day.day >= 3 && day.day <= 6){
-    // Ríos simplificados para Kruger central
     extras += `<path d="M ${W*0.3} ${H*0.2} Q ${W*0.5} ${H*0.4} ${W*0.7} ${H*0.8}" fill="none" stroke="rgba(140,74,34,.15)" stroke-width="1.5" stroke-dasharray="2 3"/>`;
   }
 
@@ -335,21 +355,35 @@ function dayMapSVG(day){
   let markers = "";
   pts.forEach((p,i)=>{
     const x=X(p.lon).toFixed(1), y=Y(p.lat).toFixed(1);
-    const r = p.isHL ? 7 : 4.5;
-    const fill = p.isHL ? hlColor : dotFaint;
+    const isEndpoint = i===0 || i===pts.length-1;
+    const r = isEndpoint ? 9 : (p.isHL ? 7.5 : 4.5);
+    const fill = (isEndpoint || p.isHL) ? hlColor : dotFaint;
     markers += `<circle cx="${x}" cy="${y}" r="${r}" fill="${fill}" stroke="${mapBg}" stroke-width="2.5"/>`;
-    if(p.isHL){
+    if(p.isHL || isEndpoint){
       markers += `<circle cx="${x}" cy="${y}" r="${r+5}" fill="none" stroke="${hlColor}" stroke-width="1" opacity=".4"/>`;
     }
-    const labY = (i===0||i===pts.length-1) ? Number(y)+20 : Number(y)-13;
+    const labY = isEndpoint ? Number(y)+24 : Number(y)-15;
     const anchor = X(p.lon) < W*0.18 ? "start" : (X(p.lon) > W*0.82 ? "end" : "middle");
-    markers += `<text x="${x}" y="${labY}" font-size="11" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.75)" text-anchor="${anchor}">${escapeXML(p.name.split(" ").slice(0,2).join(" "))}</text>`;
+    const fontSize = isEndpoint ? 15 : (p.isHL ? 13 : 11);
+    const fontWeight = isEndpoint ? 700 : (p.isHL ? 600 : 400);
+    const label = escapeXML(p.name.split(" ").slice(0, isEndpoint?3:2).join(" "));
+    const estW = label.length * fontSize * 0.62;
+    const boxX = anchor==="start" ? Number(x)-4 : (anchor==="end" ? Number(x)-estW+4 : Number(x)-estW/2);
+    markers += `<rect x="${boxX.toFixed(1)}" y="${(labY-fontSize+2).toFixed(1)}" width="${estW.toFixed(1)}" height="${(fontSize+4).toFixed(1)}" rx="4" fill="${mapBg}" opacity=".88"/>`;
+    markers += `<text x="${x}" y="${labY}" font-size="${fontSize}" font-weight="${fontWeight}" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.88)" text-anchor="${anchor}">${label}</text>`;
   });
 
+  const mid = pathMidpoint(pts, X, Y);
   const distStr = day.distance ? `${day.distance} km` : "";
   const timeStr = day.time ? `${day.time}` : "";
   const infoText = (distStr && timeStr) ? `${distStr} · ${timeStr}` : (distStr || timeStr || "");
-  const infoBox = infoText ? `<rect x="${W-152}" y="${H-32}" width="144" height="24" fill="${mapBg}" rx="6"/><text x="${W-80}" y="${H-14}" font-size="10" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.6)" text-anchor="middle" font-weight="500">${escapeXML(infoText)}</text>` : "";
+  let midInfo = "";
+  if(infoText){
+    const boxW = infoText.length*6.6 + 22;
+    midInfo = `
+      <rect x="${(mid.x-boxW/2).toFixed(1)}" y="${(mid.y-13).toFixed(1)}" width="${boxW.toFixed(1)}" height="26" rx="13" fill="${mapBg}" stroke="${routeColor}" stroke-width="1"/>
+      <text x="${mid.x.toFixed(1)}" y="${(mid.y+4).toFixed(1)}" font-size="11.5" font-family="'Roboto Mono',ui-monospace,monospace" fill="${hlColor}" text-anchor="middle" font-weight="600">${escapeXML(infoText)}</text>`;
+  }
 
   return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
     <rect x="0" y="0" width="${W}" height="${H}" fill="${mapBg}"/>
@@ -357,7 +391,7 @@ function dayMapSVG(day){
     <path d="${path}" fill="none" stroke="${routeColor}" stroke-width="2.5" stroke-dasharray="1 7" stroke-linecap="round"/>
     <path d="${path}" fill="none" stroke="${routeColor}" stroke-width="1" opacity=".4"/>
     ${markers}
-    ${infoBox}
+    ${midInfo}
   </svg>`;
 }
 function escapeXML(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
@@ -539,8 +573,10 @@ function openDay(dayNum){
 
     <div class="section ${legClass}">
       <div class="section-head">${icon("map")}<h3>Ruta del día</h3></div>
-      <div class="mapbox">${dayMapSVG(day)}</div>
-      <div class="map-caption">${icon("info")}<span>Mapa esquemático, no es de navegación real — muestra el orden y la posición relativa de las paradas.</span></div>
+<div class="mapbox-wrap">
+  <div class="mapbox">${dayMapSVG(day)}</div>
+  <button class="mapbox-expand" id="expand-map">${icon("expand")}</button>
+</div>      <div class="map-caption">${icon("info")}<span>Mapa esquemático, no es de navegación real — muestra el orden y la posición relativa de las paradas.</span></div>
       <a class="maplink" href="${gmapsUrl}" target="_blank" rel="noopener">${icon("compass")}Abrir ruta en Google Maps (requiere conexión)</a>
       <a class="maplink" href="${MYMAPS_URL}" target="_blank" rel="noopener" style="margin-left:8px;">${icon("map")}Ver en nuestro mapa completo (requiere conexión)</a>
     </div>
@@ -582,6 +618,9 @@ function openDay(dayNum){
   `;
 
   document.getElementById("close-detail").addEventListener("click", closeDay);
+  document.getElementById("expand-map").addEventListener("click", ()=>{
+  openMapZoom(dayMapSVG(day));
+});
   document.getElementById("stay-switch").addEventListener("click", ()=>{
     const cur = stayStatus(day.day);
     STORE.stayStatus[day.day] = cur==="confirmed" ? "pending" : "confirmed";
@@ -693,10 +732,92 @@ function updateCountdown(){
   }
 }
 
+
+let mapZoomState = { scale:1, x:0, y:0, pinchDist:null, dragging:false, lastX:0, lastY:0 };
+
+function openMapZoom(svgMarkup){
+  document.getElementById("map-zoom-inner").innerHTML = svgMarkup;
+  mapZoomState = { scale:1, x:0, y:0, pinchDist:null, dragging:false, lastX:0, lastY:0 };
+  applyMapZoomTransform();
+  document.getElementById("map-zoom-modal").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeMapZoom(){
+  document.getElementById("map-zoom-modal").classList.remove("open");
+  document.body.style.overflow = "";
+}
+function applyMapZoomTransform(){
+  document.getElementById("map-zoom-inner").style.transform =
+    `translate(${mapZoomState.x}px, ${mapZoomState.y}px) scale(${mapZoomState.scale})`;
+}
+function clampScale(s){ return Math.min(4, Math.max(1, s)); }
+
+function initMapZoomModal(){
+  const modal = document.getElementById("map-zoom-modal");
+  const inner = document.getElementById("map-zoom-inner");
+  document.getElementById("map-zoom-close").addEventListener("click", closeMapZoom);
+  modal.addEventListener("click", (e)=>{ if(e.target===modal) closeMapZoom(); });
+
+  modal.addEventListener("wheel", (e)=>{
+    e.preventDefault();
+    mapZoomState.scale = clampScale(mapZoomState.scale + (e.deltaY < 0 ? 0.15 : -0.15));
+    if(mapZoomState.scale===1){ mapZoomState.x=0; mapZoomState.y=0; }
+    applyMapZoomTransform();
+  }, { passive:false });
+
+  inner.addEventListener("pointerdown", (e)=>{
+    mapZoomState.dragging = true;
+    mapZoomState.lastX = e.clientX; mapZoomState.lastY = e.clientY;
+    inner.setPointerCapture(e.pointerId);
+  });
+  inner.addEventListener("pointermove", (e)=>{
+    if(!mapZoomState.dragging) return;
+    mapZoomState.x += e.clientX - mapZoomState.lastX;
+    mapZoomState.y += e.clientY - mapZoomState.lastY;
+    mapZoomState.lastX = e.clientX; mapZoomState.lastY = e.clientY;
+    applyMapZoomTransform();
+  });
+  ["pointerup","pointercancel","pointerleave"].forEach(ev=>{
+    inner.addEventListener(ev, ()=>{ mapZoomState.dragging=false; });
+  });
+
+  inner.addEventListener("touchmove", (e)=>{
+    if(e.touches.length===2){
+      e.preventDefault();
+      const dist = Math.hypot(
+        e.touches[0].clientX-e.touches[1].clientX,
+        e.touches[0].clientY-e.touches[1].clientY
+      );
+      if(mapZoomState.pinchDist){
+        mapZoomState.scale = clampScale(mapZoomState.scale + (dist - mapZoomState.pinchDist) * 0.01);
+        applyMapZoomTransform();
+      }
+      mapZoomState.pinchDist = dist;
+    }
+  }, { passive:false });
+  inner.addEventListener("touchend", (e)=>{
+    if(e.touches.length<2) mapZoomState.pinchDist = null;
+  });
+
+  let lastTap = 0;
+  inner.addEventListener("pointerup", ()=>{
+    const now = Date.now();
+    if(now - lastTap < 300){
+      mapZoomState = { scale:1, x:0, y:0, pinchDist:null, dragging:false, lastX:0, lastY:0 };
+      applyMapZoomTransform();
+    }
+    lastTap = now;
+  });
+}
+
+
+
+
 /* ============ INIT ============ */
 function init(){
   renderDayList();
   updateCountdown();
+  initMapZoomModal();
   setInterval(updateCountdown, 60*60*1000);
 
   document.querySelectorAll(".tab").forEach(tab=>{
