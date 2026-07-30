@@ -807,5 +807,5 @@ window.addEventListener("scroll", () => {
   lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 }, false);
 
-
+}
 document.addEventListener("DOMContentLoaded", init);
