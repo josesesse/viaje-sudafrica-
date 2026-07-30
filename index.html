@@ -103,18 +103,18 @@ a{color:inherit;}
  
   /* 🔥 TRUCO PARA PC: Obliga a Chrome a usar la GPU en 3D para renderizar el blur */
   will-change: transform;
-  transform: translate3d(0, 0, 0); 
+  transform: translateY(0); 
 /**/
   
-  transition: transform 0.6s ease, background 0.6s ease;
-  transform: translateY(0);
+  transition: transform 0.6s ease;
+  
 }
 
 /* 2. Cuando bajas, se esconde deslizándose hacia arriba */
 .topbar.hidden {
-  transform: translate3d(0, -100%, 0);
+  transform: translateY(-100%);
 }
-.topbar-row{display:flex; align-items:flex-start; justify-content:space-between; gap:12px;}
+.topbar-row{display:flex; align-items:flex-start; justify-content:space-between; gap:12px; width: 100%;}
 .eyebrow{
   font-family:var(--font-mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
   color:var(--amber-soft); font-weight:600;
