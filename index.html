@@ -64,7 +64,7 @@ body{
   background:
     radial-gradient(1200px 600px at 15% -10%, rgba(78,148,132,.16), transparent 60%),
     radial-gradient(1000px 500px at 100% 0%, rgba(78,148,132,.14), transparent 55%),
-    linear-gradient(180deg, #E8F2EC 0%, #E8F2EC 100%);
+    linear-gradient(180deg, #EDF6F1 0%, #E3F0EA 100%);
 }
 .app.leg-kruger{
   background:
@@ -168,15 +168,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 .card[data-leg="capetown"] .card-main{
   background:#FBF7EA;
 }
-.card[data-leg="capetown"] .stub{
-  background:rgba(46,107,94,.2);
-}
-.card[data-leg="capetown"] .stub-num{
-  color:#2E6B5E;
-}
-.card[data-leg="capetown"] .stub svg{
-  color:#2E6B5E;
-}
+
   
 .card:active{transform:scale(.995);}
 .card-main{flex:1; padding:18px 16px; min-width:0;}
@@ -186,7 +178,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
   padding:3px 9px; border-radius:100px; text-transform:uppercase;
 }
 .card[data-leg="kruger"] .card-daytag{background:rgba(201,123,66,.18); color:var(--amber-soft);}
-.card[data-leg="capetown"] .card-daytag{background:rgba(78,148,132,.18); color:var(--teal-soft);}
+.card[data-leg="capetown"] .card-daytag{bbackground:rgba(78,148,132,.14); color:#2E6B5E;}
 .card-date{font-family:var(--font-mono); font-size:12px; color:var(--text-dim);}
 .card-route{
   font-family:var(--font-mono); font-weight:700; font-size:19px; letter-spacing:.02em; margin-top:11px;
@@ -208,7 +200,14 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
   display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
   position:relative; background:var(--surface-2);
 }
-.card[data-leg="capetown"] .stub{background:#4E9484;}
+.card[data-leg="capetown"] .stub{
+  background:linear-gradient(
+    180deg,
+    #DCEEE8 0%,
+    #CFE7DF 100%
+);
+}
+  
 .card[data-leg="capetown"] .stub-num{color:var(--teal-soft);}
 .card[data-leg="capetown"] .stub svg{color:var(--teal-soft);}
 .card[data-leg="capetown"]{border-color:rgba(78,148,132,.2);}
