@@ -771,41 +771,41 @@ if(isStandalone || installDismissed) {
   
 
 let lastScrollTop = 0;
-const tolerance = 10; // Pixeles mínimos para reaccionar al scroll
+const tolerance = 10; // Pixeles mínimos para ignorar micro-movimientos
 
 window.addEventListener("scroll", () => {
   const topbar = document.querySelector(".topbar");
-  if (!topbar) return; // Seguridad por si no existe en alguna página
+  if (!topbar) return; 
   
   const scrollTop = window.scrollY;
   const windowHeight = window.innerHeight;
   const documentHeight = document.documentElement.scrollHeight;
 
-  // Evita el temblor si el scroll es menor a la tolerancia
+  // Si el movimiento es insignificante, no hagas nada
   if (Math.abs(lastScrollTop - scrollTop) <= tolerance) return;
 
-  // SOLUCIÓN AL TEMBLOR: Si llegamos al final de la página, forzar que se quede VISIBLE
-  if (scrollTop + windowHeight >= documentHeight - 35) {
+  // SOLUCIÓN AL TEMBLOR: Al llegar abajo del todo, se queda visible fijamente
+  if (scrollTop + windowHeight >= documentHeight - 30) {
     topbar.classList.remove("hidden");
     topbar.classList.add("visible");
     lastScrollTop = scrollTop;
     return;
   }
 
-  // Comportamiento de Scroll Down / Up con limpieza de clases estricta
-  if (scrollTop > lastScrollTop && scrollTop > 80) {
-    // SCROLL DOWN - Esconder (Añadimos hidden, quitamos visible)
+  // COMPORTAMIENTO DE SCROLL
+  if (scrollTop > lastScrollTop && scrollTop > 100) {
+    // Bajando: Esconder
     topbar.classList.add("hidden");
     topbar.classList.remove("visible");
   } else if (scrollTop < lastScrollTop) {
-    // SCROLL UP - Mostrar (Quitamos hidden para que la animación funcione, añadimos visible)
-    topbar.classList.remove("hidden"); /* 👈 ¡ESTA LÍNEA CORRIGE EL DESAPARECIDO SÚBITO! */
+    // Subiendo: Mostrar de forma fluida y sin saltos bruscos
+    topbar.classList.remove("hidden");
     topbar.classList.add("visible");
   }
 
-  // Evita valores negativos en navegadores con scroll elástico (como Safari)
+  // Guarda la posición actual controlando el scroll elástico
   lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
 }, false);
-}
+
 
 document.addEventListener("DOMContentLoaded", init);
