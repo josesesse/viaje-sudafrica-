@@ -1093,12 +1093,14 @@ function dismissInstallBar(){
 }
 
 // Manejo separado de iOS y Android
-if(isIOS){
+
   document.getElementById("install-close").addEventListener("click", (e)=>{
     e.stopPropagation();
     e.preventDefault();
     dismissInstallBar();  // Ahora se oculta
   });
+  
+  if(isIOS){
 } else {
   // Android/Web
   window.addEventListener("beforeinstallprompt", (e)=>{
