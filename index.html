@@ -346,7 +346,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 .mapbox-expand svg{width:16px; height:16px;}
 
   
-.map-zoom-modal{
+/*.map-zoom-modal{
   position:fixed; inset:0; z-index:200; background:rgba(20,16,8,.92);
   display:none; align-items:center; justify-content:center; overflow:hidden; touch-action:manipulation;
 }
@@ -361,7 +361,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
   color:rgba(255,255,255,.6); font-size:12px; font-family:var(--font-mono);
 }
 #map-zoom-inner{ width:90%; max-width:640px; touch-action:manipulation; cursor:grab; transition:transform .05s linear; }
-#map-zoom-inner svg{ width:100%; height:auto; display:block; }
+#map-zoom-inner svg{ width:100%; height:auto; display:block; } */
   
 
 /* timeline */
@@ -506,15 +506,41 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
 /* ---- Plano del parque (miniatura dentro de la tarjeta) ---- */
 .mapbox img{ width:100%; height:220px; object-fit:cover; display:block; }
 
-/* ---- Botón rotar dentro del visor a pantalla completa ---- */
+/* ---- Botón rotar dentro del visor a pantalla completa ---- 
 .map-zoom-rotate{
   position:absolute; top:calc(16px + var(--safe-top)); right:64px; z-index:2;
   width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.15); color:#fff;
   display:flex; align-items:center; justify-content:center;
 }
 .map-zoom-rotate svg{width:16px; height:16px;}
-#map-zoom-inner img{ max-width:100%; max-height:85vh; display:block; margin:0 auto; transition:transform .2s ease; }
-  
+#map-zoom-inner img{ max-width:100%; max-height:85vh; display:block; margin:0 auto; transition:transform .2s ease; }*/
+
+
+
+  /* ---- Visor a pantalla completa (Visor v2) ---- */
+.map-zoom-modal{
+  position:fixed; inset:0; z-index:200; background:rgba(12,10,6,.96);
+  display:none; overflow:hidden; touch-action:none;
+}
+.map-zoom-modal.open{display:block;}
+.map-zoom-close, .map-zoom-rotate{
+  position:absolute; top:calc(16px + var(--safe-top)); z-index:3;
+  width:38px; height:38px; border-radius:50%; background:rgba(255,255,255,.15); color:#fff;
+  display:flex; align-items:center; justify-content:center;
+}
+.map-zoom-close{right:16px;}
+.map-zoom-rotate{right:64px;}
+.map-zoom-close svg, .map-zoom-rotate svg{width:16px; height:16px;}
+.map-zoom-hint{
+  position:absolute; bottom:calc(20px + var(--safe-bottom)); left:0; right:0; text-align:center;
+  color:rgba(255,255,255,.55); font-size:12px; font-family:var(--font-mono); z-index:2; pointer-events:none;
+}
+#mv-stage{ position:absolute; inset:0; overflow:hidden; touch-action:none; }
+#mv-media{
+  position:absolute; top:50%; left:50%; transform-origin:center center;
+  user-select:none; -webkit-user-select:none; -webkit-user-drag:none; will-change:transform;
+}
+#mv-media img, #mv-media svg{ display:block; width:100%; height:100%; pointer-events:none; }
   
 
   
@@ -736,11 +762,13 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
   <div class="overlay-inner" id="overlay-inner"></div>
 </div>
 
- <div class="map-zoom-modal" id="map-zoom-modal">
+<div class="map-zoom-modal" id="map-zoom-modal">
   <button class="map-zoom-close" id="map-zoom-close"><svg><use href="#i-close"/></svg></button>
   <button class="map-zoom-rotate" id="map-zoom-rotate"><svg><use href="#i-rotate"/></svg></button>
-  <div id="map-zoom-inner"></div>
-  <div class="map-zoom-hint">Arrastra para mover · pellizca o usa la rueda para hacer zoom · doble toque para restablecer</div>
+  <div id="mv-stage">
+    <div id="mv-media"></div>
+  </div>
+  <div class="map-zoom-hint">Arrastra · pellizca o rueda para zoom · doble toque 100%/2,5×</div>
 </div>
 
   
