@@ -699,7 +699,7 @@ function openDay(dayNum){
 
   document.getElementById("close-detail").addEventListener("click", closeDay);
   document.getElementById("expand-map").addEventListener("click", ()=>{
-  openMapZoom(dayMapSVG(day));
+  MapViewer.open({ type:"svg", markup: dayMapSVG(day) });
 });
   document.getElementById("stay-switch").addEventListener("click", ()=>{
     const cur = stayStatus(day.day);
@@ -813,97 +813,200 @@ function updateCountdown(){
   }
 }
 
+/* ============ VISOR v2 (imágenes y SVG, pantalla completa) ============ */
+const MapViewer = (() => {
+  const modal  = () => document.getElementById("map-zoom-modal");
+  const stage  = () => document.getElementById("mv-stage");
+  const media  = () => document.getElementById("mv-media");
 
-let mapZoomState = { scale:1, x:0, y:0, pinchDist:null, dragging:false, lastX:0, lastY:0 };
+  const state = { scale:1, fitScale:1, rotation:0, tx:0, ty:0, naturalW:600, naturalH:400 };
+  const activePointers = new Map();
+  let dragging = false, lastX=0, lastY=0;
+  let pinchStartDist = null, pinchStartScale = 1;
+  let lastTapTime = 0;
 
-function openMapZoom(svgMarkup){
-  document.getElementById("map-zoom-inner").innerHTML = svgMarkup;
-  mapZoomState = { scale:1, x:0, y:0, pinchDist:null, dragging:false, lastX:0, lastY:0 };
-  applyMapZoomTransform();
-  const content = document.querySelector("#map-zoom-inner > *");
-  if(content) content.style.transform = "rotate(0deg)";
-  document.getElementById("map-zoom-modal").classList.add("open");
-  document.body.style.overflow = "hidden";
-}
-function closeMapZoom(){
-  document.getElementById("map-zoom-modal").classList.remove("open");
-  document.body.style.overflow = "";
-}
-function applyMapZoomTransform(){
-  document.getElementById("map-zoom-inner").style.transform =
-    `translate(${mapZoomState.x}px, ${mapZoomState.y}px) scale(${mapZoomState.scale})`;
-}
-function clampScale(s){ return Math.min(4, Math.max(1, s)); }
+  const clamp = (v,min,max)=> Math.min(max, Math.max(min, v));
+  const availSize = () => ({ w: window.innerWidth*0.94, h: window.innerHeight*0.82 });
+  const centerOf = (el) => { const r=el.getBoundingClientRect(); return {cx:r.left+r.width/2, cy:r.top+r.height/2}; };
 
-function initMapZoomModal(){
-  const modal = document.getElementById("map-zoom-modal");
-  const inner = document.getElementById("map-zoom-inner");
-  document.getElementById("map-zoom-close").addEventListener("click", closeMapZoom);
-  let zoomRotation = 0;
-document.getElementById("map-zoom-rotate").addEventListener("click", ()=>{
-  zoomRotation = (zoomRotation + 90) % 360;
-  const content = document.querySelector("#map-zoom-inner > *");
-  if(content) content.style.transform = `rotate(${zoomRotation}deg)`;
-});
-  modal.addEventListener("click", (e)=>{ if(e.target===modal) closeMapZoom(); });
+  function computeFitScale(){
+    const { w:availW, h:availH } = availSize();
+    const swapped = state.rotation % 180 !== 0;
+    const effW = swapped ? state.naturalH : state.naturalW;
+    const effH = swapped ? state.naturalW : state.naturalH;
+    return Math.min(availW/effW, availH/effH);
+  }
 
-  modal.addEventListener("wheel", (e)=>{
-    e.preventDefault();
-    mapZoomState.scale = clampScale(mapZoomState.scale + (e.deltaY < 0 ? 0.15 : -0.15));
-    if(mapZoomState.scale===1){ mapZoomState.x=0; mapZoomState.y=0; }
-    applyMapZoomTransform();
-  }, { passive:false });
+  function clampPan(){
+    const { w:availW, h:availH } = availSize();
+    const swapped = state.rotation % 180 !== 0;
+    const scaledW = (swapped ? state.naturalH : state.naturalW) * state.scale;
+    const scaledH = (swapped ? state.naturalW : state.naturalH) * state.scale;
+    const maxX = Math.max(0, (scaledW-availW)/2);
+    const maxY = Math.max(0, (scaledH-availH)/2);
+    state.tx = clamp(state.tx, -maxX, maxX);
+    state.ty = clamp(state.ty, -maxY, maxY);
+  }
 
-  inner.addEventListener("pointerdown", (e)=>{
-    mapZoomState.dragging = true;
-    mapZoomState.lastX = e.clientX; mapZoomState.lastY = e.clientY;
-    inner.setPointerCapture(e.pointerId);
-  });
-  inner.addEventListener("pointermove", (e)=>{
-    if(!mapZoomState.dragging) return;
-    mapZoomState.x += e.clientX - mapZoomState.lastX;
-    mapZoomState.y += e.clientY - mapZoomState.lastY;
-    mapZoomState.lastX = e.clientX; mapZoomState.lastY = e.clientY;
-    applyMapZoomTransform();
-  });
-  ["pointerup","pointercancel","pointerleave"].forEach(ev=>{
-    inner.addEventListener(ev, ()=>{ mapZoomState.dragging=false; });
-  });
+  function render(){
+    const el = media();
+    if(!el) return;
+    el.style.width  = state.naturalW + "px";
+    el.style.height = state.naturalH + "px";
+    el.style.transform =
+      `translate(-50%, -50%) translate(${state.tx}px, ${state.ty}px) rotate(${state.rotation}deg) scale(${state.scale})`;
+  }
 
-  inner.addEventListener("touchmove", (e)=>{
-    if(e.touches.length===2){
-      e.preventDefault();
-      const dist = Math.hypot(
-        e.touches[0].clientX-e.touches[1].clientX,
-        e.touches[0].clientY-e.touches[1].clientY
-      );
-      if(mapZoomState.pinchDist){
-        mapZoomState.scale = clampScale(mapZoomState.scale + (dist - mapZoomState.pinchDist) * 0.01);
-        applyMapZoomTransform();
+  function setScaleAnchored(newScale, anchorX, anchorY){
+    newScale = clamp(newScale, state.fitScale, state.fitScale*6);
+    const ratio = newScale / state.scale;
+    state.tx = anchorX - (anchorX - state.tx) * ratio;
+    state.ty = anchorY - (anchorY - state.ty) * ratio;
+    state.scale = newScale;
+    clampPan();
+    render();
+  }
+
+  function reset(){
+    state.fitScale = computeFitScale();
+    state.scale = state.fitScale;
+    state.tx = 0; state.ty = 0;
+    render();
+  }
+
+  function rotate(){
+    const wasFitted = Math.abs(state.scale - state.fitScale) < 0.001;
+    state.rotation = (state.rotation + 90) % 360;
+    state.fitScale = computeFitScale();
+    if(wasFitted) state.scale = state.fitScale;
+    clampPan();
+    render();
+  }
+
+  function toggleDoubleTap(cx, cy){
+    const target = Math.abs(state.scale - state.fitScale) < 0.001 ? state.fitScale*2.5 : state.fitScale;
+    setScaleAnchored(target, cx, cy);
+  }
+
+  function open(opts){
+    const el = media();
+    el.innerHTML = "";
+    state.rotation = 0; state.tx = 0; state.ty = 0;
+
+    const finish = () => {
+      modal().classList.add("open");
+      document.body.style.overflow = "hidden";
+      reset();
+    };
+
+    if(opts.type === "image"){
+      const img = new Image();
+      img.alt = opts.alt || "";
+      img.decoding = "async";
+      img.onload = ()=>{
+        state.naturalW = img.naturalWidth;
+        state.naturalH = img.naturalHeight;
+        el.appendChild(img);
+        finish();
+      };
+      img.src = opts.src;
+    } else if(opts.type === "svg"){
+      el.innerHTML = opts.markup;
+      const svg = el.querySelector("svg");
+      const vb = (svg?.getAttribute("viewBox")||"0 0 600 400").split(/\s+/).map(Number);
+      state.naturalW = vb[2] || 600;
+      state.naturalH = vb[3] || 400;
+      svg?.removeAttribute("width");
+      svg?.removeAttribute("height");
+      finish();
+    }
+  }
+
+  function close(){
+    modal().classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  function endPointer(e){
+    activePointers.delete(e.pointerId);
+    if(activePointers.size === 1){
+      const rem = Array.from(activePointers.values())[0];
+      dragging = true; lastX = rem.x; lastY = rem.y;
+      pinchStartDist = null;
+    } else if(activePointers.size === 0){
+      dragging = false; pinchStartDist = null;
+      const now = Date.now();
+      if(now - lastTapTime < 280){
+        const { cx, cy } = centerOf(stage());
+        toggleDoubleTap(e.clientX - cx, e.clientY - cy);
       }
-      mapZoomState.pinchDist = dist;
+      lastTapTime = now;
+    } else {
+      dragging = false;
     }
-  }, { passive:false });
-  inner.addEventListener("touchend", (e)=>{
-    if(e.touches.length<2) mapZoomState.pinchDist = null;
-  });
+  }
 
-  let lastTap = 0;
-  inner.addEventListener("pointerup", ()=>{
-    const now = Date.now();
-    if(now - lastTap < 300){
-      mapZoomState = { scale:1, x:0, y:0, pinchDist:null, dragging:false, lastX:0, lastY:0 };
-      applyMapZoomTransform();
-    }
-    lastTap = now;
-  });
-}
+  function init(){
+    document.getElementById("map-zoom-close").addEventListener("click", close);
+    document.getElementById("map-zoom-rotate").addEventListener("click", rotate);
+    modal().addEventListener("click", (e)=>{ if(e.target.id==="map-zoom-modal") close(); });
+    modal().addEventListener("contextmenu", (e)=> e.preventDefault());
+
+    const st = stage();
+
+    st.addEventListener("wheel", (e)=>{
+      e.preventDefault();
+      const { cx, cy } = centerOf(st);
+      const factor = e.deltaY < 0 ? 1.12 : 1/1.12;
+      setScaleAnchored(state.scale*factor, e.clientX-cx, e.clientY-cy);
+    }, { passive:false });
+
+    st.addEventListener("dblclick", (e)=>{
+      const { cx, cy } = centerOf(st);
+      toggleDoubleTap(e.clientX-cx, e.clientY-cy);
+    });
+
+    st.addEventListener("pointerdown", (e)=>{
+      st.setPointerCapture(e.pointerId);
+      activePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+      if(activePointers.size === 1){ dragging=true; lastX=e.clientX; lastY=e.clientY; }
+      else { dragging=false; pinchStartDist=null; }
+    });
+
+    st.addEventListener("pointermove", (e)=>{
+      if(!activePointers.has(e.pointerId)) return;
+      activePointers.set(e.pointerId, {x:e.clientX, y:e.clientY});
+
+      if(activePointers.size === 2){
+        const pts = Array.from(activePointers.values());
+        const dist = Math.hypot(pts[0].x-pts[1].x, pts[0].y-pts[1].y);
+        const midX = (pts[0].x+pts[1].x)/2, midY = (pts[0].y+pts[1].y)/2;
+        const { cx, cy } = centerOf(st);
+        if(pinchStartDist == null){ pinchStartDist=dist; pinchStartScale=state.scale; }
+        else setScaleAnchored(pinchStartScale*(dist/pinchStartDist), midX-cx, midY-cy);
+        return;
+      }
+      if(dragging){
+        state.tx += e.clientX-lastX; state.ty += e.clientY-lastY;
+        lastX=e.clientX; lastY=e.clientY;
+        clampPan(); render();
+      }
+    });
+
+    ["pointerup","pointercancel"].forEach(ev=> st.addEventListener(ev, endPointer));
+    window.addEventListener("resize", ()=>{ if(modal().classList.contains("open")) reset(); });
+  }
+
+  return { init, open, close };
+})();
+
+
 
 function initParkMapViewer(){
   const btn = document.getElementById("expand-park-map");
   if(!btn) return;
   btn.addEventListener("click", ()=>{
-    openMapZoom(`<img src="kruger-park-map.jpg" alt="Plano del Kruger" id="park-map-full"/>`);
+    MapViewer.open({ type:"image", src:"kruger-park-map.jpg", alt:"Plano del Kruger" });
   });
 }
 
@@ -914,7 +1017,7 @@ function initParkMapViewer(){
 function init(){
   renderDayList();
   updateCountdown();
-  initMapZoomModal();
+  MapViewer.init();
   initCurrencyConverter();
   initParkMapViewer();
   setInterval(updateCountdown, 60*60*1000);
