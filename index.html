@@ -541,7 +541,16 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
   user-select:none; -webkit-user-select:none; -webkit-user-drag:none; will-change:transform;
 }
 #mv-media img, #mv-media svg{ display:block; width:100%; height:100%; pointer-events:none; }
+
   
+.day-toggle-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.day-pill{
+  width:30px; height:30px; border-radius:50%; border:1px solid var(--line-strong);
+  background:var(--surface-2); color:var(--text-dim); font-family:var(--font-mono); font-size:11px; font-weight:700;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
+}
+#full-map-north-days .day-pill.active{ background:#8C4A22; color:#fff; border-color:#8C4A22; }
+#full-map-south-days .day-pill.active{ background:#2E6B5E; color:#fff; border-color:#2E6B5E; }
 
   
 </style>
@@ -610,6 +619,19 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
       <h1>Resumen</h1>
       <p>Dónde dormimos cada noche y qué falta por cerrar.</p>
     </div>
+
+    <div class="info-card" style="border-color:rgba(150,64,42,.35); background:rgba(150,64,42,.06);">
+  <h4><svg><use href="#i-info"/></svg>Formulario de aduanas de Sudáfrica
+    <span style="margin-left:auto; font-family:var(--font-mono); font-size:10px; font-weight:700; letter-spacing:.05em; color:var(--danger); background:rgba(150,64,42,.15); padding:3px 8px; border-radius:100px;">OBLIGATORIO</span>
+  </h4>
+  <div class="info-note">
+    Hay que rellenar el <b>SARS Traveller Declaration</b> online, como muy pronto <b>24 horas antes</b> de entrar en Sudáfrica (aprox. <span id="customs-deadline"></span>). Sin este formulario puede haber problemas en el control de aduanas.
+  </div>
+  <a class="maplink" href="https://tools.sars.gov.za/sarsonlinequery/traveller?utm" target="_blank" rel="noopener" style="margin-top:12px; color:var(--danger); background:rgba(150,64,42,.12);">
+    <svg><use href="#i-compass"/></svg>Rellenar formulario SARS
+  </a>
+</div>
+    
     <div class="nights-table" id="nights-table"></div>
     <div class="section-label" style="margin:22px 16px 2px;">Pendiente de cerrar</div>
     <div class="checklist" id="checklist"></div>
@@ -621,7 +643,8 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
       <h1>Info práctica</h1>
       <p>Lo esencial, disponible sin conexión.</p>
     </div>
-    
+
+  
 
     <div class="info-card">
   <h4><svg><use href="#i-map"/></svg>Plano del parque Kruger</h4>
@@ -666,8 +689,8 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
   <div class="section-label" style="margin:0 0 8px;">
     Norte · Kruger &amp; Panorama Route (días 1–6)
   </div>
-  <div class="mapbox" id="full-map-north"></div>
-  <div style="display:flex; gap:16px; margin-top:10px; padding:0 2px;">
+<div class="mapbox" id="full-map-north"></div>
+<div class="day-toggle-row" id="full-map-north-days"></div>  <div style="display:flex; gap:16px; margin-top:10px; padding:0 2px;">
     <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);">
       <span style="width:9px;height:9px;border-radius:50%;background:#8C4A22;display:inline-block;"></span>
       Kruger
@@ -677,8 +700,8 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
   <div class="section-label" style="margin:20px 0 8px;">
     Sur · Cape Town &amp; Winelands (días 7–13)
   </div>
-  <div class="mapbox" id="full-map-south"></div>
-  <div style="display:flex; gap:16px; margin-top:10px; padding:0 2px;">
+<div class="mapbox" id="full-map-south"></div>
+<div class="day-toggle-row" id="full-map-south-days"></div>  <div style="display:flex; gap:16px; margin-top:10px; padding:0 2px;">
     <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);">
       <span style="width:9px;height:9px;border-radius:50%;background:#2E6B5E;display:inline-block;"></span>
       Cape Town
