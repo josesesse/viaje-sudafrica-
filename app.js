@@ -464,21 +464,23 @@ function fullTripMapSVG(legFilter){
   days.forEach(d=> d.stops.forEach(p=> allStops.push(p)) );
   allStops.forEach((p,i)=>{ path += `${i===0?"":" L"} ${X(p.lon).toFixed(1)} ${Y(p.lat).toFixed(1)}`; });
 
-  let markers = "";
-  days.forEach(d=>{
-    const last = d.stops[d.stops.length-1];
-    const x = X(last.lon).toFixed(1), y = Y(last.lat).toFixed(1);
-    markers += `<circle cx="${x}" cy="${y}" r="10" fill="${dotColor}" stroke="${bg}" stroke-width="3"/>`;
-    markers += `<circle cx="${x}" cy="${y}" r="17" fill="none" stroke="${dotColor}" stroke-width="1.3" opacity=".4"/>`;
-    const label = escapeXML(`D${d.day} · ${d.to}`);
-const anchor = X(last.lon) < W*0.2 ? "start" : (X(last.lon) > W*0.8 ? "end" : "middle");
-const labY = Number(y) - 16;
-const fontSize = 19;
-const estW = label.length * fontSize * 0.6;
-const boxX = anchor==="start" ? Number(x)-4 : (anchor==="end" ? Number(x)-estW+4 : Number(x)-estW/2);
-markers += `<rect x="${boxX.toFixed(1)}" y="${(labY-fontSize+2).toFixed(1)}" width="${estW.toFixed(1)}" height="${(fontSize+6).toFixed(1)}" rx="5" fill="${bg}" opacity=".9"/>`;
-markers += `<text x="${x}" y="${labY}" font-size="${fontSize}" font-weight="700" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.88)" text-anchor="${anchor}">${label}</text>`;
-  });
+let markers = "";
+days.forEach(d=>{
+  const last = d.stops[d.stops.length-1];
+  const x = X(last.lon).toFixed(1), y = Y(last.lat).toFixed(1);
+  const label = escapeXML(`D${d.day}`);
+  const anchor = X(last.lon) < W*0.2 ? "start" : (X(last.lon) > W*0.8 ? "end" : "middle");
+  const labY = Number(y) - 13;
+  const fontSize = 11;
+  const estW = label.length * fontSize * 0.68 + 6;
+  const boxX = anchor==="start" ? Number(x)-3 : (anchor==="end" ? Number(x)-estW+3 : Number(x)-estW/2);
+  markers += `<g class="fm-day" data-day="${d.day}">
+    <circle cx="${x}" cy="${y}" r="7" fill="${dotColor}" stroke="${bg}" stroke-width="2.5"/>
+    <circle cx="${x}" cy="${y}" r="12" fill="none" stroke="${dotColor}" stroke-width="1" opacity=".4"/>
+    <rect x="${boxX.toFixed(1)}" y="${(labY-fontSize+1).toFixed(1)}" width="${estW.toFixed(1)}" height="${(fontSize+5).toFixed(1)}" rx="4" fill="${bg}" opacity=".92"/>
+    <text x="${x}" y="${labY}" font-size="${fontSize}" font-weight="700" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.9)" text-anchor="${anchor}">${label}</text>
+  </g>`;
+});
 
   return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
     <rect width="${W}" height="${H}" fill="${bg}"/>
@@ -493,11 +495,28 @@ function renderFullMap(){
   if(elNorth && !elNorth.dataset.rendered){
     elNorth.innerHTML = fullTripMapSVG("kruger");
     elNorth.dataset.rendered = "1";
+    renderDayToggles("full-map-north-days", "full-map-north", TRIP.days.filter(d=>d.day<=6));
   }
   if(elSouth && !elSouth.dataset.rendered){
     elSouth.innerHTML = fullTripMapSVG("capetown");
     elSouth.dataset.rendered = "1";
+    renderDayToggles("full-map-south-days", "full-map-south", TRIP.days.filter(d=>d.day>=7));
   }
+}
+
+function renderDayToggles(containerId, mapElId, days){
+  const el = document.getElementById(containerId);
+  if(!el || el.dataset.rendered) return;
+  el.innerHTML = days.map(d => `<button class="day-pill active" data-day="${d.day}">${d.day}</button>`).join("");
+  el.querySelectorAll(".day-pill").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      btn.classList.toggle("active");
+      const day = btn.dataset.day;
+      const group = document.querySelector(`#${mapElId} .fm-day[data-day="${day}"]`);
+      if(group) group.style.display = btn.classList.contains("active") ? "" : "none";
+    });
+  });
+  el.dataset.rendered = "1";
 }
 
 
@@ -858,7 +877,7 @@ const MapViewer = (() => {
   }
 
   function setScaleAnchored(newScale, anchorX, anchorY){
-    newScale = clamp(newScale, state.fitScale, state.fitScale*6);
+    newScale = clamp(newScale, state.fitScale, state.fitScale*10);
     const ratio = newScale / state.scale;
     state.tx = anchorX - (anchorX - state.tx) * ratio;
     state.ty = anchorY - (anchorY - state.ty) * ratio;
@@ -1011,6 +1030,16 @@ function initParkMapViewer(){
 }
 
 
+function renderCustomsDeadline(){
+  const el = document.getElementById("customs-deadline");
+  if(!el) return;
+  const arrival = parseDate(TRIP.start);
+  const deadline = new Date(arrival.getFullYear(), arrival.getMonth(), arrival.getDate()-1);
+  const iso = `${deadline.getFullYear()}-${String(deadline.getMonth()+1).padStart(2,"0")}-${String(deadline.getDate()).padStart(2,"0")}`;
+  el.textContent = dateLabel(iso);
+}
+
+
 
 
 /* ============ INIT ============ */
@@ -1021,6 +1050,7 @@ function init(){
   initCurrencyConverter();
   initParkMapViewer();
   setInterval(updateCountdown, 60*60*1000);
+  renderCustomsDeadline();
 
   document.querySelectorAll(".tab").forEach(tab=>{
     tab.addEventListener("click", ()=>{
