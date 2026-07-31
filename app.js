@@ -465,20 +465,49 @@ function fullTripMapSVG(legFilter){
   allStops.forEach((p,i)=>{ path += `${i===0?"":" L"} ${X(p.lon).toFixed(1)} ${Y(p.lat).toFixed(1)}`; });
 
 let markers = "";
-days.forEach(d=>{
+days.forEach((d, dayIdx)=>{
   const last = d.stops[d.stops.length-1];
+  const first = d.stops[0];
   const x = X(last.lon).toFixed(1), y = Y(last.lat).toFixed(1);
   const label = escapeXML(`D${d.day}`);
+  const destName = escapeXML(last.name);
   const anchor = X(last.lon) < W*0.2 ? "start" : (X(last.lon) > W*0.8 ? "end" : "middle");
+  
+  // Posición D1, D2, etc.
   const labY = Number(y) - 13;
   const fontSize = 11;
   const estW = label.length * fontSize * 0.68 + 6;
   const boxX = anchor==="start" ? Number(x)-3 : (anchor==="end" ? Number(x)-estW+3 : Number(x)-estW/2);
+  
+  // Posición nombre de destino (más abajo, más pequeño)
+  const destY = Number(y) + 24;
+  const destFontSize = 8;
+  const destLabel = destName.split(" ").slice(0, 2).join(" ");
+  const destEstW = destLabel.length * destFontSize * 0.65;
+  const destBoxX = anchor==="start" ? Number(x)-2 : (anchor==="end" ? Number(x)-destEstW+2 : Number(x)-destEstW/2);
+  
+  // Casilla km y horas: calcular punto medio entre inicio y fin del día
+  let kmHoursBox = "";
+  const distStr = d.distance ? `${d.distance} km` : "";
+  const timeStr = d.time ? `${d.time}` : "";
+  const infoText = (distStr && timeStr) ? `${distStr} · ${timeStr}` : (distStr || timeStr || "");
+  if(infoText){
+    const midX = (X(first.lon) + X(last.lon)) / 2;
+    const midY = (Y(first.lat) + Y(last.lat)) / 2;
+    const boxW = infoText.length * 6 + 18;
+    kmHoursBox = `
+    <rect x="${(midX-boxW/2).toFixed(1)}" y="${(midY-11).toFixed(1)}" width="${boxW.toFixed(1)}" height="22" rx="11" fill="${bg}" stroke="${lineColor}" stroke-width="0.8" opacity=".9"/>
+    <text x="${midX.toFixed(1)}" y="${(midY+3).toFixed(1)}" font-size="9" font-family="'Roboto Mono',ui-monospace,monospace" fill="${dotColor}" text-anchor="middle" font-weight="500">${escapeXML(infoText)}</text>`;
+  }
+  
   markers += `<g class="fm-day" data-day="${d.day}">
+    ${kmHoursBox}
     <circle cx="${x}" cy="${y}" r="7" fill="${dotColor}" stroke="${bg}" stroke-width="2.5"/>
     <circle cx="${x}" cy="${y}" r="12" fill="none" stroke="${dotColor}" stroke-width="1" opacity=".4"/>
     <rect x="${boxX.toFixed(1)}" y="${(labY-fontSize+1).toFixed(1)}" width="${estW.toFixed(1)}" height="${(fontSize+5).toFixed(1)}" rx="4" fill="${bg}" opacity=".92"/>
     <text x="${x}" y="${labY}" font-size="${fontSize}" font-weight="700" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.9)" text-anchor="${anchor}">${label}</text>
+    <rect x="${destBoxX.toFixed(1)}" y="${(destY-destFontSize+0.5).toFixed(1)}" width="${destEstW.toFixed(1)}" height="${(destFontSize+3).toFixed(1)}" rx="2.5" fill="${bg}" opacity=".85"/>
+    <text x="${x}" y="${destY}" font-size="${destFontSize}" font-weight="500" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.7)" text-anchor="${anchor}">${destLabel}</text>
   </g>`;
 });
 
