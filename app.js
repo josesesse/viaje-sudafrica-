@@ -839,7 +839,7 @@ function showPage(name){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("page-"+name).classList.add("active");
   document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active", b.dataset.page===name));
-  if(name==="overview") renderOverview();
+  if(name==="overview"){ renderOverview(); renderFullMap(); }
   if(name==="info") renderFullMap();
   if(name==="info") renderPhrases();
 }
