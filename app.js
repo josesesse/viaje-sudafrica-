@@ -255,12 +255,13 @@ function renderTripCalendar(){
   const el = document.getElementById("trip-calendar");
   if(!el || el.dataset.rendered) return;
   const year = 2026, month = 7; // agosto (0-indexado)
+  const startDay = 10;
   const daysInMonth = new Date(year, month+1, 0).getDate();
-  const firstWeekday = (new Date(year, month, 1).getDay()+6)%7; // 0 = lunes
+  const firstWeekday = (new Date(year, month, startDay).getDay()+6)%7; // 0 = lunes
 
   let cells = "";
   for(let i=0;i<firstWeekday;i++) cells += `<div class="cal-cell empty"></div>`;
-  for(let d=1; d<=daysInMonth; d++){
+  for(let d=startDay; d<=daysInMonth; d++){
     const iso = `${year}-08-${String(d).padStart(2,"0")}`;
     const info = getCalendarDayInfo(iso);
     if(!info){
