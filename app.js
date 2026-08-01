@@ -908,7 +908,7 @@ function showPage(name){
   if(name==="info") renderPhrases();
 }
 
-const DEBUG_DATE = 2026-08-19; // pon aquí "2026-08-19;" (o el día que quieras probar) para simular esa fecha, y "null;" para volver a la fecha real
+const DEBUG_DATE = "2026-08-19;" // pon aquí "2026-08-19;" (o el día que quieras probar) para simular esa fecha, y "null;" para volver a la fecha real
 
 
 /* ============ COUNTDOWN ============ */
@@ -1198,13 +1198,13 @@ function renderCustomsDeadline(){
 
 /* ============ INIT ============ */
 function init(){
-  renderDayList();
-  updateCountdown();
-  MapViewer.init();
-  initCurrencyConverter();
-  initParkMapViewer();
-  setInterval(updateCountdown, 60*60*1000);
-  renderCustomsDeadline();
+  try{ renderDayList(); }catch(e){ console.error("renderDayList", e); }
+  try{ updateCountdown(); }catch(e){ console.error("updateCountdown", e); }
+  try{ MapViewer.init(); }catch(e){ console.error("MapViewer.init", e); }
+  try{ initCurrencyConverter(); }catch(e){ console.error("initCurrencyConverter", e); }
+  try{ initParkMapViewer(); }catch(e){ console.error("initParkMapViewer", e); }
+  setInterval(()=>{ try{ updateCountdown(); }catch(e){ console.error("updateCountdown", e); } }, 60*60*1000);
+  try{ renderCustomsDeadline(); }catch(e){ console.error("renderCustomsDeadline", e); }
 
   document.querySelectorAll(".tab").forEach(tab=>{
     tab.addEventListener("click", ()=>{
@@ -1235,50 +1235,36 @@ function init(){
   });
 
   // Install banner
+  // Install banner
   let deferredPrompt = null;
   const bar = document.getElementById("installbar");
   const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
   const isStandalone = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone;
   const installDismissed = localStorage.getItem("sa-trip-install-dismissed") === "1";
-function dismissInstallBar(){
-  bar.style.display = "none";  // Ocultar completamente
-  bar.classList.remove("show");
-  try{ localStorage.setItem("sa-trip-install-dismissed", "1"); }catch(e){}
-}
 
-// Manejo separado de iOS y Android
+  function dismissInstallBar(){
+    bar.classList.remove("show");
+    bar.style.display = "none";
+    try{ localStorage.setItem("sa-trip-install-dismissed", "1"); }catch(e){}
+  }
 
   document.getElementById("install-close").addEventListener("click", (e)=>{
+    e.preventDefault();
     e.stopPropagation();
-    e.preventDefault();
-    dismissInstallBar();  // Ahora se oculta
+    dismissInstallBar();
   });
-  
-  if(isIOS){
-} else {
-  // Android/Web
-  window.addEventListener("beforeinstallprompt", (e)=>{
-    e.preventDefault();
-    deferredPrompt = e;
-    bar.classList.add("show");
-    
-    // Listener mejorado con userChoice
-    bar.addEventListener("click", (clickEvent)=>{
-      if(clickEvent.target.closest("#install-close")) {
-        clickEvent.stopPropagation();
-        clickEvent.preventDefault();
-        dismissInstallBar();
-        return;
-      }
-      // ...
-    });
-  });
-}
 
-// Si ya está instalada, ocultar directamente
-if(isStandalone || installDismissed) {
-  bar.style.display = "none";
-}
+  if(!isIOS){
+    window.addEventListener("beforeinstallprompt", (e)=>{
+      e.preventDefault();
+      deferredPrompt = e;
+      if(!installDismissed && !isStandalone) bar.classList.add("show");
+    });
+  }
+
+  if(isStandalone || installDismissed){
+    bar.style.display = "none";
+  }
 
   // Service worker
   if("serviceWorker" in navigator){
