@@ -9,16 +9,18 @@ const TRIP = {
     {
       day: 1, date: "2026-08-15", leg: "kruger",
       fromCode: "JNB", toCode: "GRK", from: "Johannesburgo", to: "Graskop",
-      title: "Dullstroom + Panorama Route",
+      title: "JNB → GRK",
+      subtitle: "Johannesburgo → Graskop",
       summary: "Aterrizaje, recogida del coche, desayuno en Dullstroom y primer contacto con la Panorama Route en Graskop.",
+      distance: 330, time: "5h 30m (con paradas)",
       flight: { label: "Vuelo de llegada", detail: "Johannesburgo (JNB) · 08:30", status: "confirmed" },
       stops: [
         { name: "Aeropuerto O.R. Tambo (JNB)", lat:-26.1367, lon:28.2420, time: "08:30", note: "Llegada y recogida del coche de alquiler.", isHL:false },
         { name: "Dullstroom", lat:-25.4204, lon:30.1107, time: "Mañana", note: "Parada para desayunar y pasear por el centro (45–60 min).", isHL:false },
         { name: "God's Window / The Pinnacle Rock", lat:-24.8963, lon:30.8564, time: "Tarde", note: "Primer contacto con la Panorama Route. Si el día está despejado, God's Window (vistas espectaculares sobre el Lowveld); si hay niebla, The Pinnacle Rock (parada rápida y muy fotogénica).", isHL:true, stars:0 },
-        { name: "Graskop", lat:-24.9209, lon:30.8305, time: "Tarde", note: "Llegada y check-in en el Rustique Boutique Hotel. Si queda luz, paseo por el pueblo.", isHL:true, stars:0 },
+        { name: "Graskop", lat:-24.9209, lon:30.8305, time: "Tarde", note: "Llegada y check-in en el Rustique Hotel. Si queda luz, paseo por el pueblo.", isHL:true, stars:0 },
       ],
-      stay: { name: "Rustique Boutique Hotel", area: "Graskop" },
+      stay: { name: "Rustique Hotel", area: "Graskop" },
       tips: [
         "El clima manda en la Panorama Route, igual que en Table Mountain: si el 15 de agosto llegáis con cielo despejado, aprovechad para subir a God's Window aunque penséis dejarlo para el día 20 — con niebla pierde casi toda la magia. Three Rondavels y Bourke's Luck Potholes, en cambio, suelen verse bien incluso con algo de nubosidad, así que son más fáciles de dejar para el final.",
         "Llegáis con jet lag y horas de vuelo encima — no forcéis el primer día, es solo aclimatación.",
@@ -29,8 +31,10 @@ const TRIP = {
   {
       day: 2, date: "2026-08-16", leg: "kruger",
       fromCode: "GRK", toCode: "PTK", from: "Graskop", to: "Pretoriuskop",
-      title: "Entrada al Kruger",
+      title: "GRK → PTK",
+      subtitle: "Graskop → Pretoriuskop",
       summary: "Graskop → Hazyview → Phabeni Gate → Pretoriuskop, con safari de tarde por H1-1 y F9.",
+      distance: 75, time: "3h (incl. safari de tarde)",
       stops: [
         { name: "Graskop", lat:-24.9209, lon:30.8305, time: "Mañana", note: "Salida hacia el Kruger.", isHL:false },
         { name: "Hazyview", lat:-25.0430, lon:31.1272, time: "Mañana", note: "Parada para desayunar o tomar un café antes de entrar al parque.", isHL:false },
