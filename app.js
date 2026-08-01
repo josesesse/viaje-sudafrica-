@@ -13,7 +13,7 @@ const TRIP = {
       subtitle: "Johannesburgo → Graskop",
       summary: "Aterrizaje, recogida del coche, desayuno en Dullstroom y primer contacto con la Panorama Route en Graskop.",
       distance: 330, time: "5h 30m (con paradas)",
-      flight: { label: "Vuelo de llegada", detail: "Johannesburgo (JNB) · 08:30", status: "confirmed" },
+      flight: { label: "Vuelo de llegada", detail: "Abu Dhabi (AUH) · 02:05 - Johannesburgo (JNB) · 08:15", status: "confirmed" },
       stops: [
         { name: "Aeropuerto O.R. Tambo (JNB)", lat:-26.1367, lon:28.2420, time: "08:30", note: "Llegada y recogida del coche de alquiler.", isHL:false },
         { name: "Dullstroom", lat:-25.4204, lon:30.1107, time: "Mañana", note: "Parada para desayunar y pasear por el centro (45–60 min).", isHL:false },
@@ -221,7 +221,7 @@ const TRIP = {
       subtitle: "Stellenbosch → Aeropuerto Ciudad del Cabo",
       summary: "Franschhoek, última bodega, comida de despedida y traslado al aeropuerto.",
       distance: 85, time: "1h 45m",
-      flight: { label: "Vuelo de vuelta", detail: "Ciudad del Cabo → salida ≈06:00 (28 ago)", status: "confirmed" },
+      flight: { label: "Vuelo de vuelta", detail: "Ciudad del Cabo → salida ≈06:00 (28 ago) - Johannesburgo (JNB) · 08:10 (28/08/26)", status: "confirmed" },
       stops: [
         { name: "Franschhoek", lat:-33.9122, lon:19.1207, time: "Mañana", note: "Pueblo con encanto rodeado de montañas. Paseo tranquilo por el centro.", isHL:true, stars:5 },
         { name: "Última bodega (Jordan / Delaire Graff)", lat:-33.9711, lon:18.9186, time: "Mediodía", note: "Elegir una: Jordan Wine Estate (paisaje y buena relación calidad/precio) o Delaire Graff Estate (más exclusiva y espectacular).", isHL:true, stars:0 },
@@ -269,10 +269,11 @@ function renderTripCalendar(){
       continue;
     }
     const legClass = info.leg==="kruger" ? "cal-kruger" : (info.leg==="capetown" ? "cal-capetown" : "cal-travel");
+    const flightClass = info.flight ? " cal-has-flight" : "";
     const clickAttr = info.tripDay ? ` data-day="${info.tripDay}"` : "";
     cells += `
-      <div class="cal-cell ${legClass}${info.tripDay ? " cal-clickable" : ""}"${clickAttr}>
-        <span class="cal-num">${d}</span>
+    <div class="cal-cell ${legClass}${flightClass}${info.tripDay ? " cal-clickable" : ""}"${clickAttr}>
+    <span class="cal-num">${d}</span>
         ${info.flight ? `<svg class="cal-flight"><use href="#i-nav-checklist"/></svg>` : ""}
         <span class="cal-label">${info.label}</span>
       </div>`;
@@ -729,8 +730,9 @@ function renderDayList(){
     const st = stayStatus(day.day);
     const activeDayNum = getTripDayNum();
     const cardState = activeDayNum ? (day.day===activeDayNum ? " card-current" : (day.day<activeDayNum ? " card-past" : "")) : "";
+    const flightClass = day.flight ? " card-flight" : "";
     html += `
-    <button class="card${cardState}" data-leg="${day.leg}" data-day="${day.day}">
+    <button class="card${cardState}${flightClass}" data-leg="${day.leg}" data-day="${day.day}">
       <div class="card-main">
         <div class="card-top">
           <span class="card-daytag">Día ${day.day}</span>
