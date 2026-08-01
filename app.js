@@ -20,7 +20,7 @@ const TRIP = {
       ],
       stay: { name: "Rustique Boutique Hotel", area: "Graskop" },
       tips: [
-        "El clima manda en la Panorama Route, igual que en Table Mountain: si el 15 de agosto llegáis con cielo despejado, aprovechad para subir a God's Window aunque penséis dejarlo para el día 20 — con niebla pierde casi toda la magia. Three Rondavels y Bourke's Luck Potholes, en cambio, suelen verse bien incluso con algo de nubosidad, así que son más fáciles de dejar para el final."
+        "El clima manda en la Panorama Route, igual que en Table Mountain: si el 15 de agosto llegáis con cielo despejado, aprovechad para subir a God's Window aunque penséis dejarlo para el día 20 — con niebla pierde casi toda la magia. Three Rondavels y Bourke's Luck Potholes, en cambio, suelen verse bien incluso con algo de nubosidad, así que son más fáciles de dejar para el final.",
         "Llegáis con jet lag y horas de vuelo encima — no forcéis el primer día, es solo aclimatación.",
         "Como volvéis a esta zona el día 20, no busquéis los grandes imprescindibles (Three Rondavels, Bourke's Luck Potholes...) hoy — quedan para entonces. Solo una visita corta para empezar a disfrutar sin prisas.",
         "Al empezar en Graskop, intentad llegar sobre las 15:00–16:00 para disfrutar con calma del hotel y del primer mirador."
