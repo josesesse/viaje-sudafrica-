@@ -236,6 +236,25 @@ const TRIP = {
 const LEG_LABEL = { kruger: "Kruger", capetown: "Ciudad del Cabo" };
 const MYMAPS_URL = "https://www.google.com/maps/d/u/1/viewer?mid=1DIxDEUx2ATWfkPIhY6HAbblI0aXUfv0&usp=sharing";
 
+
+const WEATHER = {
+  "2026-08-15": { max:23, min:8,  rain:5,  icon:"sun" },
+  "2026-08-16": { max:26, min:11, rain:2,  icon:"sun" },
+  "2026-08-17": { max:27, min:12, rain:2,  icon:"sun" },
+  "2026-08-18": { max:28, min:12, rain:3,  icon:"sun" },
+  "2026-08-19": { max:26, min:11, rain:5,  icon:"partly" },
+  "2026-08-20": { max:27, min:12, rain:2,  icon:"sun" },
+  "2026-08-21": { max:28, min:13, rain:2,  icon:"sun" },
+  "2026-08-22": { max:17, min:10, rain:25, icon:"partly" },
+  "2026-08-23": { max:16, min:9,  rain:35, icon:"rain" },
+  "2026-08-24": { max:17, min:10, rain:20, icon:"partly" },
+  "2026-08-25": { max:18, min:10, rain:15, icon:"sun" },
+  "2026-08-26": { max:16, min:9,  rain:30, icon:"cloud" },
+  "2026-08-27": { max:16, min:9,  rain:40, icon:"rain" },
+};
+const WEATHER_ICON = { sun:"☀️", partly:"⛅", cloud:"☁️", rain:"🌧️", storm:"⛈️" };
+
+
 const GMAPS_URLS = {
   1: "https://www.google.com/maps/dir/Aeropuerto+Internacional+de+Johannesburgo-Oliver+Reginald+Tambo,+1+Jones+Rd,+Kempton+Park,+Johannesburg,+1632,+Sud%C3%A1frica/Dullstroom,+1110,+Sud%C3%A1frica/Graskop,+1270,+Sud%C3%A1frica/God%E2%80%99s+Window,+R543,+Ehlanzeni,+Sud%C3%A1frica/The+Pinnacle+Rock,+R534,+Sud%C3%A1frica/Rustique,+3+Richardson+Ave,+Graskop,+1270,+Sud%C3%A1frica/@-24.9144948,30.7635846,12z/data=!4m38!4m37!1m5!1m1!1s0x1e95143805a229c3:0xb3bf1c40792821d6!2m2!1d28.2467949!2d-26.1393913!1m5!1m1!1s0x1eea03ce8ff2f6df:0x6a88c3a5ceadda99!2m2!1d30.1086222!2d-25.4172321!1m5!1m1!1s0x1ec26307801ae4e1:0x37b2c654d9f4be4c!2m2!1d30.8406447!2d-24.9337181!1m5!1m1!1s0x1ec261fb6d6644cf:0x77a9ae51114d1ae5!2m2!1d30.8881885!2d-24.8768995!1m5!1m1!1s0x1ec26235cbdce21d:0xddd40e574ebedefc!2m2!1d30.8544588!2d-24.9120476!1m5!1m1!1s0x1ec263abc230b483:0xc45559b638f69fc0!2m2!1d30.845162!2d-24.933998!3e0?entry=ttu&g_ep=EgoyMDI2MDcyOS4wIKXMDSoASAFQAw%3D%3D",
   2: "https://www.google.com/maps/dir/Rustique,+3+Richardson+Ave,+Graskop,+1270,+Sud%C3%A1frica/Hazyview,+1242,+Sud%C3%A1frica/Phabeni+Gate+@+Kruger+National+Park,+X6GR%2B73,+Mangwazi,+Sud%C3%A1frica/Pretoriuskop+Rest+Camp,+73+Pretoriuskop+Camp+Rd,+Kruger+Park,+Sud%C3%A1frica/@-25.0425002,30.8920136,11z/data=!4m36!4m35!1m5!1m1!1s0x1ec263abc230b483:0xc45559b638f69fc0!2m2!1d30.845162!2d-24.933998!1m5!1m1!1s0x1ee82777f83d313b:0x5fed1120b8254a8d!2m2!1d31.1284302!2d-25.0429124!1m15!1m1!1s0x1ec29f007bbf749f:0xa355e3f325ca4ffe!2m2!1d31.2401875!2d-25.0243125!3m4!1m2!1d31.2574107!2d-25.0288289!3s0x1ec29f8ecab9eed7:0xb1d760b0562a69c1!3m4!1m2!1d31.2540908!2d-25.1540041!3s0x1ee8220fe6772e21:0x1f6bdb17ac26663f!1m5!1m1!1s0x1ee8189ca7e46719:0x8840d2895a5623eb!2m2!1d31.2687541!2d-25.1695548!3e0?entry=ttu&g_ep=EgoyMDI2MDcyOS4wIKXMDSoASAFQAw%3D%3D",
@@ -896,18 +915,29 @@ function updateCountdown(){
   const end = parseDate(TRIP.end);
   const numEl = document.getElementById("countdown-num");
   const lblEl = document.getElementById("countdown-lbl");
+  const wxEl = document.getElementById("countdown-wx");
   const oneDay = 86400000;
   if(now < start){
     const days = Math.ceil((start-now)/oneDay);
     numEl.textContent = days;
     lblEl.textContent = days===1 ? "día" : "días";
+    wxEl.classList.remove("show"); wxEl.innerHTML = "";
   } else if(now <= end){
     const dayNum = Math.floor((now-start)/oneDay)+1;
+    const todayDay = TRIP.days.find(d=>d.day===dayNum);
     numEl.textContent = "D"+dayNum;
-    lblEl.textContent = "en curso";
+    lblEl.textContent = todayDay ? dateLabel(todayDay.date) : "en curso";
+    const w = todayDay ? WEATHER[todayDay.date] : null;
+    if(w){
+      wxEl.innerHTML = `<span class="wx-icon">${WEATHER_ICON[w.icon]||"☀️"}</span><span class="wx-temp">${w.max}°/${w.min}°</span><span class="wx-rain">💧${w.rain}%</span>`;
+      wxEl.classList.add("show");
+    } else {
+      wxEl.classList.remove("show"); wxEl.innerHTML = "";
+    }
   } else {
     numEl.textContent = "✓";
     lblEl.textContent = "terminado";
+    wxEl.classList.remove("show"); wxEl.innerHTML = "";
   }
 }
 
