@@ -492,17 +492,45 @@ days.forEach((d, dayIdx)=>{
   const destBoxX = anchor==="start" ? Number(x)-2 : (anchor==="end" ? Number(x)-destEstW+2 : Number(x)-destEstW/2);
   
   // Casilla km y horas: calcular punto medio entre inicio y fin del día
+  // Casilla km y horas: punto a mitad del recorrido real, desplazada a un lado de la ruta
   let kmHoursBox = "";
   const distStr = d.distance ? `${d.distance} km` : "";
   const timeStr = d.time ? `${d.time}` : "";
   const infoText = (distStr && timeStr) ? `${distStr} · ${timeStr}` : (distStr || timeStr || "");
   if(infoText){
-    const midX = (X(first.lon) + X(last.lon)) / 2;
-    const midY = (Y(first.lat) + Y(last.lat)) / 2;
+    const routePts = d.stops.map(p=>({x:X(p.lon), y:Y(p.lat)}));
+    let segLens = [], total = 0;
+    for(let i=1;i<routePts.length;i++){
+      const dx = routePts[i].x-routePts[i-1].x, dy = routePts[i].y-routePts[i-1].y;
+      const len = Math.hypot(dx,dy);
+      segLens.push(len); total += len;
+    }
+    let midX, midY, dirX = 0.7, dirY = -0.7;
+    if(total < 4 || routePts.length < 2){
+      // Día de ida y vuelta al mismo sitio: desplazar en diagonal fija
+      midX = routePts[0].x; midY = routePts[0].y;
+    } else {
+      let target = total * 0.5, acc = 0, i = 0;
+      while(i < segLens.length && acc + segLens[i] < target){ acc += segLens[i]; i++; }
+      const segLen = segLens[i] || 1;
+      const t = (target - acc) / segLen;
+      const a = routePts[i], b = routePts[i+1] || routePts[i];
+      midX = a.x + (b.x-a.x)*t;
+      midY = a.y + (b.y-a.y)*t;
+      const dx = b.x-a.x, dy = b.y-a.y;
+      const len = Math.hypot(dx,dy) || 1;
+      const side = (dayIdx % 2 === 0) ? 1 : -1;
+      dirX = (-dy/len) * side;
+      dirY = (dx/len) * side;
+    }
+    const OFFSET = 24;
+    const boxCX = midX + dirX*OFFSET;
+    const boxCY = midY + dirY*OFFSET;
     const boxW = infoText.length * 6 + 18;
     kmHoursBox = `
-    <rect x="${(midX-boxW/2).toFixed(1)}" y="${(midY-11).toFixed(1)}" width="${boxW.toFixed(1)}" height="22" rx="11" fill="${bg}" stroke="${lineColor}" stroke-width="0.8" opacity=".9"/>
-    <text x="${midX.toFixed(1)}" y="${(midY+3).toFixed(1)}" font-size="9" font-family="'Roboto Mono',ui-monospace,monospace" fill="${dotColor}" text-anchor="middle" font-weight="500">${escapeXML(infoText)}</text>`;
+    <line x1="${midX.toFixed(1)}" y1="${midY.toFixed(1)}" x2="${boxCX.toFixed(1)}" y2="${boxCY.toFixed(1)}" stroke="${lineColor}" stroke-width="0.8" opacity=".5"/>
+    <rect x="${(boxCX-boxW/2).toFixed(1)}" y="${(boxCY-11).toFixed(1)}" width="${boxW.toFixed(1)}" height="22" rx="11" fill="${bg}" stroke="${lineColor}" stroke-width="0.8" opacity=".95"/>
+    <text x="${boxCX.toFixed(1)}" y="${(boxCY+3).toFixed(1)}" font-size="9" font-family="'Roboto Mono',ui-monospace,monospace" fill="${dotColor}" text-anchor="middle" font-weight="500">${escapeXML(infoText)}</text>`;
   }
   
   markers += `<g class="fm-day" data-day="${d.day}">
