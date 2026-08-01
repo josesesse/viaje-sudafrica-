@@ -221,7 +221,8 @@ const TRIP = {
       subtitle: "Stellenbosch → Aeropuerto Ciudad del Cabo",
       summary: "Franschhoek, última bodega, comida de despedida y traslado al aeropuerto.",
       distance: 85, time: "1h 45m",
-      flight: { label: "Vuelo de vuelta", detail: "Ciudad del Cabo → salida ≈06:00 (28 ago) - Johannesburgo (JNB) · 08:10 (28/08/26)", status: "confirmed" },
+      flight: { label: "Vuelo de vuelta", detail: "Ciudad del Cabo (CPT) → Johannesburgo (JNB) · sale 06:00, llega ≈08:15 (28 ago)", status: "confirmed",
+        body: "Ese mismo día aprovecháis para estar por Johannesburgo antes de coger el vuelo internacional de vuelta, que sale al día siguiente, 29 de agosto." },
       stops: [
         { name: "Franschhoek", lat:-33.9122, lon:19.1207, time: "Mañana", note: "Pueblo con encanto rodeado de montañas. Paseo tranquilo por el centro.", isHL:true, stars:5 },
         { name: "Última bodega (Jordan / Delaire Graff)", lat:-33.9711, lon:18.9186, time: "Mediodía", note: "Elegir una: Jordan Wine Estate (paisaje y buena relación calidad/precio) o Delaire Graff Estate (más exclusiva y espectacular).", isHL:true, stars:0 },
@@ -237,7 +238,7 @@ const CALENDAR_END   = "2026-08-31";
 
 const CALENDAR_EXTRA = {
   "2026-08-14": { leg:"travel", flight:true, label:"BCN → AUH" },
-  "2026-08-28": { leg:"travel", flight:true, label:"CPT → JNB" },
+  "2026-08-28": { leg:"kruger", flight:true, label:"Johannesburgo" },
   "2026-08-29": { leg:"travel", flight:true, label:"JNB → AUH" },
   "2026-08-30": { leg:"travel", flight:true, label:"AUH → BCN" },
   "2026-08-31": { leg:"travel", flight:false, label:"Llegada BCN 07:35" },
@@ -815,9 +816,10 @@ function openDay(dayNum){
       <div class="stay-card">
         <div class="stay-top">
           <svg class="flight-ticket-icon"><use href="#i-nav-checklist"/></svg>
-          <div><div class="stay-name">${day.flight.label}</div><div class="stay-area">${day.flight.detail}</div></div>
+          <div><div class="stay-name">${day.flight.label}</div><div class="flight-detail">${day.flight.detail}</div></div>
           <span class="status-pill confirmed">Confirmado</span>
         </div>
+        ${day.flight.body ? `<div class="flight-body">${day.flight.body}</div>` : ""}
       </div>
     </div>` : "";
 
@@ -1275,6 +1277,13 @@ function renderCustomsDeadline(){
   const deadline = new Date(arrival.getFullYear(), arrival.getMonth(), arrival.getDate()-1);
   const iso = `${deadline.getFullYear()}-${String(deadline.getMonth()+1).padStart(2,"0")}-${String(deadline.getDate()).padStart(2,"0")}`;
   el.textContent = dateLabel(iso);
+
+  const card = document.getElementById("customs-card");
+  if(card){
+    const now = DEBUG_DATE ? parseDate(DEBUG_DATE) : new Date();
+    const stillNeeded = now < parseDate("2026-08-16");
+    card.style.display = stillNeeded ? "" : "none";
+  }
 }
 
 
@@ -1307,7 +1316,10 @@ function init(){
 
   
   
-  setInterval(()=>{ try{ updateCountdown(); }catch(e){ console.error("updateCountdown", e); } }, 60*60*1000);
+  setInterval(()=>{
+    try{ updateCountdown(); }catch(e){ console.error("updateCountdown", e); }
+    try{ renderCustomsDeadline(); }catch(e){ console.error("renderCustomsDeadline", e); }
+  }, 60*60*1000);
   try{ renderCustomsDeadline(); }catch(e){ console.error("renderCustomsDeadline", e); }
 
   document.querySelectorAll(".tab").forEach(tab=>{
