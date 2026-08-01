@@ -1325,3 +1325,18 @@ window.addEventListener("scroll", () => {
 
 }
 document.addEventListener("DOMContentLoaded", init);
+
+
+
+function syncBottomNavToViewport(){
+  const nav = document.querySelector(".bottomnav");
+  if(!nav || !window.visualViewport) return;
+  const vv = window.visualViewport;
+  const offset = window.innerHeight - vv.height - vv.offsetTop;
+  nav.style.transform = offset > 0.5 ? `translateY(-${offset}px)` : "";
+}
+if(window.visualViewport){
+  window.visualViewport.addEventListener("resize", syncBottomNavToViewport);
+  window.visualViewport.addEventListener("scroll", syncBottomNavToViewport);
+  syncBottomNavToViewport();
+}
