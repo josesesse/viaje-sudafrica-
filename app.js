@@ -1222,10 +1222,21 @@ function init(){
       if(card) setTimeout(()=> card.scrollIntoView({behavior:"smooth", block:"center"}), 300);
     }
   }catch(e){ console.error("autoscroll día actual", e); }
+
+  // Hacer visible el topbar al cargar
+  const topbar = document.querySelector(".topbar");
+  if(topbar) {
+    topbar.classList.remove("hidden");
+    topbar.classList.add("visible");
+  }
+  
   try{ updateCountdown(); }catch(e){ console.error("updateCountdown", e); }
   try{ MapViewer.init(); }catch(e){ console.error("MapViewer.init", e); }
   try{ initCurrencyConverter(); }catch(e){ console.error("initCurrencyConverter", e); }
   try{ initParkMapViewer(); }catch(e){ console.error("initParkMapViewer", e); }
+
+  
+  
   setInterval(()=>{ try{ updateCountdown(); }catch(e){ console.error("updateCountdown", e); } }, 60*60*1000);
   try{ renderCustomsDeadline(); }catch(e){ console.error("renderCustomsDeadline", e); }
 
