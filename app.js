@@ -26,16 +26,16 @@ const TRIP = {
         "Al empezar en Graskop, intentad llegar sobre las 15:00–16:00 para disfrutar con calma del hotel y del primer mirador."
       ]
     },
-    {
+  {
       day: 2, date: "2026-08-16", leg: "kruger",
       fromCode: "GRK", toCode: "PTK", from: "Graskop", to: "Pretoriuskop",
       title: "Entrada al Kruger",
-      summary: "Graskop → Sabie → Numbi Gate → Pretoriuskop, con safari de tarde por H1-1 y F9.",
+      summary: "Graskop → Hazyview → Phabeni Gate → Pretoriuskop, con safari de tarde por H1-1 y F9.",
       stops: [
         { name: "Graskop", lat:-24.9209, lon:30.8305, time: "Mañana", note: "Salida hacia el Kruger.", isHL:false },
-        { name: "Sabie", lat:-25.1049, lon:30.7783, time: "Mañana", note: "Parada para desayunar o tomar un café antes de entrar al parque.", isHL:false },
-        { name: "Numbi Gate", lat:-25.1544, lon:31.1697, time: "≈11:00", note: "Entrada al Kruger — intentad llegar antes de las 11:00.", isHL:false },
-        { name: "Pretoriuskop", lat:-25.1793, lon:31.2582, time: "Tarde", note: "Safari de tarde: Numbi Gate → Pretoriuskop → H1-1 → F9 (si hay tiempo) → Pretoriuskop. Bosques característicos del sur del Kruger. Posibilidad de ver elefantes, jirafas, cebras, rinocerontes y, con suerte, leopardos.", isHL:true, stars:0 },
+        { name: "Hazyview", lat:-25.0430, lon:31.1272, time: "Mañana", note: "Parada para desayunar o tomar un café antes de entrar al parque.", isHL:false },
+        { name: "Phabeni Gate", lat:-25.0173, lon:31.1997, time: "≈11:00", note: "Entrada al Kruger — intentad llegar antes de las 11:00.", isHL:false },
+        { name: "Pretoriuskop", lat:-25.1793, lon:31.2582, time: "Tarde", note: "Safari de tarde: Phabeni Gate → Pretoriuskop → H1-1 → F9 (si hay tiempo) → Pretoriuskop. Bosques característicos del sur del Kruger. Posibilidad de ver elefantes, jirafas, cebras, rinocerontes y, con suerte, leopardos.", isHL:true, stars:0 },
       ],
       stay: { name: "Pretoriuskop Rest Camp", area: "Kruger National Park" },
       tips: ["Primer safari del viaje — id sin prisa, el objetivo del día es entrar y llegar a tiempo, no acumular kilómetros."]
