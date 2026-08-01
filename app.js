@@ -650,6 +650,16 @@ function matchesFilter(day){
   return hay.includes(q);
 }
 
+function getTripDayNum(){
+  const now = DEBUG_DATE ? parseDate(DEBUG_DATE) : new Date();
+  const start = parseDate(TRIP.start);
+  const end = parseDate(TRIP.end);
+  if(now < start || now > end) return null;
+  return Math.floor((now-start)/86400000)+1;
+}
+
+
+
 function renderDayList(){
   const list = document.getElementById("day-list");
   const days = TRIP.days.filter(matchesFilter);
@@ -665,8 +675,10 @@ function renderDayList(){
       lastLeg = day.leg;
     }
     const st = stayStatus(day.day);
+    const activeDayNum = getTripDayNum();
+    const cardState = activeDayNum ? (day.day===activeDayNum ? " card-current" : (day.day<activeDayNum ? " card-past" : "")) : "";
     html += `
-    <button class="card" data-leg="${day.leg}" data-day="${day.day}">
+    <button class="card${cardState}" data-leg="${day.leg}" data-day="${day.day}">
       <div class="card-main">
         <div class="card-top">
           <span class="card-daytag">Día ${day.day}</span>
@@ -921,6 +933,7 @@ function updateCountdown(){
   const wxEl = document.getElementById("countdown-wx");
   const oneDay = 86400000;
   if(now < start){
+    numEl.classList.remove("instrip");
     const days = Math.ceil((start-now)/oneDay);
     numEl.textContent = days;
     lblEl.textContent = days===1 ? "día" : "días";
@@ -928,7 +941,8 @@ function updateCountdown(){
   } else if(now <= end){
     const dayNum = Math.floor((now-start)/oneDay)+1;
     const todayDay = TRIP.days.find(d=>d.day===dayNum);
-    numEl.textContent = "D"+dayNum;
+    numEl.classList.add("instrip");
+    numEl.textContent = "Día " + dayNum;
     lblEl.textContent = todayDay ? dateLabel(todayDay.date) : "en curso";
     const w = todayDay ? WEATHER[todayDay.date] : null;
     if(w){
@@ -938,6 +952,7 @@ function updateCountdown(){
       wxEl.classList.remove("show"); wxEl.innerHTML = "";
     }
   } else {
+    numEl.classList.remove("instrip");
     numEl.textContent = "✓";
     lblEl.textContent = "terminado";
     wxEl.classList.remove("show"); wxEl.innerHTML = "";
@@ -1199,6 +1214,13 @@ function renderCustomsDeadline(){
 /* ============ INIT ============ */
 function init(){
   try{ renderDayList(); }catch(e){ console.error("renderDayList", e); }
+  try{
+    const activeDayNum = getTripDayNum();
+    if(activeDayNum){
+      const card = document.querySelector(`.card[data-day="${activeDayNum}"]`);
+      if(card) setTimeout(()=> card.scrollIntoView({behavior:"smooth", block:"center"}), 300);
+    }
+  }catch(e){ console.error("autoscroll día actual", e); }
   try{ updateCountdown(); }catch(e){ console.error("updateCountdown", e); }
   try{ MapViewer.init(); }catch(e){ console.error("MapViewer.init", e); }
   try{ initCurrencyConverter(); }catch(e){ console.error("initCurrencyConverter", e); }
