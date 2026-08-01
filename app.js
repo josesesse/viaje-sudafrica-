@@ -1223,12 +1223,14 @@ function init(){
     }
   }catch(e){ console.error("autoscroll día actual", e); }
 
-  // Hacer visible el topbar al cargar
-  const topbar = document.querySelector(".topbar");
-  if(topbar) {
-    topbar.classList.remove("hidden");
-    topbar.classList.add("visible");
-  }
+  // Mostrar topbar al cargar (solo si no hay scroll automático pendiente)
+  setTimeout(() => {
+    const topbar = document.querySelector(".topbar");
+    if(topbar && !window.scrollAutoInProgress) {
+      topbar.classList.remove("hidden");
+      topbar.classList.add("visible");
+    }
+  }, 1800);
   
   try{ updateCountdown(); }catch(e){ console.error("updateCountdown", e); }
   try{ MapViewer.init(); }catch(e){ console.error("MapViewer.init", e); }
