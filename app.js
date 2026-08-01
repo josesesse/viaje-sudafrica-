@@ -798,7 +798,7 @@ function openDay(dayNum){
       <div class="timeline">${timelineHtml}</div>
     </div>
 
-    ${hlHtml ? `<div class="section ${legClass}">
+    ${hlHtml ? `<div class="section section-highlights ${legClass}">
       <div class="section-head">${icon("star")}<h3>Highlights</h3></div>
       <div class="hl-grid">${hlHtml}</div>
     </div>` : ""}
