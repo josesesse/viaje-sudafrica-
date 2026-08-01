@@ -542,6 +542,14 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
 }
 #mv-media img, #mv-media svg{ display:block; width:100%; height:100%; pointer-events:none; }
 
+  .mv-day-toggles{
+  position:absolute; top:calc(64px + var(--safe-top)); left:0; right:0; z-index:3;
+  display:flex; gap:6px; justify-content:center; flex-wrap:wrap; padding:0 16px;
+}
+.mv-day-toggles .day-pill{
+  background:rgba(255,255,255,.6); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  box-shadow:0 2px 8px rgba(0,0,0,.12);
+}
   
 .day-toggle-row{ display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
 .day-pill{
@@ -795,6 +803,7 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
 <div class="map-zoom-modal" id="map-zoom-modal">
   <button class="map-zoom-close" id="map-zoom-close"><svg><use href="#i-close"/></svg></button>
   <button class="map-zoom-rotate" id="map-zoom-rotate"><svg><use href="#i-rotate"/></svg></button>
+  <div id="mv-day-toggles" class="mv-day-toggles"></div>
   <div id="mv-stage">
     <div id="mv-media"></div>
   </div>
