@@ -670,6 +670,7 @@ function renderDayList(){
   let html = "";
   let lastLeg = null;
   days.forEach(day=>{
+        const w = WEATHER[day.date];
     if(day.leg!==lastLeg){
       html += `<div class="section-label">${LEG_LABEL[day.leg]}</div>`;
       lastLeg = day.leg;
@@ -689,6 +690,7 @@ function renderDayList(){
         <div class="card-sub">${day.summary}</div>
         <div class="card-bottom">
           <span class="chip">${icon("bed")}${day.stay.name}</span>
+          ${w ? `<span class="chip chip-wx"><span class="wx-icon">${WEATHER_ICON[w.icon]||"☀️"}</span>${w.max}°/${w.min}°</span>` : ""}
           <span class="status-pill ${st}">${st==="confirmed"?"Confirmado":"Pendiente"}</span>
         </div>
       </div>
