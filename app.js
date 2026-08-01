@@ -759,8 +759,8 @@ function openDay(dayNum){
       <div class="section-head">${icon("compass")}<h3>Vuelo</h3></div>
       <div class="stay-card">
         <div class="stay-top">
-${icon("compass")}
-<div><div class="stay-name">${day.flight.label}</div><div class="stay-area">${day.flight.detail}</div></div>
+          <svg class="flight-ticket-icon"><use href="#i-ticket"/></svg>
+          <div><div class="stay-name">${day.flight.label}</div><div class="stay-area">${day.flight.detail}</div></div>
           <span class="status-pill confirmed">Confirmado</span>
         </div>
       </div>
