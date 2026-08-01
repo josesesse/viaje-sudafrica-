@@ -146,13 +146,24 @@ h1.trip-title{
 .countdown .num{font-family:var(--font-display); font-weight:800; font-size:26px; color:var(--amber-soft); line-height:1;}
 .app.leg-capetown .countdown .num{color:var(--teal-soft);}
 .countdown .lbl{font-family:var(--font-mono); font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.1em;}
+.countdown-wx{
+  display:none; align-items:center; justify-content:flex-end; gap:5px; margin-top:4px;
+  font-family:var(--font-mono); font-size:11px; color:var(--text-dim); white-space:nowrap;
+}
+.countdown-wx.show{display:flex;}
+.countdown-wx .wx-icon{font-size:14px; line-height:1;}
+.countdown-wx .wx-temp{font-weight:700; color:var(--text);}
+.countdown-wx .wx-rain{color:var(--text-faint);}
+  
 
-.tabs{display:flex; gap:8px; margin-top:18px; overflow-x:auto; padding-bottom:2px; scrollbar-width:none;}
-.tabs::-webkit-scrollbar{display:none;}
+  
+.tabs{display:flex; gap:8px; margin-top:18px;}
 .tab{
-  flex-shrink:0; padding:9px 15px; border-radius:100px; font-size:13px; font-weight:600;
+  flex:1; min-width:0; justify-content:center;
+  padding:9px 10px; border-radius:100px; font-size:12.5px; font-weight:600;
   background:var(--surface); color:var(--text-dim); border:1px solid var(--line);
-  display:flex; align-items:center; gap:6px; transition:.15s;
+  display:flex; align-items:center; gap:5px; transition:.15s;
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
 }
 body.leg-capetown .tab{background:var(--surface); border-color:var(--line);}
 body.leg-capetown .card{background:#FFFDF9; border-color:rgba(78,148,132,.2);}
@@ -604,9 +615,10 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
           <h1 class="trip-title">Kruger &amp;<br/>Cape Town</h1>
         </div>
         <div class="countdown">
-          <div class="num" id="countdown-num">—</div>
-          <div class="lbl" id="countdown-lbl">días</div>
-        </div>
+  <div class="num" id="countdown-num">—</div>
+  <div class="lbl" id="countdown-lbl">días</div>
+  <div class="countdown-wx" id="countdown-wx"></div>
+</div>
       </div>
       <div class="tabs" id="tabs">
         <button class="tab active" data-leg="all"><span class="dot"></span>Todo el viaje</button>
