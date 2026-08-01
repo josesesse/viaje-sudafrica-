@@ -233,13 +233,14 @@ const TRIP = {
   ]
 };
 const CALENDAR_START = "2026-08-14";
-const CALENDAR_END   = "2026-08-30";
+const CALENDAR_END   = "2026-08-31";
 
 const CALENDAR_EXTRA = {
   "2026-08-14": { leg:"travel", flight:true, label:"BCN → AUH" },
   "2026-08-28": { leg:"travel", flight:true, label:"CPT → JNB" },
   "2026-08-29": { leg:"travel", flight:true, label:"JNB → AUH" },
   "2026-08-30": { leg:"travel", flight:true, label:"AUH → BCN" },
+  "2026-08-31": { leg:"travel", flight:false, label:"Llegada BCN 07:35" },
 };
 
 function getCalendarDayInfo(iso){
