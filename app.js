@@ -908,9 +908,12 @@ function showPage(name){
   if(name==="info") renderPhrases();
 }
 
+const DEBUG_DATE = 2026-08-19; // pon aquí "2026-08-19;" (o el día que quieras probar) para simular esa fecha, y "null;" para volver a la fecha real
+
+
 /* ============ COUNTDOWN ============ */
 function updateCountdown(){
-  const now = new Date();
+  const now = DEBUG_DATE ? parseDate(DEBUG_DATE) : new Date();
   const start = parseDate(TRIP.start);
   const end = parseDate(TRIP.end);
   const numEl = document.getElementById("countdown-num");
