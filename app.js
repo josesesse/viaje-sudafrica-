@@ -915,13 +915,24 @@ function renderOverview(){
 
 /* ============ NAV ============ */
 function showPage(name){
-  window.scrollTo({top: 0, behavior: "smooth"});
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("page-"+name).classList.add("active");
   document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active", b.dataset.page===name));
   if(name==="overview"){ renderOverview(); renderFullMap(); }
   if(name==="info") renderFullMap();
   if(name==="info") renderPhrases();
+
+  if(name==="home"){
+    const activeDayNum = getTripDayNum();
+    const card = activeDayNum ? document.querySelector(`.card[data-day="${activeDayNum}"]`) : null;
+    if(card){
+      setTimeout(()=> card.scrollIntoView({behavior:"smooth", block:"center"}), 50);
+    } else {
+      window.scrollTo({top: 0, behavior: "smooth"});
+    }
+  } else {
+    window.scrollTo({top: 0, behavior: "smooth"});
+  }
 }
 
 const DEBUG_DATE = "2026-08-19"; // pon aquí "2026-08-19;" (o el día que quieras probar) para simular esa fecha, y "null;" para volver a la fecha real
