@@ -908,7 +908,7 @@ function showPage(name){
   if(name==="info") renderPhrases();
 }
 
-const DEBUG_DATE = "2026-08-19;" // pon aquí "2026-08-19;" (o el día que quieras probar) para simular esa fecha, y "null;" para volver a la fecha real
+const DEBUG_DATE = "19-08-2026;" // pon aquí "2026-08-19;" (o el día que quieras probar) para simular esa fecha, y "null;" para volver a la fecha real
 
 
 /* ============ COUNTDOWN ============ */
