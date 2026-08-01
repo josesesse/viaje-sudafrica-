@@ -273,7 +273,7 @@ function renderTripCalendar(){
     cells += `
       <div class="cal-cell ${legClass}${info.tripDay ? " cal-clickable" : ""}"${clickAttr}>
         <span class="cal-num">${d}</span>
-        ${info.flight ? `<svg class="cal-flight"><use href="#i-ticket"/></svg>` : ""}
+        ${info.flight ? `<svg class="cal-flight"><use href="#i-nav-checklist"/></svg>` : ""}
         <span class="cal-label">${info.label}</span>
       </div>`;
   }
