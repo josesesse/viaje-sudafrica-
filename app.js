@@ -533,7 +533,11 @@ function renderFullMap(){
     renderDayToggles("full-map-north-days", "full-map-north", TRIP.days.filter(d=>d.day<=6));
     const expandBtn = document.getElementById("expand-full-map-north");
     if(expandBtn) expandBtn.addEventListener("click", ()=>{
-      MapViewer.open({ type:"svg", markup: elNorth.querySelector("svg").outerHTML });
+      MapViewer.open({
+        type:"svg", markup: elNorth.querySelector("svg").outerHTML,
+        days: TRIP.days.filter(d=>d.day<=6), activeColor:"#8C4A22",
+        syncToggleId:"full-map-north-days", syncMapId:"full-map-north"
+      });
     });
   }
   if(elSouth && !elSouth.dataset.rendered){
@@ -542,7 +546,11 @@ function renderFullMap(){
     renderDayToggles("full-map-south-days", "full-map-south", TRIP.days.filter(d=>d.day>=7));
     const expandBtn = document.getElementById("expand-full-map-south");
     if(expandBtn) expandBtn.addEventListener("click", ()=>{
-      MapViewer.open({ type:"svg", markup: elSouth.querySelector("svg").outerHTML });
+      MapViewer.open({
+        type:"svg", markup: elSouth.querySelector("svg").outerHTML,
+        days: TRIP.days.filter(d=>d.day>=7), activeColor:"#2E6B5E",
+        syncToggleId:"full-map-south-days", syncMapId:"full-map-south"
+      });
     });
   }
 }
@@ -881,6 +889,40 @@ const MapViewer = (() => {
   const stage  = () => document.getElementById("mv-stage");
   const media  = () => document.getElementById("mv-media");
 
+  const dayToggles = () => document.getElementById("mv-day-toggles");
+
+  function renderModalDayToggles(opts){
+    const el = dayToggles();
+    if(!el) return;
+    if(!opts.days || !opts.days.length){ el.innerHTML = ""; return; }
+    const miniRow = opts.syncToggleId ? document.getElementById(opts.syncToggleId) : null;
+    el.innerHTML = opts.days.map(d=>{
+      const miniBtn = miniRow ? miniRow.querySelector(`.day-pill[data-day="${d.day}"]`) : null;
+      const isActive = miniBtn ? miniBtn.classList.contains("active") : true;
+      const style = isActive ? ` style="background:${opts.activeColor};color:#fff;border-color:${opts.activeColor};"` : "";
+      return `<button class="day-pill${isActive?" active":""}" data-day="${d.day}"${style}>${d.day}</button>`;
+    }).join("");
+    el.querySelectorAll(".day-pill").forEach(btn=>{
+      btn.addEventListener("click", ()=>{
+        const day = btn.dataset.day;
+        const willActivate = !btn.classList.contains("active");
+        btn.classList.toggle("active", willActivate);
+        btn.style.background = willActivate ? opts.activeColor : "";
+        btn.style.color = willActivate ? "#fff" : "";
+        btn.style.borderColor = willActivate ? opts.activeColor : "";
+        const groupModal = media().querySelector(`.fm-day[data-day="${day}"]`);
+        if(groupModal) groupModal.style.display = willActivate ? "" : "none";
+        if(miniRow){
+          const miniBtn = miniRow.querySelector(`.day-pill[data-day="${day}"]`);
+          if(miniBtn) miniBtn.classList.toggle("active", willActivate);
+          const miniMapEl = opts.syncMapId ? document.getElementById(opts.syncMapId) : null;
+          const groupMini = miniMapEl ? miniMapEl.querySelector(`.fm-day[data-day="${day}"]`) : null;
+          if(groupMini) groupMini.style.display = willActivate ? "" : "none";
+        }
+      });
+    });
+  }
+
   const state = { scale:1, fitScale:1, rotation:0, tx:0, ty:0, naturalW:600, naturalH:400 };
   const activePointers = new Map();
   let dragging = false, lastX=0, lastY=0;
@@ -955,12 +997,13 @@ function open(opts){
     el.innerHTML = "";
     state.rotation = 0; state.tx = 0; state.ty = 0;
 
-    if(opts.type === "svg"){
+  if(opts.type === "svg"){
       const bgMatch = opts.markup.match(/<rect[^>]*fill="([^"]+)"/);
       modal().style.background = bgMatch ? bgMatch[1] : "";
     } else {
       modal().style.background = "";
     }
+    renderModalDayToggles(opts);
 
     const finish = () => {
       modal().classList.add("open");
