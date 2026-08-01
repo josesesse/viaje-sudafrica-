@@ -465,6 +465,30 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 .pagehead h1{font-family:var(--font-display); font-weight:800; font-size:24px; margin:0;}
 .pagehead p{font-size:13.5px; color:var(--text-dim); margin:6px 0 0;}
 
+/* ---- Calendario del viaje ---- */
+.cal-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:4px;}
+.cal-header{margin-bottom:4px;}
+.cal-dow{font-family:var(--font-mono); font-size:10px; text-align:center; color:var(--text-faint); text-transform:uppercase;}
+.cal-cell{
+  aspect-ratio:1/1.15; border-radius:10px; padding:4px 2px 5px; display:flex; flex-direction:column;
+  align-items:center; justify-content:flex-start; background:var(--surface); border:1px solid var(--line);
+  overflow:hidden;
+}
+.cal-cell.empty{background:transparent; border:none;}
+.cal-cell.out{opacity:.28;}
+.cal-cell.cal-clickable{cursor:pointer;}
+.cal-cell.cal-clickable:active{transform:scale(.95);}
+.cal-num{font-family:var(--font-display); font-weight:700; font-size:11.5px;}
+.cal-cell.cal-kruger{background:rgba(201,123,66,.16); border-color:rgba(201,123,66,.3);}
+.cal-cell.cal-capetown{background:rgba(78,148,132,.16); border-color:rgba(78,148,132,.3);}
+.cal-cell.cal-travel{background:rgba(150,64,42,.14); border-color:rgba(150,64,42,.3);}
+.cal-flight{width:10px; height:10px; margin-top:2px; opacity:.8; color:var(--danger);}
+.cal-label{font-size:7px; line-height:1.15; text-align:center; color:var(--text-dim); margin-top:2px; word-break:break-word;}
+.cal-legend{display:flex; flex-wrap:wrap; gap:12px; margin-top:12px; padding:0 2px;}
+.cal-legend-item{display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);}
+.cal-legend-item svg{width:11px; height:11px; opacity:.75;}
+.cal-legend-dot{width:9px; height:9px; border-radius:50%; display:inline-block; flex-shrink:0;}
+  
 .nights-table{margin:18px 16px 0; border:1px solid var(--line); border-radius:var(--radius); overflow:hidden;}
 .nights-row{display:flex; align-items:center; gap:12px; padding:13px 16px; border-bottom:1px solid var(--line);}
 .nights-row:last-child{border-bottom:none;}
@@ -678,7 +702,20 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
     <div class="pagehead">
       <h1>Resumen y cosas pendientes</h1>
       <p>Dónde dormimos cada noche y qué falta por cerrar.</p>
-    </div>
+    </<div class="info-card">
+      <h4><svg><use href="#i-calendar"/></svg>Calendario del viaje</h4>
+      <div id="trip-calendar"></div>
+      <div class="cal-legend">
+        <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#C97B42;"></span>Kruger</span>
+        <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#4E9484;"></span>Ciudad del Cabo</span>
+        <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#96402A;"></span>Vuelos internacionales</span>
+        <span class="cal-legend-item"><svg><use href="#i-ticket"/></svg>Día con vuelo</span>
+      </div>
+      <div class="map-caption" style="margin-top:8px;">
+        <svg><use href="#i-info"/></svg>
+        <span>Toca un día del Kruger o Cape Town para abrir su ficha completa.</span>
+      </div>
+    </div>div>
 
     <div class="info-card" style="border-color:rgba(150,64,42,.35); background:rgba(150,64,42,.06);">
   <h4><svg><use href="#i-info"/></svg>Formulario de aduanas de Sudáfrica
