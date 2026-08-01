@@ -464,11 +464,6 @@ function fullTripMapSVG(legFilter){
     ? `<path d="M ${X(16)},${Y(-33.9)} Q ${X(17)},${Y(-33.5)} ${X(18)},${Y(-33.3)} T ${X(20)},${Y(-32.5)}" fill="none" stroke="rgba(78,148,132,.15)" stroke-width="1.5" stroke-dasharray="2 3"/>`
     : "";
 
-  let path = "M";
-  let allStops = [];
-  days.forEach(d=> d.stops.forEach(p=> allStops.push(p)) );
-  allStops.forEach((p,i)=>{ path += `${i===0?"":" L"} ${X(p.lon).toFixed(1)} ${Y(p.lat).toFixed(1)}`; });
-
 let markers = "";
 days.forEach((d, dayIdx)=>{
   const last = d.stops[d.stops.length-1];
@@ -477,7 +472,12 @@ days.forEach((d, dayIdx)=>{
   const label = escapeXML(`D${d.day}`);
   const destName = escapeXML(last.name);
   const anchor = X(last.lon) < W*0.2 ? "start" : (X(last.lon) > W*0.8 ? "end" : "middle");
-  
+
+  // Tramo de línea propio de este día (así se puede ocultar por separado)
+  let dayPath = "M";
+  d.stops.forEach((p,i)=>{ dayPath += `${i===0?"":" L"} ${X(p.lon).toFixed(1)} ${Y(p.lat).toFixed(1)}`; });
+  const dayLine = `<path d="${dayPath}" fill="none" stroke="${lineColor}" stroke-width="3.5" stroke-dasharray="1 7" stroke-linecap="round" opacity=".75"/>`;
+
   // Posición D1, D2, etc.
   const labY = Number(y) - 13;
   const fontSize = 11;
@@ -506,6 +506,7 @@ days.forEach((d, dayIdx)=>{
   }
   
   markers += `<g class="fm-day" data-day="${d.day}">
+    ${dayLine}
     ${kmHoursBox}
     <circle cx="${x}" cy="${y}" r="7" fill="${dotColor}" stroke="${bg}" stroke-width="2.5"/>
     <circle cx="${x}" cy="${y}" r="12" fill="none" stroke="${dotColor}" stroke-width="1" opacity=".4"/>
@@ -519,7 +520,7 @@ days.forEach((d, dayIdx)=>{
   return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
     <rect width="${W}" height="${H}" fill="${bg}"/>
     ${coastline}
-  <path d="${path}" fill="none" stroke="${lineColor}" stroke-width="3.5" stroke-dasharray="1 7" stroke-linecap="round" opacity=".75"/>    ${markers}
+    ${markers}
   </svg>`;
 }
 
@@ -530,11 +531,19 @@ function renderFullMap(){
     elNorth.innerHTML = fullTripMapSVG("kruger");
     elNorth.dataset.rendered = "1";
     renderDayToggles("full-map-north-days", "full-map-north", TRIP.days.filter(d=>d.day<=6));
+    const expandBtn = document.getElementById("expand-full-map-north");
+    if(expandBtn) expandBtn.addEventListener("click", ()=>{
+      MapViewer.open({ type:"svg", markup: elNorth.querySelector("svg").outerHTML });
+    });
   }
   if(elSouth && !elSouth.dataset.rendered){
     elSouth.innerHTML = fullTripMapSVG("capetown");
     elSouth.dataset.rendered = "1";
     renderDayToggles("full-map-south-days", "full-map-south", TRIP.days.filter(d=>d.day>=7));
+    const expandBtn = document.getElementById("expand-full-map-south");
+    if(expandBtn) expandBtn.addEventListener("click", ()=>{
+      MapViewer.open({ type:"svg", markup: elSouth.querySelector("svg").outerHTML });
+    });
   }
 }
 
@@ -941,10 +950,17 @@ const MapViewer = (() => {
     setScaleAnchored(target, cx, cy);
   }
 
-  function open(opts){
+function open(opts){
     const el = media();
     el.innerHTML = "";
     state.rotation = 0; state.tx = 0; state.ty = 0;
+
+    if(opts.type === "svg"){
+      const bgMatch = opts.markup.match(/<rect[^>]*fill="([^"]+)"/);
+      modal().style.background = bgMatch ? bgMatch[1] : "";
+    } else {
+      modal().style.background = "";
+    }
 
     const finish = () => {
       modal().classList.add("open");
