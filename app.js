@@ -8,36 +8,37 @@ const TRIP = {
   days: [
     {
       day: 1, date: "2026-08-15", leg: "kruger",
-      fromCode: "JNB", toCode: "MDB", from: "Johannesburgo", to: "Middelburg",
-      title: "JNB → MDB",
-      subtitle: "Johannesburgo → Middelburg",
-      summary: "Aterrizaje, recogida del coche y primer contacto con el bush en Loskop Dam.",
-      distance: 140, time: "2h 30m",
+      fromCode: "JNB", toCode: "GRK", from: "Johannesburgo", to: "Graskop",
+      title: "Dullstroom + Panorama Route",
+      summary: "Aterrizaje, recogida del coche, desayuno en Dullstroom y primer contacto con la Panorama Route en Graskop.",
       flight: { label: "Vuelo de llegada", detail: "Johannesburgo (JNB) · 08:30", status: "confirmed" },
       stops: [
         { name: "Aeropuerto O.R. Tambo (JNB)", lat:-26.1367, lon:28.2420, time: "08:30", note: "Llegada y recogida del coche de alquiler.", isHL:false },
-        { name: "Middelburg", lat:-25.7748, lon:29.4644, time: "≈11:00", note: "Conducción de ≈2h30. Check-in en Rustique Boutique Hotel y comida.", isHL:false },
-        { name: "Loskop Dam Nature Reserve", lat:-25.4230, lon:29.3496, time: "Tarde", note: "Excursión de tarde: primer paseo entre fauna sudafricana antes de entrar al Kruger.", isHL:true, stars:0 },
+        { name: "Dullstroom", lat:-25.4204, lon:30.1107, time: "Mañana", note: "Parada para desayunar y pasear por el centro (45–60 min).", isHL:false },
+        { name: "God's Window / The Pinnacle Rock", lat:-24.8963, lon:30.8564, time: "Tarde", note: "Primer contacto con la Panorama Route. Si el día está despejado, God's Window (vistas espectaculares sobre el Lowveld); si hay niebla, The Pinnacle Rock (parada rápida y muy fotogénica).", isHL:true, stars:0 },
+        { name: "Graskop", lat:-24.9209, lon:30.8305, time: "Tarde", note: "Llegada y check-in en el Rustique Boutique Hotel. Si queda luz, paseo por el pueblo.", isHL:true, stars:0 },
       ],
-      stay: { name: "Rustique Boutique Hotel", area: "Middelburg" },
-      tips: ["Llegáis con jet lag y horas de vuelo encima — no forcéis el primer día, es solo aclimatación."]
+      stay: { name: "Rustique Boutique Hotel", area: "Graskop" },
+      tips: [
+        "El clima manda en la Panorama Route, igual que en Table Mountain: si el 15 de agosto llegáis con cielo despejado, aprovechad para subir a God's Window aunque penséis dejarlo para el día 20 — con niebla pierde casi toda la magia. Three Rondavels y Bourke's Luck Potholes, en cambio, suelen verse bien incluso con algo de nubosidad, así que son más fáciles de dejar para el final."
+        "Llegáis con jet lag y horas de vuelo encima — no forcéis el primer día, es solo aclimatación.",
+        "Como volvéis a esta zona el día 20, no busquéis los grandes imprescindibles (Three Rondavels, Bourke's Luck Potholes...) hoy — quedan para entonces. Solo una visita corta para empezar a disfrutar sin prisas.",
+        "Al empezar en Graskop, intentad llegar sobre las 15:00–16:00 para disfrutar con calma del hotel y del primer mirador."
+      ]
     },
     {
       day: 2, date: "2026-08-16", leg: "kruger",
-      fromCode: "MDB", toCode: "PTK", from: "Middelburg", to: "Pretoriuskop",
-      title: "MDB → PTK",
-      subtitle: "Middelburg → Pretoriuskop",
-      summary: "Dullstroom → Sabie → Phabeni Gate, entrada al Kruger con safari de tarde.",
-      distance: 165, time: "3h 45m (con paradas)",
+      fromCode: "GRK", toCode: "PTK", from: "Graskop", to: "Pretoriuskop",
+      title: "Entrada al Kruger",
+      summary: "Graskop → Sabie → Numbi Gate → Pretoriuskop, con safari de tarde por H1-1 y F9.",
       stops: [
-        { name: "Middelburg", lat:-25.7748, lon:29.4644, time: "07:30", note: "Salida temprano.", isHL:false },
-        { name: "Dullstroom", lat:-25.4204, lon:30.1107, time: "Mañana", note: "Desayuno y paseo por el pueblo (45–60 min).", isHL:false },
-        { name: "Sabie", lat:-25.1049, lon:30.7783, time: "Mediodía", note: "Parada para comer.", isHL:false },
-        { name: "Phabeni Gate", lat:-25.025000, lon:31.241389, time: "≈14:00", note: "Entrada al Kruger — intentad llegar antes de las 14:00.", isHL:false },
-        { name: "Pretoriuskop", lat:-25.1793, lon:31.2582, time: "Atardecer", note: "Uno de los campamentos con más encanto por su entorno boscoso. Fauna habitual: elefantes, jirafas, cebras, impalas, facóqueros. Con suerte, rinoceronte blanco o leopardo.", isHL:true, stars:0 },
+        { name: "Graskop", lat:-24.9209, lon:30.8305, time: "Mañana", note: "Salida hacia el Kruger.", isHL:false },
+        { name: "Sabie", lat:-25.1049, lon:30.7783, time: "Mañana", note: "Parada para desayunar o tomar un café antes de entrar al parque.", isHL:false },
+        { name: "Numbi Gate", lat:-25.1544, lon:31.1697, time: "≈11:00", note: "Entrada al Kruger — intentad llegar antes de las 11:00.", isHL:false },
+        { name: "Pretoriuskop", lat:-25.1793, lon:31.2582, time: "Tarde", note: "Safari de tarde: Numbi Gate → Pretoriuskop → H1-1 → F9 (si hay tiempo) → Pretoriuskop. Bosques característicos del sur del Kruger. Posibilidad de ver elefantes, jirafas, cebras, rinocerontes y, con suerte, leopardos.", isHL:true, stars:0 },
       ],
       stay: { name: "Pretoriuskop Rest Camp", area: "Kruger National Park" },
-      tips: ["Primer contacto con la fauna africana — id sin prisa, el objetivo del día es entrar y llegar a tiempo, no acumular kilómetros de safari.", "Si queda tiempo, bucle corto por H1-1 y F9 antes de volver al campamento."]
+      tips: ["Primer safari del viaje — id sin prisa, el objetivo del día es entrar y llegar a tiempo, no acumular kilómetros."]
     },
     {
       day: 3, date: "2026-08-17", leg: "kruger",
