@@ -144,6 +144,7 @@ h1.trip-title{
   text-align:right; flex-shrink:0;
 }
 .countdown .num{font-family:var(--font-display); font-weight:800; font-size:26px; color:var(--amber-soft); line-height:1;}
+.countdown .num.instrip{font-size:19px;}
 .app.leg-capetown .countdown .num{color:var(--teal-soft);}
 .countdown .lbl{font-family:var(--font-mono); font-size:10px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.1em;}
 .countdown-wx{
@@ -211,6 +212,13 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 
   
 .card:active{transform:scale(.995);}
+
+
+.card.card-current{ border-color:#8C4A22; box-shadow:0 8px 24px rgba(140,74,34,.22); }
+.card[data-leg="capetown"].card-current{ border-color:#2E6B5E; box-shadow:0 8px 24px rgba(46,107,94,.22); }
+.card.card-past{ opacity:.45; transition:opacity .2s; }
+.card.card-past:active{ opacity:.65; }
+  
 .card-main{flex:1; padding:18px 16px; min-width:0;}
 .card-top{display:flex; align-items:center; justify-content:space-between; gap:10px;}
 .card-daytag{
