@@ -232,7 +232,56 @@ const TRIP = {
     },
   ]
 };
+const CALENDAR_START = "2026-08-14";
+const CALENDAR_END   = "2026-08-30";
 
+const CALENDAR_EXTRA = {
+  "2026-08-14": { leg:"travel", flight:true, label:"BCN → AUH" },
+  "2026-08-28": { leg:"travel", flight:true, label:"CPT → JNB" },
+  "2026-08-29": { leg:"travel", flight:true, label:"JNB → AUH" },
+  "2026-08-30": { leg:"travel", flight:true, label:"AUH → BCN" },
+};
+
+function getCalendarDayInfo(iso){
+  if(iso < CALENDAR_START || iso > CALENDAR_END) return null;
+  if(CALENDAR_EXTRA[iso]) return CALENDAR_EXTRA[iso];
+  const day = TRIP.days.find(d=>d.date===iso);
+  if(day) return { leg: day.leg, flight: !!day.flight, label: day.to, tripDay: day.day };
+  return null;
+}
+
+function renderTripCalendar(){
+  const el = document.getElementById("trip-calendar");
+  if(!el || el.dataset.rendered) return;
+  const year = 2026, month = 7; // agosto (0-indexado)
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+  const firstWeekday = (new Date(year, month, 1).getDay()+6)%7; // 0 = lunes
+
+  let cells = "";
+  for(let i=0;i<firstWeekday;i++) cells += `<div class="cal-cell empty"></div>`;
+  for(let d=1; d<=daysInMonth; d++){
+    const iso = `${year}-08-${String(d).padStart(2,"0")}`;
+    const info = getCalendarDayInfo(iso);
+    if(!info){
+      cells += `<div class="cal-cell out"><span class="cal-num">${d}</span></div>`;
+      continue;
+    }
+    const legClass = info.leg==="kruger" ? "cal-kruger" : (info.leg==="capetown" ? "cal-capetown" : "cal-travel");
+    const clickAttr = info.tripDay ? ` data-day="${info.tripDay}"` : "";
+    cells += `
+      <div class="cal-cell ${legClass}${info.tripDay ? " cal-clickable" : ""}"${clickAttr}>
+        <span class="cal-num">${d}</span>
+        ${info.flight ? `<svg class="cal-flight"><use href="#i-ticket"/></svg>` : ""}
+        <span class="cal-label">${info.label}</span>
+      </div>`;
+  }
+  const dow = ["L","M","X","J","V","S","D"].map(l=>`<div class="cal-dow">${l}</div>`).join("");
+  el.innerHTML = `<div class="cal-grid cal-header">${dow}</div><div class="cal-grid">${cells}</div>`;
+  el.querySelectorAll(".cal-clickable").forEach(c=>{
+    c.addEventListener("click", ()=> openDay(Number(c.dataset.day)));
+  });
+  el.dataset.rendered = "1";
+}
 const LEG_LABEL = { kruger: "Kruger", capetown: "Ciudad del Cabo" };
 const MYMAPS_URL = "https://www.google.com/maps/d/u/1/viewer?mid=1DIxDEUx2ATWfkPIhY6HAbblI0aXUfv0&usp=sharing";
 
@@ -920,8 +969,7 @@ function showPage(name){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("page-"+name).classList.add("active");
   document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active", b.dataset.page===name));
-  if(name==="overview"){ renderOverview(); renderFullMap(); }
-  if(name==="info") renderFullMap();
+if(name==="overview"){ renderOverview(); renderFullMap(); renderTripCalendar(); }  if(name==="info") renderFullMap();
   if(name==="info") renderPhrases();
 
   if(name==="home"){
