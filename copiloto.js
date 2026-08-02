@@ -67,7 +67,7 @@ window.Copiloto = {
 
   cerrar() {
     this.modal.style.display = "none";
-  }
+  },
 
 
   agregarMensaje(tipo, texto) {
@@ -117,4 +117,4 @@ bind() {
   
 };
 
-window.addEventListener("load", () => Copiloto.init());
+window.addEventListener("DOMContentLoaded", () => Copiloto.init());
