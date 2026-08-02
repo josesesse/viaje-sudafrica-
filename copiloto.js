@@ -18,9 +18,34 @@ window.Copiloto = {
 
           <div class="cp-body">
 
-            Próximamente...
+  <div id="cp-chat" class="cp-chat">
 
-          </div>
+    <div class="cp-msg cp-msg-ai">
+      👋 Hola. Soy tu copiloto del viaje.
+
+      <br><br>
+
+      Puedo ayudarte con el planning, hoteles, rutas, restaurantes y cualquier duda sobre el viaje.
+
+    </div>
+
+  </div>
+
+  <div class="cp-input">
+
+    <input
+      id="cp-question"
+      type="text"
+      placeholder="Pregúntame cualquier cosa..."
+    >
+
+    <button id="cp-send">
+      Preguntar
+    </button>
+
+  </div>
+
+</div>
 
         </div>
       </div>
