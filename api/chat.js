@@ -1,3 +1,11 @@
+import fs from "fs";
+import path from "path";
+
+const knowledge = fs.readFileSync(
+  path.join(process.cwd(), "knowledge.md"),
+  "utf8"
+);
+
 export default async function handler(req, res) {
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -31,6 +39,14 @@ No inventes información.
 Si no sabes algo, dilo claramente.
 No utilices listas largas salvo que el usuario las pida.
 La respuesta debe ser corta, normalmente entre 2 y 5 frases.
+
+=================
+
+INFORMACIÓN DEL VIAJE
+
+${knowledge}
+
+=================
 
 Pregunta del usuario:
 
