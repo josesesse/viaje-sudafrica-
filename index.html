@@ -675,7 +675,7 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
 .cp-backdrop{
   position:absolute;
   inset:0;
-  background:rgba(20,20,20,.45);
+  background: rgba(15,23,42,.28);
   display:flex;
   align-items:center;
   justify-content:center;
@@ -690,10 +690,14 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
   display:flex;
   flex-direction:column;
 
-  background:var(--paper);
-  border:1px solid var(--line);
+  background: rgba(255,255,255,.72);
+backdrop-filter: blur(18px) saturate(180%);
+-webkit-backdrop-filter: blur(18px) saturate(180%);
+border: 1px solid rgba(255,255,255,.35);
   border-radius: 24px;
-  box-shadow:0 20px 60px rgba(0,0,0,.18);
+  box-shadow:
+    0 24px 60px rgba(0,0,0,.18),
+    inset 0 1px rgba(255,255,255,.45);
 }
 
 .cp-header{
