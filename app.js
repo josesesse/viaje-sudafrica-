@@ -122,6 +122,17 @@ const TRIP = {
       subtitle: "Nelspruit → Ciudad del Cabo",
       summary: "Vuelo interno y una tarde tranquila de aterrizaje en la ciudad.",
       flight: { label: "Vuelo interno", detail: "Nelspruit (MQP) → Ciudad del Cabo (CPT) · 18:30", status: "confirmed" },
+      northRoute: {
+        title: "Antes de volar",
+        subtitle: "Graskop → Aeropuerto de Nelspruit",
+        distance: 100, time: "≈1h 45m (con paradas)",
+        stops: [
+          { name: "Graskop", lat:-24.9337, lon:30.8406, time: "Mañana", note: "Última mañana en la zona de Kruger/Panorama Route — salida hacia el aeropuerto de Nelspruit.", isHL:false },
+          { name: "Graskop Gorge Lift Co.", lat:-24.9455, lon:30.8412, time: "Opcional", note: "Ascensor panorámico que baja a la garganta, con pasarelas por el bosque — actividad corta si os queda tiempo antes de devolver el coche.", isHL:true, stars:0 },
+          { name: "Mac Mac Falls", lat:-25.0013, lon:30.8164, time: "Opcional", note: "Una de las cascadas más visitadas de la zona, muy cerca de la carretera — parada rápida de camino al aeropuerto.", isHL:true, stars:0 },
+          { name: "Aeropuerto de Nelspruit (MQP)", lat:-25.5002, lon:30.9119, time: "Mediodía", note: "Devolución del coche de alquiler del primer tramo y facturación para el vuelo interno.", isHL:false },
+        ]
+      },
       stops: [
         { name: "Aeropuerto de Ciudad del Cabo", lat:-33.9715, lon:18.6021, time: "≈18:30", note: "Llegada y recogida del coche de alquiler.", isHL:false },
         { name: "De Waterkant / Gardens / Oranjezicht", lat:-33.9249, lon:18.4108, time: "Noche", note: "Zona recomendada para dormir: ambiente agradable, seguro para cenar fuera y bien conectada con las visitas de los próximos días.", isHL:true, stars:0 },
@@ -411,6 +422,24 @@ function starsStr(n){ if(!n) return ""; return "★".repeat(n) + "☆".repeat(5-
 
 function icon(name){ return `<svg><use href="#i-${name}"/></svg>`; }
 
+/* ============ ROAD PATHS (geometria real extraida de KML) ============ */
+// Coordenadas [lon,lat] simplificadas a partir del KML exportado de Google My Maps.
+// Cubren los dias 1-6 (Kruger), el tramo "7north" (Graskop -> Aeropuerto Nelspruit)
+// y los dias 9 y 10 (Cape Point / Clarence Drive -> Hermanus).
+// Los dias sin entrada aqui (7 tramo sur, 8, 11, 12, 13) siguen dibujandose
+// como linea recta esquematica entre paradas.
+const ROAD_PATHS = {
+  "1": [[28.2304,-26.1287],[28.2198,-26.1449],[28.2317,-26.171],[28.286,-26.1744],[28.3019,-26.1807],[28.3204,-26.1801],[28.3611,-26.1631],[28.3919,-26.1672],[28.4263,-26.157],[28.4577,-26.1651],[28.5133,-26.1631],[28.5314,-26.1488],[28.612,-26.109],[28.7204,-26.0779],[28.7893,-26.0664],[28.8958,-26.0195],[28.9531,-26.0166],[29.0507,-26.0224],[29.1417,-25.9944],[29.1951,-25.9632],[29.2382,-25.9294],[29.2649,-25.855],[29.28,-25.79],[29.2867,-25.7217],[29.3117,-25.6383],[29.3283,-25.6117],[29.4383,-25.6017],[29.4633,-25.5883],[29.475,-25.5817],[29.5383,-25.51],[29.5583,-25.4483],[29.5983,-25.42],[29.6217,-25.42],[29.6417,-25.4067],[29.6567,-25.3717],[29.6883,-25.3417],[29.7317,-25.3283],[29.775,-25.2933],[29.8117,-25.2833],[29.8417,-25.2483],[29.8683,-25.2367],[29.9117,-25.1983],[29.9483,-25.1833],[29.9583,-25.1417],[29.9917,-25.0917],[30.0317,-25.0783],[30.0583,-25.0483],[30.0983,-25.0383],[30.1083,-25.0217],[30.1217,-25.02],[30.1483,-24.9983],[30.1717,-24.9883],[30.1783,-24.9633],[30.2117,-24.9483],[30.2383,-24.9483],[30.2583,-24.9333],[30.2783,-24.9317],[30.3083,-24.9483],[30.3283,-24.9483],[30.3617,-24.9283],[30.3883,-24.9283],[30.4083,-24.9117],[30.4317,-24.9083],[30.4783,-24.9117],[30.4983,-24.9017],[30.5183,-24.9017],[30.5383,-24.8883],[30.5683,-24.8883],[30.6083,-24.9083],[30.6283,-24.9083],[30.6483,-24.8917],[30.6683,-24.8917],[30.7183,-24.9083],[30.7383,-24.9083],[30.7583,-24.9217],[30.7583,-24.9417],[30.7717,-24.9483],[30.7883,-24.9317],[30.8183,-24.9483],[30.8406,-24.9337],[30.8451,-24.94],[30.8564,-24.8965],[30.8451,-24.94],[30.8406,-24.9337]],
+  "2": [[30.8406,-24.9337],[30.8281,-24.9557],[30.8264,-24.9683],[30.828,-24.9852],[30.8231,-24.9971],[30.8354,-25.0072],[30.8556,-25.0091],[30.8817,-25.0219],[30.9106,-25.0243],[30.9313,-25.0344],[30.9525,-25.0344],[30.9721,-25.0288],[31.0007,-25.0288],[31.03,-25.0202],[31.0552,-25.0181],[31.076,-25.0288],[31.1121,-25.0234],[31.1284,-25.0429],[31.1465,-25.0429],[31.1637,-25.0231],[31.1874,-25.0231],[31.2043,-25.0116],[31.2202,-25.017],[31.2401,-25.0243],[31.253,-25.0507],[31.2559,-25.0764],[31.2624,-25.1063],[31.2513,-25.1349],[31.2597,-25.1493],[31.2588,-25.1602],[31.2532,-25.166],[31.2574,-25.1696]],
+  "3": [[31.2574,-25.1696],[31.2687,-25.1695],[31.2777,-25.1638],[31.2938,-25.1607],[31.3116,-25.1478],[31.3319,-25.1445],[31.3554,-25.1258],[31.3752,-25.1258],[31.3934,-25.1102],[31.4127,-25.1102],[31.4319,-25.0866],[31.4519,-25.0847],[31.4666,-25.0691],[31.4849,-25.0691],[31.5061,-25.0454],[31.5108,-25.0175],[31.5288,-25.0031],[31.5387,-24.9862],[31.5547,-24.9884],[31.5578,-24.9975],[31.5741,-24.9975],[31.5761,-24.9917],[31.5905,-24.991],[31.5978,-24.9762],[31.5978,-24.9527],[31.6156,-24.9412],[31.6156,-24.9203],[31.6337,-24.9086],[31.6337,-24.8823],[31.6497,-24.8676],[31.6497,-24.8434],[31.6666,-24.8322],[31.6666,-24.8047],[31.6845,-24.7955],[31.7031,-24.7749],[31.7226,-24.7614],[31.7377,-24.7378],[31.7565,-24.7263],[31.7723,-24.7057],[31.7887,-24.6976],[31.7995,-24.6791],[31.8081,-24.7002],[31.8123,-24.6976],[31.8081,-24.7002],[31.7995,-24.6791],[31.7887,-24.6976],[31.7723,-24.7057],[31.7565,-24.7263],[31.7377,-24.7378],[31.7226,-24.7614],[31.7031,-24.7749],[31.6845,-24.7955],[31.6666,-24.8047],[31.6497,-24.8434],[31.6337,-24.8823],[31.6156,-24.9203],[31.5978,-24.9527],[31.5905,-24.991],[31.5741,-24.9975],[31.5578,-24.9975],[31.5547,-24.9884],[31.5387,-24.9862],[31.5288,-25.0031],[31.5108,-25.0175],[31.5061,-25.0454],[31.4849,-25.0691],[31.4666,-25.0691],[31.4519,-25.0847],[31.4319,-25.0866],[31.4127,-25.1102],[31.3934,-25.1102],[31.3752,-25.1258],[31.3554,-25.1258],[31.3319,-25.1445],[31.3116,-25.1478],[31.2938,-25.1607],[31.2777,-25.1638],[31.2687,-25.1695],[31.2624,-25.1063],[31.2559,-25.0764],[31.253,-25.0507],[31.2401,-25.0243],[31.2202,-25.017],[31.2043,-25.0116],[31.1874,-25.0231],[31.1637,-25.0231],[31.1465,-25.0429],[31.1284,-25.0429],[31.1121,-25.0234],[31.076,-25.0288],[31.0552,-25.0181],[31.03,-25.0202],[31.0007,-25.0288],[30.9721,-25.0288]],
+  "4": [[31.7798,-24.393],[31.7539,-24.4109],[31.7302,-24.4109],[31.7089,-24.4291],[31.6863,-24.4291],[31.6647,-24.4478],[31.6421,-24.4478],[31.6229,-24.4658],[31.6229,-24.4923],[31.6011,-24.5087],[31.5804,-24.5262],[31.5581,-24.5262],[31.5388,-24.5433],[31.5157,-24.5433],[31.4936,-24.5622],[31.4738,-24.5622],[31.4519,-24.5453],[31.4319,-24.5261],[31.4127,-24.5019],[31.3934,-24.4859],[31.3798,-24.4699],[31.3901,-24.4658],[31.3934,-24.4859],[31.4127,-24.5019],[31.4319,-24.5261],[31.4519,-24.5453],[31.4738,-24.5622],[31.4936,-24.5622],[31.5157,-24.5433],[31.5388,-24.5433],[31.5581,-24.5262],[31.5804,-24.5262],[31.6011,-24.5087],[31.6229,-24.4923]],
+  "5": [[31.6229,-24.4478],[31.6647,-24.4291],[31.6863,-24.4291],[31.7089,-24.4109],[31.7302,-24.4109],[31.7539,-24.393],[31.7798,-24.393],[31.7995,-24.4123],[31.7995,-24.4372],[31.8181,-24.4569],[31.8181,-24.4839],[31.8382,-24.5021],[31.8382,-24.5292],[31.8564,-24.5498],[31.8564,-24.5768],[31.876,-24.5952],[31.876,-24.6221],[31.8942,-24.6427],[31.8942,-24.6697],[31.9124,-24.6903],[31.9124,-24.7173],[31.8942,-24.7368],[31.876,-24.7573],[31.8942,-24.7368],[31.8721,-24.79],[31.8721,-24.8172],[31.8919,-24.9092],[31.8919,-24.9542],[31.9153,-25.0165],[31.9153,-25.0554],[31.912,-25.1165],[31.912,-25.1493],[31.9061,-25.1893],[31.9061,-25.2233],[31.8935,-25.2565],[31.8935,-25.2919],[31.8727,-25.3251],[31.8727,-25.3505],[31.8935,-25.3584]],
+  "6": [[31.8935,-25.3584],[31.8703,-25.3251],[31.8703,-25.2919],[31.8935,-25.2565],[31.8935,-25.2233],[31.9061,-25.1893],[31.9061,-25.1493],[31.912,-25.1165],[31.9153,-25.0554],[31.9153,-25.0165],[31.8919,-24.9542],[31.8919,-24.9092],[31.8721,-24.8172],[31.8721,-24.79],[31.8942,-24.7368],[31.876,-24.7573],[31.8564,-24.5768],[31.8382,-24.5292],[31.8181,-24.4839],[31.7995,-24.4372],[31.7798,-24.393],[31.7226,-24.5721],[31.6845,-24.5721],[31.6647,-24.5947],[31.6421,-24.5947],[31.6229,-24.6144],[31.5978,-24.6144],[31.5805,-24.6427],[31.5578,-24.6427],[31.5387,-24.6626],[31.5108,-24.6626],[31.4936,-24.6864],[31.4738,-24.6864],[31.4519,-24.7076],[31.4127,-24.7076],[31.3934,-24.7301],[31.3752,-24.7301],[31.3554,-24.7522],[31.3319,-24.7522],[31.3116,-24.7746],[31.2938,-24.7746],[31.2777,-24.7972],[31.2624,-24.8236],[31.2559,-24.8562],[31.253,-24.8871],[31.2401,-24.9142],[31.2202,-24.9243],[31.2043,-24.9482],[31.1874,-24.9556],[31.1637,-24.9799],[31.1465,-24.9799],[31.1284,-25.0027],[31.1121,-25.0027],[31.076,-25.0288],[31.0552,-25.0181],[31.03,-25.0202],[31.0007,-25.0288],[30.9721,-25.0288],[30.9525,-25.0344],[30.9313,-25.0344],[30.9106,-25.0243],[30.8817,-25.0219],[30.8556,-25.0091],[30.8354,-25.0072],[30.8231,-24.9971],[30.828,-24.9852],[30.8264,-24.9683],[30.8281,-24.9557],[30.8406,-24.9337]],
+  "7north": [[30.8406,-24.9337],[30.8452,-24.9455],[30.8397,-24.9528],[30.8451,-24.9542],[30.8412,-24.9701],[30.8285,-24.9812],[30.8146,-24.9895],[30.8083,-25.0004],[30.7953,-25.0053],[30.7899,-25.0201],[30.7719,-25.0349],[30.7676,-25.0521],[30.7524,-25.0631],[30.7462,-25.0803],[30.7332,-25.0952],[30.7256,-25.1136],[30.7093,-25.1284],[30.7016,-25.1456],[30.6864,-25.1628],[30.6788,-25.18],[30.6636,-25.1948],[30.6538,-25.2109],[30.6386,-25.2257],[30.6288,-25.2429],[30.6136,-25.2577],[30.6049,-25.2762],[30.5919,-25.2947],[30.5811,-25.3143],[30.5681,-25.3315],[30.5573,-25.3487],[30.5443,-25.3659],[30.5335,-25.3844],[30.5205,-25.4016],[30.5097,-25.4188],[30.4967,-25.436],[30.4859,-25.4545],[30.4729,-25.4693],[30.4621,-25.4877],[30.4491,-25.5013],[30.4383,-25.5197],[30.4253,-25.5333],[30.4145,-25.5517],[30.4015,-25.5641],[30.3907,-25.5825],[30.3777,-25.5949],[30.3669,-25.6133],[30.3539,-25.6257],[30.3431,-25.6441],[30.3301,-25.6565],[30.3193,-25.6749],[30.3063,-25.6873],[30.2955,-25.7057],[30.2825,-25.7181],[30.2717,-25.7365],[30.2587,-25.7489],[30.2479,-25.7673],[30.2349,-25.7797],[30.2241,-25.7981],[30.2111,-25.8105],[30.2003,-25.8289],[30.1873,-25.8413],[30.1765,-25.8597],[30.1635,-25.8721],[30.1527,-25.8905],[30.1397,-25.9029],[30.1289,-25.9213],[30.1159,-25.9337],[30.1051,-25.9521],[30.0921,-25.9645],[30.0813,-25.9829],[30.0683,-25.9953],[30.0575,-26.0137],[30.0445,-26.0261],[30.0337,-26.0445],[30.0207,-26.0569],[30.0099,-26.0753],[29.9969,-26.0877],[29.9861,-26.1061],[29.9731,-26.1185],[29.9623,-26.1369],[29.9493,-26.1493],[29.9385,-26.1677],[29.9255,-26.1801],[29.9147,-26.1985],[29.9017,-26.2109],[29.8909,-26.2293],[29.8779,-26.2417],[29.8671,-26.2601],[30.9121,-25.5010]],
+  "9": [[18.4111,-33.9263],[18.4033,-33.9342],[18.3983,-33.9374],[18.3975,-33.9453],[18.3948,-33.9423],[18.3998,-33.9445],[18.4103,-33.9508],[18.4156,-33.9553],[18.4103,-33.9508],[18.3998,-33.9445],[18.3975,-33.9453],[18.3983,-33.9374],[18.3868,-33.9469],[18.376,-33.9469],[18.3624,-33.9663],[18.3496,-33.9843],[18.3374,-33.9925],[18.3286,-34.0093],[18.3401,-34.0195],[18.3495,-34.0359],[18.3547,-34.0492],[18.3495,-34.0359],[18.3401,-34.0195],[18.3374,-33.9925],[18.3416,-34.0356],[18.3467,-34.0524],[18.3401,-34.0673],[18.3421,-34.0857],[18.3335,-34.0993],[18.3341,-34.1177],[18.3273,-34.1329],[18.3273,-34.1585],[18.3395,-34.1733],[18.3459,-34.1917],[18.3559,-34.2027],[18.3617,-34.2211],[18.3673,-34.2381],[18.373,-34.2565],[18.3892,-34.2683],[18.4014,-34.2867],[18.4141,-34.2989],[18.4243,-34.3155],[18.4405,-34.3255],[18.4507,-34.3421],[18.4629,-34.3521],[18.4731,-34.3684],[18.4849,-34.3768],[18.4915,-34.3921],[18.4849,-34.3768],[18.4731,-34.3684],[18.4629,-34.3521],[18.4507,-34.3421],[18.4405,-34.3255],[18.4243,-34.3155],[18.4141,-34.2989],[18.4014,-34.2867],[18.3892,-34.2683],[18.373,-34.2565],[18.3673,-34.2381],[18.3617,-34.2211],[18.3559,-34.2027],[18.3459,-34.1917],[18.3395,-34.1733],[18.3273,-34.1585],[18.3273,-34.1329],[18.3341,-34.1177],[18.3335,-34.0993],[18.3421,-34.0857],[18.3401,-34.0673],[18.3467,-34.0524],[18.3416,-34.0356],[18.3374,-33.9925],[18.3495,-34.0359],[18.3547,-34.0492],[18.3612,-34.0602],[18.3721,-34.0574],[18.3822,-34.0655],[18.3924,-34.0623],[18.4022,-34.0709],[18.4131,-34.0673],[18.4229,-34.0761],[18.4331,-34.0721],[18.4429,-34.0813],[18.4531,-34.0768],[18.4629,-34.0865],[18.4731,-34.0813],[18.4849,-34.1213],[18.4784,-34.1329],[18.4849,-34.1213],[18.4291,-34.1929]],
+  "10": [[18.4291,-34.1929],[18.4374,-34.1861],[18.4436,-34.1801],[18.4498,-34.197],[18.4436,-34.1801],[18.4374,-34.1861],[18.4291,-34.1929],[18.4491,-34.1268],[18.4707,-34.1083],[18.4849,-34.1213],[18.4784,-34.1329],[18.4849,-34.1213],[18.4731,-34.0813],[18.4629,-34.0865],[18.4531,-34.0768],[18.4429,-34.0813],[18.4331,-34.0721],[18.4229,-34.0761],[18.4131,-34.0673],[18.4022,-34.0709],[18.3924,-34.0623],[18.3822,-34.0655],[18.3721,-34.0574],[18.3612,-34.0602],[18.3547,-34.0492],[18.3624,-33.9663],[18.3496,-33.9843],[18.3374,-33.9925],[18.3286,-34.0093],[18.3401,-34.0195],[18.3495,-34.0359],[18.3416,-34.0356],[18.3467,-34.0524],[18.3401,-34.0673],[18.3421,-34.0857],[18.3335,-34.0993],[18.3341,-34.1177],[18.3273,-34.1329],[18.3273,-34.1585],[18.3395,-34.1733],[18.3459,-34.1917],[18.3559,-34.2027],[18.3617,-34.2211],[18.3673,-34.2381],[18.373,-34.2565],[18.3892,-34.2683],[18.4014,-34.2867],[18.4141,-34.2989],[18.4243,-34.3155],[18.4405,-34.3255],[18.4507,-34.3421],[18.4629,-34.3521],[18.4731,-34.3684],[18.4849,-34.3768],[18.4915,-34.3921],[18.5095,-34.3969],[18.5192,-34.3901],[18.5346,-34.3948],[18.549,-34.3898],[18.5627,-34.3939],[18.5757,-34.3814],[18.5983,-34.3831],[18.6111,-34.3735],[18.6221,-34.3789],[18.6321,-34.3684],[18.6493,-34.3676],[18.6602,-34.3564],[18.678,-34.3548],[18.6884,-34.3437],[18.7093,-34.3395],[18.7202,-34.3286],[18.7383,-34.3245],[18.7492,-34.3143],[18.7683,-34.3103],[18.7793,-34.2989],[18.7983,-34.2949],[18.8093,-34.2841],[18.8283,-34.28],[18.8393,-34.2701],[18.8583,-34.2649],[18.8825,-34.2915],[18.9218,-34.3311],[18.9614,-34.3529],[19.0217,-34.3529],[19.0617,-34.3719],[19.1017,-34.3719],[19.1417,-34.3919],[19.1817,-34.3919],[19.2217,-34.4119],[19.2345,-34.4187]],
+};
+
 /* ============ SVG SCHEMATIC MAP ============ */
 function pathMidpoint(pts, X, Y){
   const coords = pts.map(p=>({x:X(p.lon), y:Y(p.lat)}));
@@ -434,12 +463,14 @@ function pathMidpoint(pts, X, Y){
   return coords[Math.floor(coords.length/2)];
 }
 
-function dayMapSVG(day){
-  const pts = day.stops;
-  const lons = pts.map(p=>p.lon), lats = pts.map(p=>p.lat);
+// legKey: "kruger" | "capetown"  ·  dayNumForExtras: numero de dia (solo para las
+// pequenas decoraciones de fondo existentes) o null para mapas sin esas decoraciones.
+function routeMapSVG(pts, legKey, dayNumForExtras, realPath, distance, time){
+  const W = 640, H = 440, PAD = 64;
+  const lons = pts.map(p=>p.lon).concat(realPath ? realPath.map(p=>p[0]) : []);
+  const lats = pts.map(p=>p.lat).concat(realPath ? realPath.map(p=>p[1]) : []);
   const minLon = Math.min(...lons), maxLon = Math.max(...lons);
   const minLat = Math.min(...lats), maxLat = Math.max(...lats);
-  const W = 640, H = 440, PAD = 64;
   const spanLon = Math.max(maxLon-minLon, 0.02);
   const spanLat = Math.max(maxLat-minLat, 0.02);
   const sx = (W-2*PAD)/spanLon, sy = (H-2*PAD)/spanLat;
@@ -449,22 +480,35 @@ function dayMapSVG(day){
   function X(lon){ return offX + (lon-minLon)*s; }
   function Y(lat){ return offY + (maxLat-lat)*s; }
 
-  const isCape = day.leg === "capetown";
+  const isCape = legKey === "capetown";
   const mapBg = isCape ? "#F5F9F6" : "#FAF4E8";
   const routeColor = isCape ? "#4E9484" : "#C97B42";
   const hlColor = isCape ? "#2E6B5E" : "#8C4A22";
   const dotFaint = isCape ? "rgba(46,107,94,.45)" : "rgba(140,74,34,.4)";
 
   let extras = "";
-  if(isCape && day.day >= 9){
+  if(isCape && dayNumForExtras >= 9){
     extras += `<path d="M ${W-20} 0 L ${W-15} ${H*0.3} L ${W-10} ${H*0.6} L ${W} ${H}" fill="none" stroke="rgba(78,148,132,.25)" stroke-width="2.5" stroke-dasharray="3 4"/>`;
   }
-  if(day.day >= 3 && day.day <= 6){
+  if(dayNumForExtras >= 3 && dayNumForExtras <= 6){
     extras += `<path d="M ${W*0.3} ${H*0.2} Q ${W*0.5} ${H*0.4} ${W*0.7} ${H*0.8}" fill="none" stroke="rgba(140,74,34,.15)" stroke-width="1.5" stroke-dasharray="2 3"/>`;
   }
 
-  let path = "M";
-  pts.forEach((p,i)=>{ path += `${i===0?"":" L"} ${X(p.lon).toFixed(1)} ${Y(p.lat).toFixed(1)}`; });
+  // Trazado: geometria real del KML si esta disponible; si no, linea recta esquematica.
+  let pathSVG;
+  if(realPath && realPath.length > 1){
+    let d = "M";
+    realPath.forEach((p,i)=>{ d += `${i===0?"":" L"} ${X(p[0]).toFixed(1)} ${Y(p[1]).toFixed(1)}`; });
+    pathSVG = `
+    <path d="${d}" fill="none" stroke="${routeColor}" stroke-width="5" opacity=".22" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="${d}" fill="none" stroke="${routeColor}" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>`;
+  } else {
+    let d = "M";
+    pts.forEach((p,i)=>{ d += `${i===0?"":" L"} ${X(p.lon).toFixed(1)} ${Y(p.lat).toFixed(1)}`; });
+    pathSVG = `
+    <path d="${d}" fill="none" stroke="${routeColor}" stroke-width="2.5" stroke-dasharray="1 7" stroke-linecap="round"/>
+    <path d="${d}" fill="none" stroke="${routeColor}" stroke-width="1" opacity=".4"/>`;
+  }
 
   let markers = "";
   pts.forEach((p,i)=>{
@@ -487,9 +531,12 @@ function dayMapSVG(day){
     markers += `<text x="${x}" y="${labY}" font-size="${fontSize}" font-weight="${fontWeight}" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.88)" text-anchor="${anchor}">${label}</text>`;
   });
 
-  const mid = pathMidpoint(pts, X, Y);
-  const distStr = day.distance ? `${day.distance} km` : "";
-  const timeStr = day.time ? `${day.time}` : "";
+  const midSourcePts = (realPath && realPath.length > 1)
+    ? realPath.map(p=>({lon:p[0], lat:p[1]}))
+    : pts;
+  const mid = pathMidpoint(midSourcePts, X, Y);
+  const distStr = distance ? `${distance} km` : "";
+  const timeStr = time ? `${time}` : "";
   const infoText = (distStr && timeStr) ? `${distStr} · ${timeStr}` : (distStr || timeStr || "");
   let midInfo = "";
   if(infoText){
@@ -502,18 +549,26 @@ function dayMapSVG(day){
   return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg">
     <rect x="0" y="0" width="${W}" height="${H}" fill="${mapBg}"/>
     ${extras}
-    <path d="${path}" fill="none" stroke="${routeColor}" stroke-width="2.5" stroke-dasharray="1 7" stroke-linecap="round"/>
-    <path d="${path}" fill="none" stroke="${routeColor}" stroke-width="1" opacity=".4"/>
+    ${pathSVG}
     ${markers}
     ${midInfo}
   </svg>`;
+}
+
+function dayMapSVG(day){
+  const realPath = ROAD_PATHS[String(day.day)] || null;
+  return routeMapSVG(day.stops, day.leg, day.day, realPath, day.distance, day.time);
 }
 function escapeXML(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
 
 function fullTripMapSVG(legFilter){
   const days = TRIP.days.filter(d => legFilter === "kruger" ? d.day <= 6 : d.day >= 7);
   const pts = [];
-  days.forEach(d=> d.stops.forEach(p=> pts.push({...p, leg:d.leg})) );
+  days.forEach(d=>{
+    d.stops.forEach(p=> pts.push({...p, leg:d.leg}));
+    const rp = ROAD_PATHS[String(d.day)];
+    if(rp) rp.forEach(p=> pts.push({lon:p[0], lat:p[1], leg:d.leg}));
+  });
 
   const lons = pts.map(p=>p.lon), lats = pts.map(p=>p.lat);
   const minLon = Math.min(...lons), maxLon = Math.max(...lons);
@@ -546,9 +601,17 @@ days.forEach((d, dayIdx)=>{
   const anchor = X(last.lon) < W*0.2 ? "start" : (X(last.lon) > W*0.8 ? "end" : "middle");
 
   // Tramo de línea propio de este día (así se puede ocultar por separado)
-  let dayPath = "M";
-  d.stops.forEach((p,i)=>{ dayPath += `${i===0?"":" L"} ${X(p.lon).toFixed(1)} ${Y(p.lat).toFixed(1)}`; });
-  const dayLine = `<path d="${dayPath}" fill="none" stroke="${lineColor}" stroke-width="3.5" stroke-dasharray="1 7" stroke-linecap="round" opacity=".75"/>`;
+  const dRealPath = ROAD_PATHS[String(d.day)];
+  let dayLine;
+  if(dRealPath && dRealPath.length > 1){
+    let rd = "M";
+    dRealPath.forEach((p,i)=>{ rd += `${i===0?"":" L"} ${X(p[0]).toFixed(1)} ${Y(p[1]).toFixed(1)}`; });
+    dayLine = `<path d="${rd}" fill="none" stroke="${lineColor}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>`;
+  } else {
+    let dayPath = "M";
+    d.stops.forEach((p,i)=>{ dayPath += `${i===0?"":" L"} ${X(p.lon).toFixed(1)} ${Y(p.lat).toFixed(1)}`; });
+    dayLine = `<path d="${dayPath}" fill="none" stroke="${lineColor}" stroke-width="3.5" stroke-dasharray="1 7" stroke-linecap="round" opacity=".75"/>`;
+  }
 
   // Posición D1, D2, etc.
   const labY = Number(y) - 13;
@@ -810,6 +873,33 @@ function openDay(dayNum){
 
   const gmapsUrl = GMAPS_URLS[day.day] || `https://www.google.com/maps/search/${encodeURIComponent(day.to)}`;
 
+  let northRouteHtml = "";
+  if(day.northRoute){
+    const nr = day.northRoute;
+    let northTimelineHtml = "";
+    nr.stops.forEach(s=>{
+      northTimelineHtml += `
+      <div class="tl-item ${s.isHL?"hl":""}">
+        <div class="tl-dot" ${s.isHL ? 'style="border-color:#8C4A22;background:#C97B42;"' : ''}></div>
+        <div class="tl-time">${s.time}</div>
+        <div class="tl-name">${s.name}</div>
+        <div class="tl-note">${s.note}</div>
+        ${s.stars ? `<div class="tl-stars">${starsStr(s.stars)}</div>` : ""}
+      </div>`;
+    });
+    northRouteHtml = `
+    <div class="section">
+      <div class="section-head"><svg style="color:#8C4A22"><use href="#i-map"/></svg><h3>${nr.title}</h3></div>
+      <div class="detail-subtitle">${nr.subtitle}</div>
+      <div class="mapbox-wrap" style="margin-top:14px;">
+        <div class="mapbox">${routeMapSVG(nr.stops, "kruger", null, ROAD_PATHS["7north"], nr.distance, nr.time)}</div>
+        <button class="mapbox-expand" id="expand-map-north">${icon("expand")}</button>
+      </div>
+      <div class="map-caption">${icon("info")}<span>Geometría real de la carretera, extraída de vuestro mapa de Google My Maps.</span></div>
+      <div class="timeline" style="margin-top:18px;">${northTimelineHtml}</div>
+    </div>`;
+  }
+
   const flightHtml = day.flight ? `
     <div class="section">
       <div class="section-head">${icon("compass")}<h3>Vuelo</h3></div>
@@ -834,10 +924,13 @@ function openDay(dayNum){
       <div class="detail-date">${dowLabel(day.date)} · ${dateLabel(day.date)} 2026</div>
     </div>
 
+    ${northRouteHtml}
+
     ${flightHtml}
 
     <div class="section ${legClass}">
       <div class="section-head">${icon("map")}<h3>Ruta del día</h3></div>
+${day.northRoute ? `<div class="detail-subtitle">Al aterrizar en Ciudad del Cabo</div>` : ""}
 <div class="mapbox-wrap">
   <div class="mapbox">${dayMapSVG(day)}</div>
   <button class="mapbox-expand" id="expand-map">${icon("expand")}</button>
@@ -890,6 +983,12 @@ function openDay(dayNum){
   document.getElementById("expand-map").addEventListener("click", ()=>{
   MapViewer.open({ type:"svg", markup: dayMapSVG(day) });
 });
+  if(day.northRoute){
+    const expandNorthBtn = document.getElementById("expand-map-north");
+    if(expandNorthBtn) expandNorthBtn.addEventListener("click", ()=>{
+      MapViewer.open({ type:"svg", markup: routeMapSVG(day.northRoute.stops, "kruger", null, ROAD_PATHS["7north"], day.northRoute.distance, day.northRoute.time) });
+    });
+  }
   document.getElementById("stay-switch").addEventListener("click", ()=>{
     const cur = stayStatus(day.day);
     STORE.stayStatus[day.day] = cur==="confirmed" ? "pending" : "confirmed";
