@@ -851,16 +851,17 @@ function renderDayList(){
       <div class="card-main">
         <div class="card-top">
           <span class="card-daytag">Día ${day.day}</span>
-          <span class="card-date">${dowLabel(day.date)} · ${dateLabel(day.date)}</span>
+          <div class="card-top-right">
+            <span class="card-date">${dowLabel(day.date)} · ${dateLabel(day.date)}</span>
+            ${w ? `<span class="chip-wx"><span class="wx-icon">${WEATHER_ICON[w.icon]||"☀️"}</span>${w.max}°/${w.min}°</span>` : ""}
+          </div>
         </div>
         <div class="card-route">${day.fromCode}<span class="arrow">→</span>${day.toCode}</div>
         ${day.subtitle ? `<div class="card-title">${day.subtitle}</div>` : ""}
         <div class="card-sub">${day.summary}</div>
         <div class="card-bottom">
-          <div class="card-bottom-left">
-            <span class="chip">${icon("bed")}<span class="chip-text">${day.stay.name}</span></span>            <span class="status-pill ${st}">${st==="confirmed"?"Confirmado":"Pendiente"}</span>
-          </div>
-          ${w ? `<span class="chip chip-wx"><span class="wx-icon">${WEATHER_ICON[w.icon]||"☀️"}</span>${w.max}°/${w.min}°</span>` : ""}
+          <span class="chip">${icon("bed")}<span class="chip-text">${day.stay.name}</span></span>
+          <span class="status-pill ${st}">${st==="confirmed"?"Confirmado":"Pendiente"}</span>
         </div>
       </div>
       <div class="stub">
