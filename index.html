@@ -240,16 +240,14 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 .card-subtitle{font-size:13px; color:var(--text-dim); margin-top:2px; line-height:1.3; font-weight:500;}
 .card-sub{font-size:13px; color:var(--text-dim); margin-top:4px; line-height:1.4;}
 .card-bottom{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:13px; flex-wrap:nowrap;}
-.card-bottom-left{display:flex; align-items:center; gap:10px; min-width:0; overflow:hidden; flex:1 1 auto;}
-.chip{display:flex; align-items:center; gap:5px; font-size:12px; color:var(--text-dim); min-width:0;}
+.chip{display:flex; align-items:center; gap:5px; font-size:12px; color:var(--text-dim); min-width:0; flex:1 1 auto; overflow:hidden;}
 .chip-text{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;}
-.chip-wx{flex-shrink:0;}
 .status-pill{flex-shrink:0;}
+.card-top-right{display:flex; flex-direction:column; align-items:flex-end; gap:4px;}
 .chip svg{width:13px; height:13px; opacity:.7;}
+.chip-wx{display:flex; align-items:center; gap:4px; font-size:11px; font-weight:600; color:var(--text-dim);}
 .chip-wx .wx-icon{font-size:13px; line-height:1;}
-.chip-wx{font-weight:600;}
-.status-pill{font-size:11px; font-weight:600; padding:3px 9px; border-radius:100px; font-family:var(--font-mono); letter-spacing:.03em;}
-.status-pill.pending{background:rgba(150,64,42,.14); color:var(--danger);}
+.status-pill{font-size:10px; font-weight:600; padding:2px 7px; border-radius:100px; font-family:var(--font-mono); letter-spacing:.02em; flex-shrink:0;}.status-pill.pending{background:rgba(150,64,42,.14); color:var(--danger);}
 .status-pill.confirmed{background:rgba(63,107,78,.14); color:var(--ok);}
 
 .stub{
