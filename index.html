@@ -494,6 +494,13 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
   display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; word-break:break-word;
 }  
 .cal-legend{display:flex; flex-wrap:wrap; gap:12px; margin-top:12px; padding:0 2px;}
+.cal-zoom-wrap{width:720px; padding:20px; box-sizing:border-box;}
+.cal-zoom-wrap .cal-grid{gap:8px;}
+.cal-zoom-wrap .cal-dow{font-size:14px;}
+.cal-zoom-wrap .cal-cell{border-radius:14px; padding:8px 4px 10px;}
+.cal-zoom-wrap .cal-num{font-size:18px;}
+.cal-zoom-wrap .cal-label{font-size:12px; -webkit-line-clamp:3;}
+.cal-zoom-wrap .cal-flight{width:14px; height:14px;}
 .cal-legend-item{display:flex; align-items:center; gap:6px; font-size:11.5px; color:var(--text-dim);}
 .cal-legend-item svg{width:11px; height:11px; opacity:.75;}
 .cal-legend-dot{width:9px; height:9px; border-radius:50%; display:inline-block; flex-shrink:0;}
@@ -714,7 +721,10 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
     </div>
       <div class="info-card">
       <h4><svg><use href="#i-calendar"/></svg>Calendario del viaje</h4>
-      <div id="trip-calendar"></div>
+      <div class="mapbox-wrap">
+        <div id="trip-calendar"></div>
+        <button class="mapbox-expand" id="expand-calendar"><svg><use href="#i-expand"/></svg></button>
+      </div>
       <div class="cal-legend">
         <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#C97B42;"></span>Kruger</span>
         <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#4E9484;"></span>Ciudad del Cabo</span>
