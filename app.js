@@ -281,12 +281,14 @@ function buildCalendarGridHTML(){
     const legClass = info.leg==="kruger" ? "cal-kruger" : (info.leg==="capetown" ? "cal-capetown" : "cal-travel");
     const flightClass = info.flight ? " cal-has-flight" : "";
     const clickAttr = info.tripDay ? ` data-day="${info.tripDay}"` : "";
+    const w = WEATHER[iso];
     cells += `
     <div class="cal-cell ${legClass}${flightClass}${info.tripDay ? " cal-clickable" : ""}"${clickAttr}>
-    <span class="cal-num">${d}</span>
-        ${info.flight ? `<svg class="cal-flight"><use href="#i-nav-checklist"/></svg>` : ""}
-        <span class="cal-label">${info.label}</span>
-      </div>`;
+      <span class="cal-num">${d}</span>
+      ${info.flight ? `<svg class="cal-flight"><use href="#i-nav-checklist"/></svg>` : ""}
+      ${w ? `<span class="cal-wx"><span class="cal-wx-icon">${WEATHER_ICON[w.icon]||"☀️"}</span><span class="cal-wx-temp">${w.max}°/${w.min}°</span></span>` : ""}
+      <span class="cal-label">${info.label}</span>
+    </div>`;
   }
   const dow = ["L","M","X","J","V","S","D"].map(l=>`<div class="cal-dow">${l}</div>`).join("");
   return `<div class="cal-grid cal-header">${dow}</div><div class="cal-grid">${cells}</div>`;
