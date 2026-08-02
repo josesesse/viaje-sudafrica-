@@ -263,9 +263,7 @@ function getCalendarDayInfo(iso){
   return null;
 }
 
-function renderTripCalendar(){
-  const el = document.getElementById("trip-calendar");
-  if(!el || el.dataset.rendered) return;
+function buildCalendarGridHTML(){
   const year = 2026, month = 7; // agosto (0-indexado)
   const startDay = 10;
   const daysInMonth = new Date(year, month+1, 0).getDate();
@@ -291,11 +289,35 @@ function renderTripCalendar(){
       </div>`;
   }
   const dow = ["L","M","X","J","V","S","D"].map(l=>`<div class="cal-dow">${l}</div>`).join("");
-  el.innerHTML = `<div class="cal-grid cal-header">${dow}</div><div class="cal-grid">${cells}</div>`;
+  return `<div class="cal-grid cal-header">${dow}</div><div class="cal-grid">${cells}</div>`;
+}
+
+function renderTripCalendar(){
+  const el = document.getElementById("trip-calendar");
+  if(!el || el.dataset.rendered) return;
+  el.innerHTML = buildCalendarGridHTML();
   el.querySelectorAll(".cal-clickable").forEach(c=>{
     c.addEventListener("click", ()=> openDay(Number(c.dataset.day)));
   });
   el.dataset.rendered = "1";
+}
+
+function initCalendarZoom(){
+  const btn = document.getElementById("expand-calendar");
+  if(!btn || btn.dataset.bound) return;
+  btn.addEventListener("click", ()=>{
+    const markup = `<div class="cal-zoom-wrap">${buildCalendarGridHTML()}</div>`;
+    MapViewer.open({ type:"html", markup, width:720, height:900 });
+    setTimeout(()=>{
+      document.querySelectorAll("#mv-media .cal-clickable").forEach(c=>{
+        c.addEventListener("click", ()=>{
+          MapViewer.close();
+          openDay(Number(c.dataset.day));
+        });
+      });
+    }, 0);
+  });
+  btn.dataset.bound = "1";
 }
 const LEG_LABEL = { kruger: "Kruger", capetown: "Ciudad del Cabo" };
 const MYMAPS_URL = "https://www.google.com/maps/d/u/1/viewer?mid=1DIxDEUx2ATWfkPIhY6HAbblI0aXUfv0&usp=sharing";
@@ -460,7 +482,26 @@ function pathMidpoint(pts, X, Y){
     }
     acc += segLens[i];
   }
-  return coords[Math.floor(coords.length/2)];
+return coords[Math.floor(coords.length/2)];
+}
+
+// Empuja las etiquetas que chocan entre sí en su dirección preferida (arriba/abajo)
+// hasta que dejan de solaparse con las ya colocadas.
+function resolveLabelOverlaps(items){
+  const placed = [];
+  const boxAt = (item, y) => ({ x1:item.boxX, x2:item.boxX+item.w, y1:y-item.h/2, y2:y+item.h/2 });
+  const overlaps = (a,b) => a.x1 < b.x2 && a.x2 > b.x1 && a.y1 < b.y2 && a.y2 > b.y1;
+  items.forEach(item=>{
+    let y = item.y;
+    let attempts = 0;
+    while(attempts < 24 && placed.some(p => overlaps(boxAt(item, y), p))){
+      y += item.dir * (item.h * 0.85);
+      attempts++;
+    }
+    item.finalY = y;
+    placed.push(boxAt(item, y));
+  });
+  return items;
 }
 
 // legKey: "kruger" | "capetown"  ·  dayNumForExtras: numero de dia (solo para las
@@ -511,6 +552,7 @@ function routeMapSVG(pts, legKey, dayNumForExtras, realPath, distance, time){
   }
 
   let markers = "";
+  const labelItems = [];
   pts.forEach((p,i)=>{
     const x=X(p.lon).toFixed(1), y=Y(p.lat).toFixed(1);
     const isEndpoint = i===0 || i===pts.length-1;
@@ -520,6 +562,7 @@ function routeMapSVG(pts, legKey, dayNumForExtras, realPath, distance, time){
     if(p.isHL || isEndpoint){
       markers += `<circle cx="${x}" cy="${y}" r="${r+5}" fill="none" stroke="${hlColor}" stroke-width="1" opacity=".4"/>`;
     }
+    const dir = isEndpoint ? 1 : -1; // 1 = empuja hacia abajo, -1 = hacia arriba
     const labY = isEndpoint ? Number(y)+24 : Number(y)-15;
     const anchor = X(p.lon) < W*0.18 ? "start" : (X(p.lon) > W*0.82 ? "end" : "middle");
     const fontSize = isEndpoint ? 15 : (p.isHL ? 13 : 11);
@@ -527,8 +570,14 @@ function routeMapSVG(pts, legKey, dayNumForExtras, realPath, distance, time){
     const label = escapeXML(p.name.split(" ").slice(0, isEndpoint?3:2).join(" "));
     const estW = label.length * fontSize * 0.62;
     const boxX = anchor==="start" ? Number(x)-4 : (anchor==="end" ? Number(x)-estW+4 : Number(x)-estW/2);
-    markers += `<rect x="${boxX.toFixed(1)}" y="${(labY-fontSize+2).toFixed(1)}" width="${estW.toFixed(1)}" height="${(fontSize+4).toFixed(1)}" rx="4" fill="${mapBg}" opacity=".88"/>`;
-    markers += `<text x="${x}" y="${labY}" font-size="${fontSize}" font-weight="${fontWeight}" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.88)" text-anchor="${anchor}">${label}</text>`;
+    labelItems.push({ x:Number(x), y:labY, dir, boxX, w:estW, h:fontSize+4, fontSize, fontWeight, anchor, label });
+  });
+
+  resolveLabelOverlaps(labelItems);
+
+  labelItems.forEach(item=>{
+    markers += `<rect x="${item.boxX.toFixed(1)}" y="${(item.finalY-item.fontSize+2).toFixed(1)}" width="${item.w.toFixed(1)}" height="${item.h.toFixed(1)}" rx="4" fill="${mapBg}" opacity=".88"/>`;
+    markers += `<text x="${item.x}" y="${item.finalY.toFixed(1)}" font-size="${item.fontSize}" font-weight="${item.fontWeight}" font-family="'Roboto Mono',ui-monospace,monospace" fill="rgba(46,38,24,.88)" text-anchor="${item.anchor}">${item.label}</text>`;
   });
 
   const midSourcePts = (realPath && realPath.length > 1)
@@ -1074,7 +1123,7 @@ function showPage(name){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById("page-"+name).classList.add("active");
   document.querySelectorAll(".navbtn").forEach(b=>b.classList.toggle("active", b.dataset.page===name));
-if(name==="overview"){ renderOverview(); renderFullMap(); renderTripCalendar(); }  if(name==="info") renderFullMap();
+if(name==="overview"){ renderOverview(); renderFullMap(); renderTripCalendar(); initCalendarZoom(); }  if(name==="info") renderFullMap();  
   if(name==="info") renderPhrases();
 
   if(name==="home"){
@@ -1276,6 +1325,11 @@ function open(opts){
       state.naturalH = vb[3] || 400;
       svg?.removeAttribute("width");
       svg?.removeAttribute("height");
+      finish();
+    } else if(opts.type === "html"){
+      el.innerHTML = opts.markup;
+      state.naturalW = opts.width || 640;
+      state.naturalH = opts.height || 480;
       finish();
     }
   }
