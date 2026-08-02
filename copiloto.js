@@ -84,8 +84,8 @@ window.Copiloto = {
 
 },
 
-enviar() {
-
+async enviar() {
+  
   const input = document.getElementById("cp-question");
   const pregunta = input.value.trim();
 
@@ -95,9 +95,35 @@ enviar() {
 
   input.value = "";
 
-  setTimeout(() => {
-    this.agregarMensaje("ai", "Esta es una respuesta de prueba 😊");
-  }, 500);
+  try {
+
+  const response = await fetch("/api/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      pregunta: pregunta
+    })
+  });
+
+  const data = await response.json();
+
+  this.agregarMensaje(
+    "ai",
+    data.respuesta || "No he podido responder."
+  );
+
+} catch (error) {
+
+  this.agregarMensaje(
+    "ai",
+    "Ha ocurrido un error al conectar con el copiloto."
+  );
+
+  console.error(error);
+
+}
 
 },
 
