@@ -863,6 +863,7 @@ function renderDayList(){
           </div>
           ${w ? `<span class="chip chip-wx"><span class="wx-icon">${WEATHER_ICON[w.icon]||"☀️"}</span>${w.max}°/${w.min}°</span>` : ""}
         </div>
+      </div>
       <div class="stub">
         <div class="stub-num">${String(day.day).padStart(2,"0")}</div>
         ${icon(day.leg==="capetown" ? "wave" : "paw")}
