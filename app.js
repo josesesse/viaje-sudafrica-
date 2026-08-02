@@ -858,8 +858,7 @@ function renderDayList(){
         <div class="card-sub">${day.summary}</div>
         <div class="card-bottom">
           <div class="card-bottom-left">
-            <span class="chip">${icon("bed")}${day.stay.name}</span>
-            <span class="status-pill ${st}">${st==="confirmed"?"Confirmado":"Pendiente"}</span>
+            <span class="chip">${icon("bed")}<span class="chip-text">${day.stay.name}</span></span>            <span class="status-pill ${st}">${st==="confirmed"?"Confirmado":"Pendiente"}</span>
           </div>
           ${w ? `<span class="chip chip-wx"><span class="wx-icon">${WEATHER_ICON[w.icon]||"☀️"}</span>${w.max}°/${w.min}°</span>` : ""}
         </div>
