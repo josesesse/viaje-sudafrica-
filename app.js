@@ -857,11 +857,12 @@ function renderDayList(){
         ${day.subtitle ? `<div class="card-title">${day.subtitle}</div>` : ""}
         <div class="card-sub">${day.summary}</div>
         <div class="card-bottom">
-          <span class="chip">${icon("bed")}${day.stay.name}</span>
+          <div class="card-bottom-left">
+            <span class="chip">${icon("bed")}${day.stay.name}</span>
+            <span class="status-pill ${st}">${st==="confirmed"?"Confirmado":"Pendiente"}</span>
+          </div>
           ${w ? `<span class="chip chip-wx"><span class="wx-icon">${WEATHER_ICON[w.icon]||"☀️"}</span>${w.max}°/${w.min}°</span>` : ""}
-          <span class="status-pill ${st}">${st==="confirmed"?"Confirmado":"Pendiente"}</span>
         </div>
-      </div>
       <div class="stub">
         <div class="stub-num">${String(day.day).padStart(2,"0")}</div>
         ${icon(day.leg==="capetown" ? "wave" : "paw")}
