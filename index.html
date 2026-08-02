@@ -474,7 +474,13 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 .cal-dow{font-family:var(--font-mono); font-size:10px; text-align:center; color:var(--text-faint); text-transform:uppercase;}
 
 .cal-wrap{margin:14px -10px 0;}
-.cal-cell{
+.cal-head-row{display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0;}
+.cal-head-row h4{margin:0;}
+.cal-expand-btn{
+  width:34px; height:34px; border-radius:50%; background:rgba(36,29,18,.08); display:flex;
+  align-items:center; justify-content:center; flex-shrink:0; color:var(--ink);
+}
+.cal-expand-btn svg{width:16px; height:16px;}.cal-cell{
   position:relative;
   aspect-ratio:1/1.55; border-radius:9px; padding:4px 1px 5px; display:flex; flex-direction:column;
   align-items:center; justify-content:flex-start; gap:2px; background:var(--surface); border:1px solid var(--line);
@@ -726,10 +732,12 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
       <p>Dónde dormimos cada noche y qué falta por cerrar.</p>
     </div>
       <div class="info-card">
-      <h4><svg><use href="#i-calendar"/></svg>Calendario del viaje</h4>
-      <div class="mapbox-wrap cal-wrap">
+      <div class="cal-head-row">
+        <h4><svg><use href="#i-calendar"/></svg>Calendario del viaje</h4>
+        <button class="cal-expand-btn" id="expand-calendar"><svg><use href="#i-expand"/></svg></button>
+      </div>
+      <div class="cal-wrap">
         <div id="trip-calendar"></div>
-        <button class="mapbox-expand" id="expand-calendar"><svg><use href="#i-expand"/></svg></button>
       </div>
       <div class="cal-legend">
         <span class="cal-legend-item"><span class="cal-legend-dot" style="background:#C97B42;"></span>Kruger</span>
@@ -762,7 +770,7 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
   <h4><svg><use href="#i-map"/></svg>Mapa completo del viaje</h4>
 
   <div class="section-label" style="margin:0 0 8px;">
-    Norte · Kruger &amp; Panorama Route (días 1–6)
+    Norte · Kruger &amp; Panorama Route<br>(días 1–6)
   </div>
 <div class="mapbox-wrap">
   <div class="mapbox" id="full-map-north"></div>
@@ -776,7 +784,7 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
   </div>
 
   <div class="section-label" style="margin:20px 0 8px;">
-    Sur · Cape Town &amp; Winelands (días 7–13)
+    Sur · Cape Town &amp; Winelands<br>(días 7–13)
   </div>
 <div class="mapbox-wrap">
   <div class="mapbox" id="full-map-south"></div>
