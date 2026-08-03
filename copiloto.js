@@ -404,11 +404,22 @@ async enviar(preguntaForzada) {
 
   if (!pregunta) return;
 
-  this.agregarMensaje("user", pregunta);
-
   input.value = "";
 
-  const typingEl = this.mostrarTyping();
+  const chat = document.getElementById("cp-chat");
+  let typingEl;
+
+  this._animarAltura(chat, () => {
+    const userMsg = document.createElement("div");
+    userMsg.className = "cp-msg cp-msg-user";
+    userMsg.textContent = pregunta;
+    chat.appendChild(userMsg);
+
+    typingEl = document.createElement("div");
+    typingEl.className = "cp-msg cp-msg-ai cp-typing";
+    typingEl.innerHTML = `<span class="cp-dot"></span><span class="cp-dot"></span><span class="cp-dot"></span>`;
+    chat.appendChild(typingEl);
+  });
 
   try {
 
