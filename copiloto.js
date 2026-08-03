@@ -277,15 +277,18 @@ async enviar(preguntaForzada) {
 
   try {
 
-  const response = await fetch("/api/chat", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      pregunta: pregunta
-    })
-  });
+  const ubicacion = JSON.parse(localStorage.getItem("ubicacion"));
+
+const response = await fetch("/api/chat", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    pregunta,
+    ubicacion
+  })
+});
 
   const data = await response.json();
 
