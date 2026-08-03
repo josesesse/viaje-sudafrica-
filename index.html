@@ -87,7 +87,7 @@ a{color:inherit;}
 }
 
 #page-home{
-  padding-top: 155px;
+  padding-top: 170px;
 }
 
 /* ---------- Top header ---------- */
@@ -145,6 +145,7 @@ h1.trip-title{
 .countdown{
   text-align:right; flex-shrink:0;
 }
+.countdown{cursor:pointer;}  
 .countdown .num{font-family:var(--font-display); font-weight:800; font-size:26px; color:var(--amber-soft); line-height:1;}
 .countdown .num.instrip{font-size:19px;}
 .app.leg-capetown .countdown .num{color:var(--teal-soft);}
@@ -239,7 +240,11 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 .card[data-leg="capetown"].card-current{ border-color:var(--ink); box-shadow:0 8px 24px rgba(36,29,18,.22); }
 .card.card-past{ opacity:.45; transition:opacity .2s; }
 .card.card-past:active{ opacity:.65; }
-.card.card-flight{ border-color:var(--danger); }
+.card.card-flight{
+  border-width: 1.5px;
+  border-color: rgba(150,64,42,.45);
+  border-style: dashed;
+}
   
 .card-main{flex:1; padding:18px 16px; min-width:0;}
 .card-top{display:flex; align-items:center; justify-content:space-between; gap:10px;}
@@ -292,7 +297,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 .stub::before{top:-9px;} .stub::after{bottom:-9px;}
 .stub .stub-num{font-family:var(--font-display); font-weight:800; font-size:22px; color:var(--text-faint);}
 .stub svg{width:22px; height:22px; opacity:.55;}
-.stub-flight{width:19px !important; height:19px !important; margin-top:6px; opacity:.85; color:var(--danger);}
+.stub-flight{width:26px !important; height:19px !important; margin-top:6px; opacity:.85; color:var(--danger);}
 .card-chevron{position:absolute; right:0px; top:14px; width:16px; height:16px; color:var(--text-faint); opacity:.5;}
 
 /* empty state */
