@@ -1187,9 +1187,10 @@ function updateCountdown(){
     const w = todayDay ? WEATHER[todayDay.date] : null;
     if(w){
       wxEl.innerHTML = `<span class="wx-icon">${WEATHER_ICON[w.icon]||"☀️"}</span><span class="wx-temp">${w.max}°/${w.min}°</span><span class="wx-rain">💧${w.rain}%</span>`;
-      wxEl.classList.add("show");
+      wxEl.dataset.hasWeather = "1";
     } else {
       wxEl.classList.remove("show"); wxEl.innerHTML = "";
+      wxEl.dataset.hasWeather = "";
     }
   } else {
     numEl.classList.remove("instrip");
@@ -1198,6 +1199,21 @@ function updateCountdown(){
     wxEl.classList.remove("show"); wxEl.innerHTML = "";
   }
 }
+
+let wxHideTimer = null;
+function initCountdownWeatherToggle(){
+  const countdown = document.querySelector(".countdown");
+  const wxEl = document.getElementById("countdown-wx");
+  if(!countdown || countdown.dataset.bound) return;
+  countdown.addEventListener("click", ()=>{
+    if(!wxEl.dataset.hasWeather) return;
+    clearTimeout(wxHideTimer);
+    wxEl.classList.add("show");
+    wxHideTimer = setTimeout(()=> wxEl.classList.remove("show"), 4000);
+  });
+  countdown.dataset.bound = "1";
+}
+
 
 /* ============ VISOR v2 (imágenes y SVG, pantalla completa) ============ */
 const MapViewer = (() => {
@@ -1484,6 +1500,7 @@ function init(){
   }, 1800);
   
   try{ updateCountdown(); }catch(e){ console.error("updateCountdown", e); }
+  try{ initCountdownWeatherToggle(); }catch(e){ console.error("initCountdownWeatherToggle", e); }
   try{ MapViewer.init(); }catch(e){ console.error("MapViewer.init", e); }
   try{ initCurrencyConverter(); }catch(e){ console.error("initCurrencyConverter", e); }
   try{ initParkMapViewer(); }catch(e){ console.error("initParkMapViewer", e); }
