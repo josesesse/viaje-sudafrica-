@@ -115,7 +115,7 @@ function buildStayCard(day){
   card.className = "cp-card cp-card-stay";
   card.innerHTML = `
     <div class="cp-card-top">
-  <span class="cp-card-daytag">Día ${day.day}</span>
+  <span class="cp-card-daytag">¿Dónde dormimos?</span>
   <span class="cp-card-arrow">›</span>
 </div>
     <div class="cp-card-title">🏨 ${day.stay.name}</div>
@@ -331,11 +331,12 @@ window.Copiloto = {
   resolverTyping(msgEl, texto) {
 
     const chat = document.getElementById("cp-chat");
+    const anclaje = msgEl.previousElementSibling || msgEl;
 
     this._animarAltura(chat, () => {
       msgEl.classList.remove("cp-typing");
       renderCopilotoContent(msgEl, texto);
-    }, msgEl);
+    }, anclaje);
 
   },
 
