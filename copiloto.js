@@ -203,7 +203,7 @@ window.Copiloto = {
       msg.className = "cp-msg cp-msg-" + tipo;
       if(tipo === "ai"){
         renderCopilotoContent(msg, texto);
-        // msg.innerHTML = mdToHtml(texto);
+        msg.innerHTML = mdToHtml(texto);
       } else {
         msg.textContent = texto;
       }
@@ -223,7 +223,7 @@ window.Copiloto = {
     this._animarAltura(chat, () => {
       msg = document.createElement("div");
       msg.className = "cp-msg cp-msg-ai cp-typing";
-      // msg.innerHTML = `<span class="cp-dot"></span><span class="cp-dot"></span><span class="cp-dot"></span>`;
+      msg.innerHTML = `<span class="cp-dot"></span><span class="cp-dot"></span><span class="cp-dot"></span>`;
       renderCopilotoContent(msgEl, texto);
       chat.appendChild(msg);
     });
