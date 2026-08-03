@@ -126,6 +126,9 @@ console.log(contextoUbicacion);
                 text: `
 Eres el copiloto inteligente de un viaje por Sudáfrica.
 
+Para pruebas, si el usuario pide un mapa responde exactamente:
+[[MAPA:40.42152,0.423332]]
+
 Tu misión es ayudar a los viajeros durante todo el viaje de forma útil, natural y práctica.
 
 Habla siempre en español.
