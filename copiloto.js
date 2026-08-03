@@ -24,7 +24,7 @@ function mdToHtml(texto){
 
 function renderCopilotoContent(container, texto){
   container.innerHTML = "";
-  const regex = /\[\[(DIA|ALOJAMIENTO|MAPA):([^\]]+)\]\]/g;
+  const regex = /\[\[(DIA|ALOJAMIENTO|MAPA|BOOKING):([^\]]+)\]\]/g;
   let lastIndex = 0, match;
 
   function appendText(fragment){
@@ -81,6 +81,17 @@ else if(tipo === "MAPA"){
     }
 
 }
+
+    else if(tipo === "BOOKING"){
+
+    const nombre = valor.trim();
+    const bookingUrl = `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(nombre)}`;
+
+    container.appendChild(buildBookingCard(nombre, bookingUrl));
+
+}
+    
+    
     lastIndex = regex.lastIndex;
   }
   appendText(texto.slice(lastIndex));
@@ -125,6 +136,23 @@ function buildStayCard(day){
     Copiloto.cerrar();
     if(typeof openDay === "function") openDay(day.day);
   });
+  return card;
+}
+
+function buildBookingCard(nombre, url){
+  const card = document.createElement("a");
+  card.href = url;
+  card.target = "_blank";
+  card.rel = "noopener";
+  card.className = "cp-card cp-card-booking";
+  card.innerHTML = `
+    <div class="cp-card-top">
+      <span class="cp-card-daytag" style="background:rgba(0,53,128,.12); color:#003580;">Booking.com</span>
+      <span class="cp-card-arrow">›</span>
+    </div>
+    <div class="cp-card-title">🏨 Buscar alojamiento en ${nombre}</div>
+    <div class="cp-card-sub">Se abre en una pestaña nueva.</div>
+  `;
   return card;
 }
 
