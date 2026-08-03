@@ -1636,9 +1636,26 @@ window.addEventListener("scroll", () => {
 }, false);
 
 }
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", () => {
 
+  init();
 
+  if (navigator.geolocation) {
+
+    navigator.geolocation.getCurrentPosition((pos) => {
+
+      localStorage.setItem("ubicacion", JSON.stringify({
+        lat: pos.coords.latitude,
+        lng: pos.coords.longitude,
+        accuracy: pos.coords.accuracy,
+        updated: Date.now()
+      }));
+
+    });
+
+  }
+
+});
 
 function syncBottomNavToViewport(){
   const nav = document.querySelector(".bottomnav");
