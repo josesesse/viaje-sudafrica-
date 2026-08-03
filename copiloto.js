@@ -60,7 +60,10 @@ if(tipo === "DIA" || tipo === "ALOJAMIENTO"){
 }
 else if(tipo === "MAPA"){
 
-    const [lat,lng] = valor.split(",").map(Number);
+    const partes = valor.split(",");
+    const lat = Number(partes[0]);
+    const lng = Number(partes[1]);
+    const etiqueta = partes.slice(2).join(",").trim();
 
     if(!isNaN(lat) && !isNaN(lng)){
 
@@ -69,7 +72,8 @@ else if(tipo === "MAPA"){
         renderMapCard(
             mapa,
             lat,
-            lng
+            lng,
+            etiqueta
         );
 
         container.appendChild(mapa);
@@ -124,7 +128,7 @@ function buildStayCard(day){
   return card;
 }
 
-function renderMapCard(container, lat, lng){
+function renderMapCard(container, lat, lng, etiqueta){
 
   container.innerHTML = `<div class="cp-map"></div>`;
 
@@ -141,7 +145,10 @@ function renderMapCard(container, lat, lng){
     maxZoom:19
   }).addTo(map);
 
-  L.marker([lat, lng]).addTo(map);
+  const marker = L.marker([lat, lng]).addTo(map);
+  if(etiqueta){
+    marker.bindPopup(etiqueta).openPopup();
+  }
 
   // Leaflet necesita recalcular el tamaño cuando el div ya existe
   setTimeout(() => map.invalidateSize(), 50);
