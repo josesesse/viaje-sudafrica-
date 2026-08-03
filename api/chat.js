@@ -297,7 +297,7 @@ ${pregunta}
   console.log(datos);
 
   const respuestaTexto =
-  datos.candidates?.[0]?.content?.parts?.[0]?.text || "No tengo respuesta.";
+  datos.candidates?.[0]?.content?.parts?.[0]?.text || "Estoy recibiendo muchas consultas en este momento. Inténtalo de nuevo en unos segundos.";
 
 res.status(200).json({
   respuesta: respuestaTexto
