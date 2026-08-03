@@ -24,7 +24,7 @@ function mdToHtml(texto){
 
 function renderCopilotoContent(container, texto){
   container.innerHTML = "";
-  const regex = /\[\[(DIA|ALOJAMIENTO):(\d+)\]\]/g;
+  const regex = /\[\[(DIA|ALOJAMIENTO|MAPA):([^\]]+)\]\]/g;
   let lastIndex = 0, match;
 
   function appendText(fragment){
@@ -36,11 +36,47 @@ function renderCopilotoContent(container, texto){
 
   while((match = regex.exec(texto))){
     appendText(texto.slice(lastIndex, match.index));
-    const dayNum = Number(match[2]);
-    const day = (typeof TRIP !== "undefined") ? TRIP.days.find(d => d.day === dayNum) : null;
+    const tipo = match[1];
+const valor = match[2];
+
+if(tipo === "DIA" || tipo === "ALOJAMIENTO"){
+
+    const dayNum = Number(valor);
+
+    const day = (typeof TRIP !== "undefined")
+        ? TRIP.days.find(d => d.day === dayNum)
+        : null;
+
     if(day){
-      container.appendChild(match[1] === "DIA" ? buildDayCard(day) : buildStayCard(day));
+
+        container.appendChild(
+            tipo === "DIA"
+                ? buildDayCard(day)
+                : buildStayCard(day)
+        );
+
     }
+
+}
+else if(tipo === "MAPA"){
+
+    const [lat,lng] = valor.split(",").map(Number);
+
+    if(!isNaN(lat) && !isNaN(lng)){
+
+        const mapa = document.createElement("div");
+
+        renderMapCard(
+            mapa,
+            lat,
+            lng
+        );
+
+        container.appendChild(mapa);
+
+    }
+
+}
     lastIndex = regex.lastIndex;
   }
   appendText(texto.slice(lastIndex));
@@ -86,6 +122,30 @@ function buildStayCard(day){
     if(typeof openDay === "function") openDay(day.day);
   });
   return card;
+}
+
+function renderMapCard(container, lat, lng){
+
+  container.innerHTML = `<div class="cp-map"></div>`;
+
+  const mapDiv = container.querySelector(".cp-map");
+
+  const map = L.map(mapDiv, {
+    zoomControl: false,
+    attributionControl: false
+  });
+
+  map.setView([lat, lng], 13);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom:19
+  }).addTo(map);
+
+  L.marker([lat, lng]).addTo(map);
+
+  // Leaflet necesita recalcular el tamaño cuando el div ya existe
+  setTimeout(() => map.invalidateSize(), 50);
+
 }
 
 
@@ -323,44 +383,5 @@ bind() {
 window.addEventListener("DOMContentLoaded", () => Copiloto.init());
 
 
-function renderMapCard(container, lat, lng){
-
-  container.innerHTML = `
-    <div class="cp-map" style="
-      height:220px;
-      border-radius:18px;
-      overflow:hidden;
-      margin:10px 0;
-    "></div>
-  `;
-
-  const mapDiv = container.querySelector(".cp-map");
-
-  const map = L.map(mapDiv, {
-    zoomControl: false,
-    attributionControl: false
-  });
-
-  map.setView([lat, lng], 13);
-
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    maxZoom:19
-  }).addTo(map);
-
-  L.marker([lat, lng]).addTo(map);
-
-  // Leaflet necesita recalcular el tamaño cuando el div ya existe
-  setTimeout(() => map.invalidateSize(), 50);
-
-}
 
 
-
-const prueba = document.createElement("div");
-document.getElementById("cp-chat").appendChild(prueba);
-
-renderMapCard(
-    prueba,
-    40.42152,
-    0.423332
-);
