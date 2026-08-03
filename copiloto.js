@@ -349,20 +349,16 @@ window.Copiloto = {
   this._animarAltura(chat, () => {
 
     msg = document.createElement("div");
-    msg.className = "cp-msg cp-msg-" + tipo;
+msg.className = "cp-msg cp-msg-" + tipo;
 
-    if (tipo === "ai") {
+if (tipo === "ai") {
+    renderCopilotoContent(msg, texto);
+} else {
+    msg.textContent = texto;
+}
 
-      renderCopilotoContent(msg, texto);
-
-    } else {
-
-      msg.textContent = texto;
-
-    }
-
-    chat.appendChild(msg);
-
+chat.appendChild(msg);
+chat.scrollTop = chat.scrollHeight;
   });
 
   return msg;
@@ -373,20 +369,19 @@ window.Copiloto = {
   mostrarTyping() {
 
   const chat = document.getElementById("cp-chat");
-  let msg;
 
-  this._animarAltura(chat, () => {
-    msg = document.createElement("div");
-    msg.className = "cp-msg cp-msg-ai cp-typing";
-    msg.innerHTML = `
-      <span class="cp-dot"></span>
-      <span class="cp-dot"></span>
-      <span class="cp-dot"></span>
-    `;
-    chat.appendChild(msg);
-  });
+const msg = document.createElement("div");
+msg.className = "cp-msg cp-msg-ai cp-typing";
+msg.innerHTML = `
+<span class="cp-dot"></span>
+<span class="cp-dot"></span>
+<span class="cp-dot"></span>
+`;
 
-  return msg;
+chat.appendChild(msg);
+chat.scrollTop = chat.scrollHeight;
+
+return msg;
 
 },
 
@@ -394,13 +389,11 @@ window.Copiloto = {
   // cambio de altura si la respuesta ocupa más (o menos) que los puntos.
   resolverTyping(msgEl, texto) {
 
-    const chat = document.getElementById("cp-chat");
-    const anclaje = msgEl.previousElementSibling || msgEl;
+    msgEl.classList.remove("cp-typing");
+renderCopilotoContent(msgEl, texto);
 
-    this._animarAltura(chat, () => {
-      msgEl.classList.remove("cp-typing");
-      renderCopilotoContent(msgEl, texto);
-    }, anclaje);
+const chat = document.getElementById("cp-chat");
+chat.scrollTop = chat.scrollHeight;
 
   },
 
