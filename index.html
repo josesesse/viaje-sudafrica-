@@ -758,16 +758,21 @@ border: 1px solid rgba(255,255,255,.35);
   padding:14px 16px;
   border-radius:18px;
   line-height:1.45;
+  max-width:80%;
 }
 
 .cp-msg-ai{
   background:#f5f5f5;
+  max-width:100%;
 }
 
 .cp-msg-user{
-  background:#1f6feb;
-  color:white;
+  background:var(--card);
+    color:var(--text);
+
+    border:1px solid var(--line);
   align-self:flex-end;
+  max-width:80%;
 }
 
 .cp-typing{
