@@ -40,9 +40,9 @@ window.Copiloto = {
       placeholder="Pregúntame cualquier cosa..."
     >
 
-    <button id="cp-send">
-      Preguntar
-    </button>
+    <button id="cp-send" aria-label="Enviar">
+  ↑
+</button>
 
   </div>
 
