@@ -52,9 +52,13 @@ function buildDayCard(day){
   card.className = "cp-card cp-card-day";
   card.innerHTML = `
     <div class="cp-card-top">
-      <span class="cp-card-daytag">Día ${day.day}</span>
-      <span class="cp-card-route">${day.fromCode} → ${day.toCode}</span>
-    </div>
+  <span class="cp-card-daytag">Día ${day.day}</span>
+
+  <div style="display:flex;align-items:center;gap:8px;">
+    <span class="cp-card-route">${day.fromCode} → ${day.toCode}</span>
+    <span class="cp-card-arrow">›</span>
+  </div>
+</div>
     <div class="cp-card-title">${day.subtitle || day.title}</div>
     <div class="cp-card-sub">${day.summary}</div>
   `;
@@ -70,7 +74,10 @@ function buildStayCard(day){
   card.type = "button";
   card.className = "cp-card cp-card-stay";
   card.innerHTML = `
-    <div class="cp-card-top"><span class="cp-card-daytag">Día ${day.day}</span></div>
+    <div class="cp-card-top">
+  <span class="cp-card-daytag">Día ${day.day}</span>
+  <span class="cp-card-arrow">›</span>
+</div>
     <div class="cp-card-title">🏨 ${day.stay.name}</div>
     <div class="cp-card-sub">${day.stay.area || ""}</div>
   `;
