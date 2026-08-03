@@ -129,30 +129,29 @@ function buildStayCard(day){
 }
 
 function renderMapCard(container, lat, lng, etiqueta){
+  const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
 
-  container.innerHTML = `<div class="cp-map"></div>`;
-
+  container.innerHTML = `
+    <div class="cp-map"></div>
+    <div class="cp-map-actions">
+      <a href="${googleMapsUrl}" target="_blank" rel="noopener" class="cp-map-action">🗺️ Abrir en Google Maps</a>
+    </div>
+  `;
   const mapDiv = container.querySelector(".cp-map");
-
   const map = L.map(mapDiv, {
     zoomControl: false,
     attributionControl: false
   });
-
   map.setView([lat, lng], 13);
-
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     maxZoom:19
   }).addTo(map);
-
   const marker = L.marker([lat, lng]).addTo(map);
   if(etiqueta){
     marker.bindPopup(etiqueta).openPopup();
   }
-
   // Leaflet necesita recalcular el tamaño cuando el div ya existe
   setTimeout(() => map.invalidateSize(), 50);
-
 }
 
 
