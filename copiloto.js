@@ -195,42 +195,52 @@ window.Copiloto = {
 
   agregarMensaje(tipo, texto) {
 
-    const chat = document.getElementById("cp-chat");
-    let msg;
+  const chat = document.getElementById("cp-chat");
+  let msg;
 
-    this._animarAltura(chat, () => {
-      msg = document.createElement("div");
-      msg.className = "cp-msg cp-msg-" + tipo;
-      if(tipo === "ai"){
-        renderCopilotoContent(msg, texto);
-        msg.innerHTML = mdToHtml(texto);
-      } else {
-        msg.textContent = texto;
-      }
-      chat.appendChild(msg);
-    });
+  this._animarAltura(chat, () => {
 
-    return msg;
+    msg = document.createElement("div");
+    msg.className = "cp-msg cp-msg-" + tipo;
 
-  },
+    if (tipo === "ai") {
+
+      renderCopilotoContent(msg, texto);
+
+    } else {
+
+      msg.textContent = texto;
+
+    }
+
+    chat.appendChild(msg);
+
+  });
+
+  return msg;
+
+},
 
   // Burbuja con los tres puntos animados mientras se espera la respuesta.
   mostrarTyping() {
 
-    const chat = document.getElementById("cp-chat");
-    let msg;
+  const chat = document.getElementById("cp-chat");
+  let msg;
 
-    this._animarAltura(chat, () => {
-      msg = document.createElement("div");
-      msg.className = "cp-msg cp-msg-ai cp-typing";
-      msg.innerHTML = `<span class="cp-dot"></span><span class="cp-dot"></span><span class="cp-dot"></span>`;
-      renderCopilotoContent(msgEl, texto);
-      chat.appendChild(msg);
-    });
+  this._animarAltura(chat, () => {
+    msg = document.createElement("div");
+    msg.className = "cp-msg cp-msg-ai cp-typing";
+    msg.innerHTML = `
+      <span class="cp-dot"></span>
+      <span class="cp-dot"></span>
+      <span class="cp-dot"></span>
+    `;
+    chat.appendChild(msg);
+  });
 
-    return msg;
+  return msg;
 
-  },
+},
 
   // Sustituye la burbuja de "escribiendo" por el texto real, animando el
   // cambio de altura si la respuesta ocupa más (o menos) que los puntos.
@@ -240,7 +250,7 @@ window.Copiloto = {
 
     this._animarAltura(chat, () => {
       msgEl.classList.remove("cp-typing");
-      msgEl.innerHTML = mdToHtml(texto);
+      renderCopilotoContent(msgEl, texto);
     });
 
   },
