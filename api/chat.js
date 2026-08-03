@@ -294,6 +294,7 @@ ${pregunta}
   );
 
   const datos = await respuesta.json();
+  console.log(datos);
 
   const respuestaTexto =
   datos.candidates?.[0]?.content?.parts?.[0]?.text || "No tengo respuesta.";
