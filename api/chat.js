@@ -26,7 +26,7 @@ const DEBUG_DATE = "2026-08-19";
 export default async function handler(req, res) {
 
   const apiKey = process.env.GEMINI_API_KEY;
-  const { pregunta } = req.body;
+  const { pregunta, ubicacion } = req.body;
   if (!pregunta) {
   return res.status(400).json({
     respuesta: "No se ha recibido ninguna pregunta."
