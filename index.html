@@ -284,7 +284,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
   
 .card[data-leg="capetown"] .stub-num{color:var(--teal-soft);}
 .card[data-leg="capetown"] .stub svg{color:var(--teal-soft);}
-.card[data-leg="capetown"]{border-color:rgba(78,148,132,.2);}
+.card[data-leg="capetown"]:not(.card-flight){border-color:rgba(78,148,132,.2);}
 .card[data-leg="capetown"] .stub::before, .card[data-leg="capetown"] .stub::after{background:var(--bg);}
 .stub::before, .stub::after{
   content:""; position:absolute; left:-9px; width:18px; height:18px; border-radius:50%; background:var(--bg);
@@ -292,6 +292,7 @@ body.leg-capetown .section-label{color:var(--teal-soft); margin:10px 0 2px;}
 .stub::before{top:-9px;} .stub::after{bottom:-9px;}
 .stub .stub-num{font-family:var(--font-display); font-weight:800; font-size:22px; color:var(--text-faint);}
 .stub svg{width:22px; height:22px; opacity:.55;}
+.stub-flight{width:15px !important; height:15px !important; margin-top:6px; opacity:.85; color:var(--danger);}
 .card-chevron{position:absolute; right:0px; top:14px; width:16px; height:16px; color:var(--text-faint); opacity:.5;}
 
 /* empty state */
