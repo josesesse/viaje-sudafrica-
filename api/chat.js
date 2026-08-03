@@ -21,7 +21,77 @@ const knowledge = fs.readFileSync(
 const DEBUG_DATE = "2026-08-19";
 // const DEBUG_DATE = null;
 
+const TRIP_DAYS_LOCATIONS = [
+  { day:1,  date:"2026-08-15", lat:-24.9209, lon:30.8305, label:"Graskop" },
+  { day:2,  date:"2026-08-16", lat:-25.1793, lon:31.2582, label:"Pretoriuskop" },
+  { day:3,  date:"2026-08-17", lat:-24.3936, lon:31.7784, label:"Satara" },
+  { day:4,  date:"2026-08-18", lat:-24.4300, lon:31.6200, label:"Tamboti" },
+  { day:5,  date:"2026-08-19", lat:-25.3508, lon:31.8999, label:"Crocodile Bridge" },
+  { day:6,  date:"2026-08-20", lat:-24.9209, lon:30.8305, label:"Graskop" },
+  { day:7,  date:"2026-08-21", lat:-33.9249, lon:18.4108, label:"Ciudad del Cabo" },
+  { day:8,  date:"2026-08-22", lat:-33.9249, lon:18.4108, label:"Ciudad del Cabo" },
+  { day:9,  date:"2026-08-23", lat:-34.1929, lon:18.4291, label:"Simon's Town" },
+  { day:10, date:"2026-08-24", lat:-34.4187, lon:19.2345, label:"Hermanus" },
+  { day:11, date:"2026-08-25", lat:-33.9346, lon:18.8600, label:"Stellenbosch" },
+  { day:12, date:"2026-08-26", lat:-33.9346, lon:18.8600, label:"Stellenbosch" },
+  { day:13, date:"2026-08-27", lat:-33.9715, lon:18.6021, label:"Zona aeropuerto Ciudad del Cabo" },
+];
 
+async function obtenerPrevisionReal(hoy){
+  const MS_DIA = 1000 * 60 * 60 * 24;
+  const limite = new Date(hoy.getTime() + 15 * MS_DIA);
+
+  const diasEnRango = TRIP_DAYS_LOCATIONS.filter(d=>{
+    const fecha = new Date(d.date + "T12:00:00");
+    return fecha >= hoy && fecha <= limite;
+  });
+
+  if(diasEnRango.length === 0) return "";
+
+  const resultados = await Promise.all(diasEnRango.map(async (d)=>{
+    try{
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${d.lat}&longitude=${d.lon}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=auto&start_date=${d.date}&end_date=${d.date}`;
+      const r = await fetch(url);
+      const j = await r.json();
+      const max = j?.daily?.temperature_2m_max?.[0];
+      const min = j?.daily?.temperature_2m_min?.[0];
+      const lluvia = j?.daily?.precipitation_probability_max?.[0];
+      if(max === undefined) return null;
+      return `- Día ${d.day} (${d.date}, ${d.label}): previsión real máx ${max}°C / mín ${min}°C, probabilidad de lluvia ${lluvia}%.`;
+    }catch(e){
+      return null;
+    }
+  }));
+
+  const lineas = resultados.filter(Boolean);
+  if(lineas.length === 0) return "";
+
+  return `
+PREVISIÓN METEOROLÓGICA REAL (actualizada, solo disponible para los próximos días del viaje que ya tienen pronóstico)
+
+${lineas.join("\n")}
+
+Si el usuario pregunta por el tiempo de alguno de estos días, utiliza estos datos reales en vez de estimaciones genéricas o de la tabla fija del planning.
+`;
+}
+
+async function obtenerCambioActual(){
+  try{
+    const r = await fetch("https://api.frankfurter.app/latest?from=ZAR&to=EUR");
+    const j = await r.json();
+    const cambio = j?.rates?.EUR;
+    if(!cambio) return "";
+    return `
+CAMBIO DE DIVISA ACTUAL (dato en vivo, fuente Banco Central Europeo)
+
+1 ZAR ≈ ${cambio.toFixed(4)} EUR · 1 EUR ≈ ${(1/cambio).toFixed(2)} ZAR.
+
+Si el usuario pregunta por conversiones de dinero, utiliza este cambio real en vez de una cifra fija o inventada.
+`;
+  }catch(e){
+    return "";
+  }
+}
 
 export default async function handler(req, res) {
 
@@ -101,8 +171,10 @@ Longitud: ${ubicacion.lng}
 Precisión aproximada: ${Math.round(ubicacion.accuracy)} metros.
 `
   : "";
-  
-  
+
+const previsionReal = await obtenerPrevisionReal(hoy);
+const cambioActual = await obtenerCambioActual();
+
 console.log("=== UBICACIÓN RECIBIDA ===");
 console.log(ubicacion);
 
@@ -151,6 +223,7 @@ REGLAS
 - Cuando la respuesta hable de la ubicación de un lugar concreto (un hotel, un mirador, una parada de ruta, un pueblo, una reserva de fauna...) y un mapa realmente ayude a situarlo, añade la marca [[MAPA:lat,lng,Nombre del lugar]] con las coordenadas aproximadas de ese lugar, usando tu propio conocimiento geográfico.
 - Si el usuario pregunta por SU PROPIA ubicación actual y tienes sus coordenadas en el CONTEXTO ACTUAL, usa esas coordenadas exactas en la marca MAPA con la etiqueta "Tu ubicación actual".
 - No abuses de la marca MAPA: solo úsala cuando aporte valor real para situar un lugar. No la uses en respuestas puramente conversacionales, ni la repitas varias veces para el mismo lugar en una misma respuesta.
+- Cuando la respuesta mencione una zona, ciudad o alojamiento donde el usuario podría necesitar buscar hotel (especialmente si es una noche marcada como "zona a confirmar"), añade la marca [[BOOKING:Nombre del lugar o zona]] con el nombre a buscar en Booking.com.
 - No expliques estas marcas al usuario ni digas que las usas.
 - Usa cada marca una sola vez por mención relevante.
 
@@ -196,6 +269,8 @@ CONTEXTO ACTUAL
 
 ${contextoActual}
 ${contextoUbicacion}
+${previsionReal}
+${cambioActual}
 
 
 =================
