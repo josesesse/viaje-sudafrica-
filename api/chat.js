@@ -78,6 +78,8 @@ Hoy es ${hoy.toLocaleDateString("es-ES", {
 
 ${estadoViaje}
 
+
+
 Debes utilizar SIEMPRE esta fecha para interpretar expresiones como:
 
 - hoy
@@ -90,6 +92,19 @@ Debes utilizar SIEMPRE esta fecha para interpretar expresiones como:
 El documento del viaje debe interpretarse tomando esta fecha como referencia.
 `;
 
+  const contextoUbicacion = ubicacion
+  ? `
+UBICACIÓN ACTUAL
+
+Latitud: ${ubicacion.lat}
+Longitud: ${ubicacion.lng}
+Precisión aproximada: ${Math.round(ubicacion.accuracy)} metros.
+`
+  : "";
+  
+  
+
+  
   const respuesta = await fetch(
     "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent",
     {
@@ -172,6 +187,7 @@ Actúa como si conocieras perfectamente este viaje y estuvieras acompañando a l
 CONTEXTO ACTUAL
 
 ${contextoActual}
+${contextoUbicacion}
 
 
 =================
