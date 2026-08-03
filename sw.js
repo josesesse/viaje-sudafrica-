@@ -1,4 +1,4 @@
-const CACHE = "sa-trip-v3";
+const CACHE = "sa-trip-v4";
 const SHELL = [
   "./",
   "./index.html",
