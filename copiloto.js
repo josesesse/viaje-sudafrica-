@@ -171,7 +171,7 @@ window.Copiloto = {
         <div class="cp-window">
 
           <div class="cp-header">
-  <span class="cp-header-title">🦁 Copiloto</span>
+  <span class="cp-header-title"><span class="cp-header-emoji">🦁</span>Copiloto</span>
   <button id="cp-close">✕</button>
 </div>
 
