@@ -216,14 +216,33 @@ window.Copiloto = {
 
     document.getElementById("cp-close").onclick = () => this.cerrar();
     this.bind();
+    this._bloquearGestos();
 
+  },
+
+  _bloquearGestos() {
+    const backdrop = this.modal.querySelector(".cp-backdrop");
+
+    // Evita que un touchmove con más de un dedo (pinch) haga zoom en toda la página
+    this.modal.addEventListener("touchmove", (e)=>{
+      if(e.touches.length > 1) e.preventDefault();
+    }, { passive:false });
+
+    // Safari dispara estos eventos específicos de pellizco; los anulamos
+    this.modal.addEventListener("gesturestart", (e)=> e.preventDefault());
+    this.modal.addEventListener("gesturechange", (e)=> e.preventDefault());
+
+    // Si el dedo arrastra directamente sobre el fondo oscuro (no sobre el chat), no debe mover nada
+    backdrop.addEventListener("touchmove", (e)=>{
+      if(e.target === backdrop) e.preventDefault();
+    }, { passive:false });
   },
 
   abrir(pregunta) {
     if (!this.modal) this.init(); // salvaguarda por si se llama antes de tiempo
 
     this.modal.style.display = "block";
-    document.body.style.overflow = "hidden";
+    this._bloquearScrollFondo();
 
     const input = document.getElementById("cp-question");
 
@@ -234,10 +253,27 @@ window.Copiloto = {
       setTimeout(() => input && input.focus(), 50);
     }
   },
-  
-  cerrar() {
-    this.modal.style.display = "none";
+  _bloquearScrollFondo() {
+    this._scrollGuardado = window.scrollY || document.documentElement.scrollTop || 0;
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${this._scrollGuardado}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+  },
+  _desbloquearScrollFondo() {
+    document.body.style.position = "";
+    document.body.style.top = "";
+    document.body.style.left = "";
+    document.body.style.right = "";
+    document.body.style.width = "";
     document.body.style.overflow = "";
+    window.scrollTo(0, this._scrollGuardado || 0);
+  },
+   cerrar() {
+    this.modal.style.display = "none";
+    this._desbloquearScrollFondo();
   },
 
   // Ajusta la altura de #cp-chat con una transición suave: fija la altura
