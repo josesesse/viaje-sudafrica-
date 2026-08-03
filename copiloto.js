@@ -321,3 +321,46 @@ bind() {
 };
 
 window.addEventListener("DOMContentLoaded", () => Copiloto.init());
+
+
+function renderMapCard(container, lat, lng){
+
+  container.innerHTML = `
+    <div class="cp-map" style="
+      height:220px;
+      border-radius:18px;
+      overflow:hidden;
+      margin:10px 0;
+    "></div>
+  `;
+
+  const mapDiv = container.querySelector(".cp-map");
+
+  const map = L.map(mapDiv, {
+    zoomControl: false,
+    attributionControl: false
+  });
+
+  map.setView([lat, lng], 13);
+
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom:19
+  }).addTo(map);
+
+  L.marker([lat, lng]).addTo(map);
+
+  // Leaflet necesita recalcular el tamaño cuando el div ya existe
+  setTimeout(() => map.invalidateSize(), 50);
+
+}
+
+
+
+const prueba = document.createElement("div");
+document.getElementById("cp-chat").appendChild(prueba);
+
+renderMapCard(
+    prueba,
+    40.42152,
+    0.423332
+);
