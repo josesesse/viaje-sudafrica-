@@ -103,7 +103,12 @@ Precisión aproximada: ${Math.round(ubicacion.accuracy)} metros.
   : "";
   
   
+console.log("=== UBICACIÓN RECIBIDA ===");
+console.log(ubicacion);
 
+console.log("=== CONTEXTO UBICACIÓN ===");
+console.log(contextoUbicacion);
+  
   
   const respuesta = await fetch(
     "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent",
