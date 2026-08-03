@@ -253,6 +253,15 @@ window.Copiloto = {
     cambios();
 
     const end = chat.scrollHeight;
+
+    function ajustarScroll(){
+      if(scrollToEl){
+        chat.scrollTop = Math.max(0, scrollToEl.offsetTop - 8);
+      } else {
+        chat.scrollTop = chat.scrollHeight;
+      }
+    }
+    
     requestAnimationFrame(() => {
       chat.style.transition = "height .32s cubic-bezier(.22,.9,.32,1)";
       chat.style.height = end + "px";
@@ -325,7 +334,7 @@ window.Copiloto = {
     this._animarAltura(chat, () => {
       msgEl.classList.remove("cp-typing");
       renderCopilotoContent(msgEl, texto);
-    });
+    }, msgEl);
 
   },
 
