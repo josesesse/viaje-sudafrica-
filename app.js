@@ -363,7 +363,7 @@ const RESERVATIONS_STATIC = [
   { key:"flight-in", label:"Vuelo internacional de ida", detail:"Johannesburgo · 15 ago, 08:30", status:"confirmed" },
   { key:"flight-internal", label:"Vuelo interno Nelspruit → Ciudad del Cabo", detail:"20/21 ago", status:"confirmed" },
   { key:"flight-out", label:"Vuelo internacional de vuelta", detail:"Ciudad del Cabo · 28 ago, ≈06:00", status:"confirmed" },
-  { key:"car1", label:"Coche de alquiler — tramo Johannesburgo/Kruger/Panorama", detail:"15–20 ago", status:"pending" },
+  { key:"car1", label:"Coche de alquiler — tramo Johannesburgo/Kruger/Panorama", detail:"15–20 ago", status:"confirmed" },
   { key:"car2", label:"Coche de alquiler — tramo Ciudad del Cabo", detail:"21–28 ago", status:"pending" },
 ];
 
