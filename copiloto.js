@@ -223,6 +223,7 @@ window.Copiloto = {
     if (!this.modal) this.init(); // salvaguarda por si se llama antes de tiempo
 
     this.modal.style.display = "block";
+    document.body.style.overflow = "hidden";
 
     const input = document.getElementById("cp-question");
 
@@ -233,16 +234,16 @@ window.Copiloto = {
       setTimeout(() => input && input.focus(), 50);
     }
   },
-
+  
   cerrar() {
     this.modal.style.display = "none";
+    document.body.style.overflow = "";
   },
-
 
   // Ajusta la altura de #cp-chat con una transición suave: fija la altura
   // actual, deja que 'cambios()' añada/edite contenido, y luego anima hacia
   // la nueva altura (el max-height del CSS sigue limitando el máximo).
-  _animarAltura(chat, cambios) {
+  _animarAltura(chat, cambios, scrollToEl) {
 
     const start = chat.getBoundingClientRect().height;
     chat.style.transition = "none";
@@ -260,16 +261,17 @@ window.Copiloto = {
         chat.scrollTop = chat.scrollHeight;
       }
     }
-    
+
     requestAnimationFrame(() => {
       chat.style.transition = "height .32s cubic-bezier(.22,.9,.32,1)";
       chat.style.height = end + "px";
-      chat.scrollTop = chat.scrollHeight;
+      ajustarScroll();
     });
 
     chat.addEventListener("transitionend", function handler(e) {
       if (e.propertyName !== "height") return;
       chat.style.height = ""; // vuelve a altura automática (deja hueco para seguir creciendo)
+      ajustarScroll();
       chat.removeEventListener("transitionend", handler);
     }, { once: true });
 
