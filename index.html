@@ -704,20 +704,30 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
 }
 
 .cp-window{
+
   width:min(560px,100%);
-  max-height:85vh;
-  overflow:hidden;
+
+  min-height:320px;
+  max-height:80vh;
+
   display:flex;
   flex-direction:column;
 
-  background: rgba(255,255,255,.72);
-backdrop-filter: blur(18px) saturate(180%);
--webkit-backdrop-filter: blur(18px) saturate(180%);
-border: 1px solid rgba(255,255,255,.35);
-  border-radius: 24px;
+  overflow:hidden;
+
+  background:rgba(255,255,255,.72);
+  backdrop-filter:blur(18px) saturate(180%);
+  -webkit-backdrop-filter:blur(18px) saturate(180%);
+
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:24px;
+
   box-shadow:
     0 24px 60px rgba(0,0,0,.18),
     inset 0 1px rgba(255,255,255,.45);
+
+  transition:height .25s ease;
+
 }
 
 .cp-header{
@@ -741,23 +751,39 @@ border: 1px solid rgba(255,255,255,.35);
 }
 
 .cp-body{
+
   padding:20px;
+
   display:flex;
   flex-direction:column;
-  height:70vh;
+
+  flex:1;
+
+  min-height:0;
+
 }
 
 
   .cp-chat{
+
   display:flex;
   flex-direction:column;
+
   gap:14px;
-  flex:1;
+
   overflow-y:auto;
   overflow-x:hidden;
-  margin-bottom:18px;
+
+  flex:1;
+
+  min-height:120px;
+
+  max-height:55vh;
 
   padding-right:10px;
+
+  margin-bottom:18px;
+
 }
 
 .cp-msg{
@@ -773,7 +799,7 @@ border: 1px solid rgba(255,255,255,.35);
 }
 
 .cp-msg-user{
-  background:rgba(var(--amber-soft-rgb), 0.8);
+  background:rgba(var(--amber-soft-rgb), 0.1);
     color: white;
 
     border:1px solid var(--line);
