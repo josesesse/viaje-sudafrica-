@@ -1,3 +1,28 @@
+function mdToHtml(texto){
+  // Escapar HTML primero, por seguridad
+  let s = texto
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+
+  // Negrita **texto**
+  s = s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+
+  // Encabezados markdown (#, ##, ###) -> línea en negrita
+  s = s.replace(/^#{1,6}\s?(.+)$/gm, "<strong>$1</strong>");
+
+  // Listas "- item" o "* item" -> <li>
+  s = s.replace(/^[*-]\s+(.+)$/gm, "<li>$1</li>");
+  s = s.replace(/(<li>.*<\/li>)/gs, "<ul>$1</ul>");
+
+  // Saltos de línea restantes
+  s = s.replace(/\n{2,}/g, "<br><br>");
+  s = s.replace(/\n/g, "<br>");
+
+  return s;
+}
+
+
 window.Copiloto = {
 
   
@@ -116,7 +141,11 @@ window.Copiloto = {
     this._animarAltura(chat, () => {
       msg = document.createElement("div");
       msg.className = "cp-msg cp-msg-" + tipo;
-      msg.textContent = texto;
+      if(tipo === "ai"){
+        msg.innerHTML = mdToHtml(texto);
+      } else {
+        msg.textContent = texto;
+      }
       chat.appendChild(msg);
     });
 
@@ -149,8 +178,7 @@ window.Copiloto = {
 
     this._animarAltura(chat, () => {
       msgEl.classList.remove("cp-typing");
-      msgEl.innerHTML = "";
-      msgEl.textContent = texto;
+      msgEl.innerHTML = mdToHtml(texto);
     });
 
   },
