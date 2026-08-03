@@ -789,23 +789,66 @@ border: 1px solid rgba(255,255,255,.35);
 }
 
 .cp-input{
-  display:flex;
-  gap:10px;
+    position:relative;
+    margin-top:16px;
 }
 
 .cp-input input{
-  flex:1;
-  padding:12px 14px;
-  border:1px solid var(--line);
-  border-radius:14px;
-  font:inherit;
+
+    width:100%;
+    box-sizing:border-box;
+
+    padding:14px 60px 14px 16px;
+
+    border:1px solid var(--line);
+    border-radius:999px;
+
+    background:rgba(255,255,255,.55);
+
+    font:inherit;
+
+    outline:none;
+
 }
 
 .cp-input button{
-  padding:12px 18px;
-  border:none;
-  border-radius:14px;
-  cursor:pointer;
+
+    position:absolute;
+
+    top:50%;
+    right:6px;
+
+    transform:translateY(-50%);
+
+    width:42px;
+    height:42px;
+
+    border:none;
+    border-radius:50%;
+
+    background:var(--amber-soft);   /* sustituir por tu tono */
+color:white;
+box-shadow:0 4px 12px rgba(0,0,0,.12);
+
+    color:white;
+
+    font-size:20px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:.2s;
+
+}
+
+.cp-input button:hover{
+
+    transform:translateY(-50%) scale(1.05);
+
 }
   
   
