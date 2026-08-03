@@ -22,6 +22,66 @@ function mdToHtml(texto){
   return s;
 }
 
+function renderCopilotoContent(container, texto){
+  container.innerHTML = "";
+  const regex = /\[\[(DIA|ALOJAMIENTO):(\d+)\]\]/g;
+  let lastIndex = 0, match;
+
+  function appendText(fragment){
+    if(!fragment.trim()) return;
+    const p = document.createElement("div");
+    p.innerHTML = mdToHtml(fragment);
+    container.appendChild(p);
+  }
+
+  while((match = regex.exec(texto))){
+    appendText(texto.slice(lastIndex, match.index));
+    const dayNum = Number(match[2]);
+    const day = (typeof TRIP !== "undefined") ? TRIP.days.find(d => d.day === dayNum) : null;
+    if(day){
+      container.appendChild(match[1] === "DIA" ? buildDayCard(day) : buildStayCard(day));
+    }
+    lastIndex = regex.lastIndex;
+  }
+  appendText(texto.slice(lastIndex));
+}
+
+function buildDayCard(day){
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "cp-card cp-card-day";
+  card.innerHTML = `
+    <div class="cp-card-top">
+      <span class="cp-card-daytag">Día ${day.day}</span>
+      <span class="cp-card-route">${day.fromCode} → ${day.toCode}</span>
+    </div>
+    <div class="cp-card-title">${day.subtitle || day.title}</div>
+    <div class="cp-card-sub">${day.summary}</div>
+  `;
+  card.addEventListener("click", () => {
+    Copiloto.cerrar();
+    if(typeof openDay === "function") openDay(day.day);
+  });
+  return card;
+}
+
+function buildStayCard(day){
+  const card = document.createElement("button");
+  card.type = "button";
+  card.className = "cp-card cp-card-stay";
+  card.innerHTML = `
+    <div class="cp-card-top"><span class="cp-card-daytag">Día ${day.day}</span></div>
+    <div class="cp-card-title">🏨 ${day.stay.name}</div>
+    <div class="cp-card-sub">${day.stay.area || ""}</div>
+  `;
+  card.addEventListener("click", () => {
+    Copiloto.cerrar();
+    if(typeof openDay === "function") openDay(day.day);
+  });
+  return card;
+}
+
+
 
 window.Copiloto = {
 
@@ -142,7 +202,8 @@ window.Copiloto = {
       msg = document.createElement("div");
       msg.className = "cp-msg cp-msg-" + tipo;
       if(tipo === "ai"){
-        msg.innerHTML = mdToHtml(texto);
+        renderCopilotoContent(msg, texto);
+        // msg.innerHTML = mdToHtml(texto);
       } else {
         msg.textContent = texto;
       }
@@ -162,7 +223,8 @@ window.Copiloto = {
     this._animarAltura(chat, () => {
       msg = document.createElement("div");
       msg.className = "cp-msg cp-msg-ai cp-typing";
-      msg.innerHTML = `<span class="cp-dot"></span><span class="cp-dot"></span><span class="cp-dot"></span>`;
+      // msg.innerHTML = `<span class="cp-dot"></span><span class="cp-dot"></span><span class="cp-dot"></span>`;
+      renderCopilotoContent(msgEl, texto);
       chat.appendChild(msg);
     });
 
