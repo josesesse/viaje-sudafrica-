@@ -6,6 +6,23 @@ const knowledge = fs.readFileSync(
   "utf8"
 );
 
+
+// ======================================================
+// CONFIGURACIÓN
+// ======================================================
+
+// Durante el desarrollo puedes fijar una fecha.
+// Formato: "YYYY-MM-DD"
+// Ejemplo: "2026-08-19"
+//
+// Cuando publiques la aplicación,
+// cambia DEBUG_DATE a null.
+
+const DEBUG_DATE = "2026-08-19";
+// const DEBUG_DATE = null;
+
+
+
 export default async function handler(req, res) {
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -16,16 +33,61 @@ export default async function handler(req, res) {
   });
 }
 
-  const hoy = new Date();
+const hoy = DEBUG_DATE
+  ? new Date(DEBUG_DATE + "T12:00:00")
+  : new Date();
+
+const inicioViaje = new Date("2026-08-15T12:00:00");
+
+const MS_DIA = 1000 * 60 * 60 * 24;
+
+const diasRestantes = Math.floor(
+  (inicioViaje - hoy) / MS_DIA
+);
+
+let estadoViaje = "";
+
+if (diasRestantes > 0) {
+
+  estadoViaje = `
+El viaje todavía no ha comenzado.
+
+Comienza el 15 de agosto de 2026.
+
+Faltan ${diasRestantes} días para el inicio del viaje.
+`;
+
+} else {
+
+  estadoViaje = `
+El viaje ya ha comenzado.
+
+Todas las preguntas sobre "hoy", "mañana", "esta tarde", "esta noche" o fechas relativas deben interpretarse tomando esta fecha como referencia.
+
+El documento del viaje debe interpretarse utilizando esta fecha actual.
+`;
+
+}
 
 const contextoActual = `
-FECHA ACTUAL
-
 Hoy es ${hoy.toLocaleDateString("es-ES", {
   day: "numeric",
   month: "long",
   year: "numeric"
 })}.
+
+${estadoViaje}
+
+Debes utilizar SIEMPRE esta fecha para interpretar expresiones como:
+
+- hoy
+- mañana
+- esta tarde
+- esta noche
+- ayer
+- pasado mañana
+
+El documento del viaje debe interpretarse tomando esta fecha como referencia.
 `;
 
   const respuesta = await fetch(
