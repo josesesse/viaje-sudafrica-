@@ -1,0 +1,9 @@
+DEBUG_DATE duplicado sin sincronizar entre app.js y chat.js. 
+
+Si el día del viaje llega y pones: 
+  DEBUG_DATE = null;
+
+en uno y se te olvida en el otro, la app mostrará el día real pero el Copiloto seguirá interpretando fechas relativas 
+como si fuera el 19 de agosto (o viceversa). 
+
+Antes de publicar, revisa los dos a la vez.
