@@ -708,6 +708,7 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
   justify-content:center;
   padding:20px;
   backdrop-filter:blur(6px);
+  touch-action:none;
 }
 
 .cp-window{
@@ -715,12 +716,13 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
   width:min(560px,100%);
 
   min-height:320px;
-  max-height:92vh;
+  max-height:82vh;
 
   display:flex;
   flex-direction:column;
 
   overflow:hidden;
+  touch-action:pan-y;
 
   background:rgba(255,255,255,.72);
   backdrop-filter:blur(18px) saturate(180%);
