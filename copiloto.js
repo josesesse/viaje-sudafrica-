@@ -172,9 +172,9 @@ window.Copiloto = {
         <div class="cp-window">
 
           <div class="cp-header">
-            🦁 Copiloto
-            <button id="cp-close">✕</button>
-          </div>
+  <span class="cp-header-title">🦁 Copiloto</span>
+  <button id="cp-close">✕</button>
+</div>
 
           <div class="cp-body">
 
