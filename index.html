@@ -946,8 +946,21 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
     transform:translateX(2px);
     opacity:1;
 } 
+
+.cp-map{
+    height:220px;
+    border-radius:18px;
+    overflow:hidden;
+    margin:10px 0;
+}
   
 </style>
+  
+  <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+  
 </head>
 <body>
 
@@ -1243,7 +1256,9 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
 </div>
 
   
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="app.js"></script>
-  <script src="copiloto.js"></script>
+<script src="copiloto.js"></script>
+  
 </body>
 </html>
