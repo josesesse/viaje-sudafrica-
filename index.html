@@ -934,8 +934,18 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
 .cp-card-route{ font-family:var(--font-mono); font-size:11px; color:var(--text-dim); font-weight:600; }
 .cp-card-title{ font-family:var(--font-display); font-weight:700; font-size:14px; margin-top:6px; }
 .cp-card-sub{ font-size:12.5px; color:var(--text-dim); margin-top:3px; line-height:1.4; }
-.cp-card-arrow{margin-left:auto; font-size:22px; font-weight:300; color:var(--text-faint);opacity:.75; }  
-  
+.cp-card-arrow{
+    font-size:22px;
+    font-weight:300;
+    color:var(--text-faint);
+    opacity:.7;
+    transition:transform .15s ease, opacity .15s ease;
+}
+
+.cp-card:active .cp-card-arrow{
+    transform:translateX(2px);
+    opacity:1;
+} 
   
 </style>
 </head>
