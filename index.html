@@ -921,10 +921,11 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
   
 .cp-card{
   display:block; width:100%; text-align:left; cursor:pointer;
-  background:#fff; border:1px solid var(--line); border-radius:14px;
-  padding:12px 14px; margin:8px 0; transition:.15s;
-}
-.cp-card:active{ transform:scale(.98); }
+  background:rgba(255,255,255,.82); backdrop-filter:blur(12px); border:1px solid var(--line); border-radius:18px;
+  padding:12px 14px; margin:8px 0; box-shadow: 0 2px 8px rgba(0,0,0,.05), 0 8px 22px rgba(0,0,0,.06); transition: transform .12s ease, box-shadow .18s ease; }
+.cp-card:active{ transform:scale(.985); box-shadow:
+        0 1px 4px rgba(0,0,0,.04),
+        0 4px 12px rgba(0,0,0,.05); }
 .cp-card-top{ display:flex; align-items:center; justify-content:space-between; gap:8px; }
 .cp-card-daytag{
   font-family:var(--font-mono); font-size:10px; font-weight:700; letter-spacing:.06em;
@@ -933,7 +934,7 @@ body.leg-capetown .info-card{background:var(--surface); border-color:var(--line)
 .cp-card-route{ font-family:var(--font-mono); font-size:11px; color:var(--text-dim); font-weight:600; }
 .cp-card-title{ font-family:var(--font-display); font-weight:700; font-size:14px; margin-top:6px; }
 .cp-card-sub{ font-size:12.5px; color:var(--text-dim); margin-top:3px; line-height:1.4; }
-  
+.cp-card-arrow{margin-left:auto; font-size:22px; font-weight:300; color:var(--text-faint);opacity:.75; }  
   
   
 </style>
