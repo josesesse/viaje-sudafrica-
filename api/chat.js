@@ -37,6 +37,29 @@ const TRIP_DAYS_LOCATIONS = [
   { day:13, date:"2026-08-27", lat:-33.9715, lon:18.6021, label:"Zona aeropuerto Ciudad del Cabo" },
 ];
 
+// ======================================================
+// DETECCIÓN DE INTENCIÓN (para no llamar a APIs externas
+// ni inflar el prompt cuando la pregunta no lo necesita)
+// ======================================================
+
+const PALABRAS_METEO = [
+  "tiempo", "clima", "meteo", "temperatura", "grados", "lluvia", "llover",
+  "lloviendo", "nublado", "nubes", "sol", "soleado", "viento", "frío",
+  "frio", "calor", "previsión", "prevision", "pronóstico", "pronostico",
+  "abrigo", "chubasco", "paraguas"
+];
+
+const PALABRAS_DIVISA = [
+  "euro", "euros", "rand", "zar", "cambio", "divisa", "convertir",
+  "conversión", "conversion", "cuánto cuesta", "cuanto cuesta", "precio en",
+  "dinero", "€", "moneda"
+];
+
+function preguntaContiene(pregunta, lista){
+  const q = pregunta.toLowerCase();
+  return lista.some(p => q.includes(p));
+}
+
 async function obtenerPrevisionReal(hoy){
   const MS_DIA = 1000 * 60 * 60 * 24;
   const limite = new Date(hoy.getTime() + 15 * MS_DIA);
@@ -96,12 +119,22 @@ Si el usuario pregunta por conversiones de dinero, utiliza este cambio real en v
 export default async function handler(req, res) {
 
   const apiKey = process.env.GEMINI_API_KEY;
-  const { pregunta, ubicacion } = req.body;
+  const { pregunta, ubicacion, historial } = req.body;
   if (!pregunta) {
   return res.status(400).json({
     respuesta: "No se ha recibido ninguna pregunta."
   });
 }
+
+// Límite de turnos de historial que se reenvían a Gemini (por coste de tokens).
+// Cada "turno" es un mensaje (usuario o modelo), así que 8 = últimos 4 intercambios.
+const MAX_TURNOS_HISTORIAL = 8;
+
+const historialLimpio = Array.isArray(historial)
+  ? historial
+      .filter(h => h && (h.role === "user" || h.role === "model") && typeof h.text === "string" && h.text.trim())
+      .slice(-MAX_TURNOS_HISTORIAL)
+  : [];
 
 const hoy = DEBUG_DATE
   ? new Date(DEBUG_DATE + "T12:00:00")
@@ -172,8 +205,16 @@ Precisión aproximada: ${Math.round(ubicacion.accuracy)} metros.
 `
   : "";
 
-const previsionReal = await obtenerPrevisionReal(hoy);
-const cambioActual = await obtenerCambioActual();
+const necesitaMeteo = preguntaContiene(pregunta, PALABRAS_METEO);
+const necesitaDivisa = preguntaContiene(pregunta, PALABRAS_DIVISA);
+
+const [previsionReal, cambioActual] = await Promise.all([
+  necesitaMeteo ? obtenerPrevisionReal(hoy) : Promise.resolve(""),
+  necesitaDivisa ? obtenerCambioActual() : Promise.resolve("")
+]);
+
+console.log("=== INTENCIÓN DETECTADA ===");
+console.log({ necesitaMeteo, necesitaDivisa });
 
 console.log("=== UBICACIÓN RECIBIDA ===");
 console.log(ubicacion);
@@ -182,20 +223,7 @@ console.log("=== CONTEXTO UBICACIÓN ===");
 console.log(contextoUbicacion);
   
   
-  const respuesta = await fetch(
-    "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-goog-api-key": apiKey
-      },
-      body: JSON.stringify({
-        contents: [
-          {
-            parts: [
-              {
-                text: `
+  const systemInstructionText = `
 Eres el copiloto inteligente de un viaje por Sudáfrica.
 
 Tu misión es ayudar a los viajeros durante todo el viaje de forma útil, natural y práctica.
@@ -250,6 +278,14 @@ Utiliza siempre ese contexto para interpretar expresiones como:
 No preguntes al usuario en qué día está salvo que realmente sea imposible deducirlo.
 
 =================
+MEMORIA DE LA CONVERSACIÓN
+=================
+
+Verás más abajo, en "contents", los turnos anteriores de esta misma conversación (si los hay).
+Tenlos en cuenta para entender referencias como "eso", "ese día", "y al día siguiente" o preguntas de seguimiento.
+Si el usuario cambia de tema, no fuerces relación con lo anterior.
+
+=================
 FORMA DE RESPONDER
 =================
 
@@ -278,17 +314,29 @@ ${cambioActual}
 DOCUMENTO DEL VIAJE
 
 ${knowledge}
+`;
 
-=================
+  const contents = [
+    ...historialLimpio.map(h => ({
+      role: h.role,
+      parts: [{ text: h.text }]
+    })),
+    { role: "user", parts: [{ text: pregunta }] }
+  ];
 
-Pregunta del usuario:
-
-${pregunta}
-`
-              }
-            ]
-          }
-        ]
+  const respuesta = await fetch(
+    "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-goog-api-key": apiKey
+      },
+      body: JSON.stringify({
+        systemInstruction: {
+          parts: [{ text: systemInstructionText }]
+        },
+        contents
       })
     }
   );
