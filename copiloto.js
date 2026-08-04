@@ -15,6 +15,14 @@ function mdToHtml(texto){
   s = s.replace(/^[*-]\s+(.+)$/gm, "<li>$1</li>");
   s = s.replace(/(<li>.*<\/li>)/gs, "<ul>$1</ul>");
 
+  // Marcas del copiloto -> elementos interactivos
+  s = s.replace(/\[\[DIA:(\d+)\]\]/g, '<button type="button" class="maplink cp-tag" data-open-day="$1">📅 Día $1</button>');
+  s = s.replace(/\[\[ALOJAMIENTO:(\d+)\]\]/g, '<button type="button" class="maplink cp-tag" data-open-day="$1">🏨 Ver alojamiento</button>');
+  s = s.replace(/\[\[MAPA:([\-\d.]+),\s*([\-\d.]+),\s*([^\]]+)\]\]/g, (m,lat,lng,nombre)=>
+    `<a class="maplink cp-tag" href="https://www.google.com/maps/search/?api=1&query=${lat},${lng}" target="_blank" rel="noopener">📍 ${nombre.trim()}</a>`);
+  s = s.replace(/\[\[BOOKING:([^\]]+)\]\]/g, (m,nombre)=>
+    `<a class="maplink cp-tag" href="https://www.booking.com/searchresults.html?ss=${encodeURIComponent(nombre.trim())}" target="_blank" rel="noopener">🛏️ Buscar en Booking</a>`);
+
   // Saltos de línea restantes
   s = s.replace(/\n{2,}/g, "<br><br>");
   s = s.replace(/\n/g, "<br>");
@@ -243,6 +251,13 @@ window.Copiloto = {
     document.body.appendChild(this.modal);
 
     document.getElementById("cp-close").onclick = () => this.cerrar();
+    document.getElementById("cp-chat").addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-open-day]");
+      if (!btn) return;
+      const day = Number(btn.dataset.openDay);
+      this.cerrar();
+      if (typeof openDay === "function") openDay(day);
+    });
     this.bind();
     this._bloquearGestos();
 
