@@ -194,8 +194,8 @@ function renderMapCard(container, lat, lng, etiqueta){
 
 window.Copiloto = {
 
-  
   modal: null,
+  historial: [], // { role: "user"|"model", text: "..." } — memoria de la conversación actual
 
   init() {
 
@@ -447,13 +447,27 @@ const response = await fetch("/api/chat", {
   },
   body: JSON.stringify({
     pregunta,
-    ubicacion
+    ubicacion,
+    historial: this.historial
   })
 });
 
   const data = await response.json();
+  const respuestaTexto = data.respuesta || "No he podido responder.";
 
-  this.resolverTyping(typingEl, data.respuesta || "No he podido responder.");
+  this.resolverTyping(typingEl, respuestaTexto);
+
+  // Guarda el turno en memoria SOLO si hubo respuesta real, para no
+  // contaminar la conversación con mensajes de error.
+  if(data.respuesta){
+    this.historial.push({ role: "user", text: pregunta });
+    this.historial.push({ role: "model", text: respuestaTexto });
+    // Nos quedamos solo con los últimos intercambios para no disparar tokens.
+    const MAX_TURNOS = 8;
+    if(this.historial.length > MAX_TURNOS){
+      this.historial = this.historial.slice(-MAX_TURNOS);
+    }
+  }
 
 } catch (error) {
 
@@ -482,7 +496,6 @@ bind() {
 };
 
 window.addEventListener("DOMContentLoaded", () => Copiloto.init());
-
 
 
 
